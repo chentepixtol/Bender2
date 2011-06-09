@@ -21,7 +21,7 @@ class TableCollection extends BaseCollection
 	 * @return int
 	 */
 	protected function getIndex($table){
-		return $table->getName()->toString();
+		return $table->getObject()->toString();
 	}
 
 

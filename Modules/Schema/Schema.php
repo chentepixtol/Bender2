@@ -33,7 +33,7 @@ class Schema extends AbstractModule
 		$files = new FileCollection();
 
 		$files->append(
-			new File('config/schema.yml',  Yaml::dump($this->createSchemaArray(), 1) )
+			new File('config/schema.yml',  Yaml::dump($this->createSchemaArray(), 3) )
 		);
 
 		return $files;

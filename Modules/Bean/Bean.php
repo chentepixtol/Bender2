@@ -38,7 +38,7 @@ class Bean extends AbstractModule
 			$view->table = $table;
 			$content = $view->fetch('bean.tpl');
 			$files->append(
-				new File('application/models/beans/'.$table->getName()->toUpperCamelCase().'.php', $content)
+				new File('application/models/beans/'.$table->getObject()->toUpperCamelCase().'.php', $content)
 			);
 		});
 

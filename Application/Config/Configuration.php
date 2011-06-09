@@ -1,5 +1,5 @@
 <?php
-namespace Application\Bender;
+namespace Application\Config;
 
 /**
  *
@@ -12,9 +12,26 @@ class Configuration
 	/**
 	 *
 	 *
-	 * @var unknown_type
+	 * @var array
 	 */
 	protected $parameters = array();
+
+	/**
+	 *
+	 *
+	 * @param array $parameters
+	 */
+	public function __construct($parameters = array())
+	{
+		if( !is_array($parameters) ){
+			throw new \Exception("Parametros no validos ");
+		}
+
+		foreach ($parameters as $parameter => $value) {
+			$this->set($parameter, $value);
+		}
+
+	}
 
 	/**
 	 *
@@ -23,7 +40,7 @@ class Configuration
 	 * @param mixed $value
 	 * @return Application\Bender\Configuration
 	 */
-	public function setParameter($parameter, $value){
+	public function set($parameter, $value){
 		$this->parameters[$parameter] = $value;
 		return $this;
 	}
@@ -35,7 +52,7 @@ class Configuration
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function getParameter($parameter, $default = null){
+	public function get($parameter, $default = null){
 		return isset($this->parameters[$parameter]) ?  $this->parameters[$parameter] : $default;
 	}
 

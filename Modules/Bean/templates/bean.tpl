@@ -1,3 +1,6 @@
 {% include 'header.tpl' %}
 
-class {{ table.getName().toUpperCamelCase() }}{}
+class {{ table.getObject().toUpperCamelCase() }}
+{
+	const TABLENAME = '{{ table.getName() }}';
+}

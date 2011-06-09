@@ -59,9 +59,19 @@ class String
 
 	/**
 	 *
+	 * @param string $string
+	 * @return boolean
+	 */
+	public function equal($string){
+		return $this->string == $string;
+	}
+
+	/**
+	 *
 	 * @return string
 	 */
 	public function toUpperCamelCase(){
+		if( $this->mode == self::UPPERCAMELCASE ) return $this->string;
 		$method = $this->mode . '_to_' . self::UPPERCAMELCASE;
 		return $this->{$method}();
 	}

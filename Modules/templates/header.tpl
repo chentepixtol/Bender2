@@ -1,3 +1,3 @@
 /**
- * class {{ table.getName() }}
+ * class {{ table.getObject() }}
  */

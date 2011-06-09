@@ -12,6 +12,7 @@ use Application\Generator\Module\Module;
  */
 class Generator
 {
+
 	/**
 	 *
 	 * @var Application\Generator\Module\ModuleCollection
@@ -33,6 +34,7 @@ class Generator
 	 */
 	public function generate()
 	{
+		$this->modules->rewind();
 		while ( $this->modules->valid() ) {
 			$module = $this->modules->read();
 			$files = $module->getFiles();
@@ -41,6 +43,7 @@ class Generator
 				echo $file->getFullpath() . " => \n" . $file->getContent() ."\n";
 			}
 		}
+		$this->modules->rewind();
 	}
 
 	/**
@@ -50,6 +53,15 @@ class Generator
 	 */
 	public function addModule(Module $module){
 		$this->modules->append($module);
+	}
+
+	/**
+	 *
+	 * @return Application\Generator\Module\ModuleCollection
+	 */
+	public function getModules(){
+		$this->modules->rewind();
+		return $this->modules;
 	}
 }
 

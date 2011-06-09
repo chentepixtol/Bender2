@@ -1,16 +1,18 @@
 <?php
+
 namespace Application\Bender;
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\DBAL\DriverManager;
 use Application\Bender\View;
-use Application\Bender\Configuration;
 use Application\Bender\Singleton;
 use Application\Bender\Event\Event;
+use Application\Config\Configuration;
 use Application\Generator\Module\Module;
 use Application\Database\Database;
 use Application\CLI\CLI;
+use Application\Config\Schema;
 
 
 require_once 'Application/Bender/Singleton.php';
@@ -64,6 +66,12 @@ final class Bender extends Singleton
 
 	/**
 	 *
+	 * @var Application\Config\Schema
+	 */
+	protected $schema;
+
+	/**
+	 *
 	 * @return Application\Bender\Bender
 	 */
 	public function registerAutoloader()
@@ -84,7 +92,7 @@ final class Bender extends Singleton
 
 		$loader->register();
 
-		$this->getConfiguration()->setParameter('modulesPath', APPLICATION_PATH.'/Modules/');
+		$this->getConfiguration()->set('modulesPath', APPLICATION_PATH.'/Modules/');
 
 		return $this;
 	}
@@ -117,7 +125,7 @@ final class Bender extends Singleton
 		if( null == $this->database ){
 			$this->database = new Database();
 			$this->dispatch(Event::DATABASE_BEFORE_INSPECT);
-			$this->database->inspect($this->getConnection()->getSchemaManager());
+			$this->database->inspect($this->getConnection()->getSchemaManager(), $this->getSchema());
 			$this->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $this->database)));
 		}
 		return $this->database;
@@ -161,12 +169,25 @@ final class Bender extends Singleton
 	/**
 	 * @return Application\Bender\Configuration
 	 */
-	public function getConfiguration() {
+	public function getConfiguration()
+	{
 		if( null == $this->configuration ){
 			$this->configuration = new Configuration();
 		}
-
 		return $this->configuration;
+	}
+
+	/**
+	 *
+	 * @return Application\Config\Schema
+	 */
+	public function getSchema()
+	{
+		if( null == $this->schema ){
+			$this->schema = new Schema();
+			$this->schema->load(APPLICATION_PATH.'/config/schema.yml');
+		}
+		return $this->schema;
 	}
 
 	/**
@@ -186,7 +207,7 @@ final class Bender extends Singleton
 	 * @param string $eventName
 	 * @param CoreEvent $event
 	 */
-	protected function dispatch($eventName, Event $event = null)
+	public function dispatch($eventName, Event $event = null)
 	{
 		if( null == $event ){
 			$event = new Event();

@@ -1,6 +1,7 @@
 <?php
 namespace Application\Database;
 
+use Application\Config\Schema;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 
 
@@ -23,12 +24,14 @@ class Database {
 	 *
 	 *
 	 */
-	public function inspect(AbstractSchemaManager $schemaManager)
+	public function inspect(AbstractSchemaManager $schemaManager, Schema $schema)
 	{
 		$tables = $schemaManager->listTables();
 		foreach ($tables as $doctrineTable){
 			$table = new Table($doctrineTable);
 			$table->setDatabase($this);
+			$configuration = $schema->createConfiguration($table->getName()->toString());
+			$table->setConfiguration($configuration);
 			$this->tables->append($table);
 		}
 	}

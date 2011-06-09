@@ -1,6 +1,8 @@
 <?php
 namespace Application\CLI;
 
+use Application\Bender\Event\Event;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,7 +45,7 @@ class Create extends Command
 			throw new \Exception('Not enough arguments.');
 		}
 
-		$directories = $this->getBender()->getConfiguration()->getParameter('modulesPath');
+		$directories = $this->getBender()->getConfiguration()->get('modulesPath');
 
 		$generator = new Generator();
 		$finder = new Finder($directories);
@@ -52,6 +54,8 @@ class Create extends Command
 				$generator->addModule($module);
 			}
 		});
+
+		$this->getBender()->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $generator->getModules())));
 
 		$generator->generate();
 	}

@@ -1,9 +1,9 @@
 <?php
 namespace Application\Database;
 
-
 use Doctrine\DBAL\Schema\Table as DoctrineTable;
 use Application\Native\String;
+use Application\Config\Configuration;
 
 /**
  *
@@ -36,6 +36,12 @@ class Table
 
 	/**
 	 *
+	 * @var Application\Config\Configuration
+	 */
+	protected $configuration;
+
+	/**
+	 *
 	 *
 	 * @param DoctrineTable $table
 	 */
@@ -65,7 +71,7 @@ class Table
 
 	/**
 	 *
-	 * @return string
+	 * @return Application\Native\String
 	 */
 	public function getName()
 	{
@@ -73,6 +79,14 @@ class Table
 			$this->name = new String($this->doctrineTable->getName(), String::UNDERSCORE);
 		}
 		return $this->name;
+	}
+
+	/**
+	 *
+	 * @return Application\Native\String
+	 */
+	public function getObject(){
+		return $this->configuration->get('object', new String($this->getName()->toString()));
 	}
 
 	/**
@@ -89,7 +103,19 @@ class Table
 		$this->database = $database;
 	}
 
+	/**
+	 * @return Application\Config\Configuration
+	 */
+	public function getConfiguration() {
+		return $this->configuration;
+	}
 
+	/**
+	 * @param Application\Config\Configuration $configuration
+	 */
+	public function setConfiguration(\Application\Config\Configuration $configuration) {
+		$this->configuration = $configuration;
+	}
 
 
 }

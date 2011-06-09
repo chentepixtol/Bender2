@@ -22,6 +22,7 @@ class Event extends sfEvent
 	const VIEW_MODULE_CREATE = 'view.module_create';
 	const CLI_READY = 'cli.ready';
 	const CONNECTION_ESTABILISHED = 'connection.estabilished';
+	const LOAD_MODULES = 'load.modules';
 
 	/**
 	 *

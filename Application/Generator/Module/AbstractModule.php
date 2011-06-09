@@ -43,7 +43,7 @@ abstract class AbstractModule implements Module
 	 */
 	public function getModulesPath()
 	{
-		return $this->getBender()->getConfiguration()->getParameter('modulesPath');
+		return $this->getBender()->getConfiguration()->get('modulesPath');
 	}
 
 }
