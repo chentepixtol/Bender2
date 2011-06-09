@@ -41,9 +41,9 @@ class Schema
 		if( isset($this->schema['schema']) ){
 			foreach ($this->schema['schema'] as $object => $options ){
 				if( isset($options['tablename']) && $tablename == $options['tablename'] ){
-					unset($options['tablename']);
 					$configuration->set('object', new String($object, String::UPPERCAMELCASE));
-					$configuration->set('options', $options);
+					$configuration->set('options', isset($options['options']) ? $options['options'] : array());
+					$configuration->set('extends', isset($options['extends']) ? $options['extends'] : false);
 					break;
 				}
 			}

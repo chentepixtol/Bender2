@@ -42,6 +42,12 @@ class Table
 
 	/**
 	 *
+	 * @var Table
+	 */
+	protected $parent;
+
+	/**
+	 *
 	 *
 	 * @param DoctrineTable $table
 	 */
@@ -116,6 +122,30 @@ class Table
 	public function setConfiguration(\Application\Config\Configuration $configuration) {
 		$this->configuration = $configuration;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasParent() {
+		return ($this->parent instanceof Table);
+	}
+
+	/**
+	 * @return Application\Database\Table
+	 */
+	public function getParent() {
+		return $this->parent;
+	}
+
+	/**
+	 * @param Application\Database\Table $parentTable
+	 */
+	public function setParent($parent) {
+		$this->parent = $parent;
+	}
+
+
+
 
 
 }

@@ -124,12 +124,26 @@ final class Bender extends Singleton
 	{
 		if( null == $this->database ){
 			$this->database = new Database();
-			$this->dispatch(Event::DATABASE_BEFORE_INSPECT);
-			$this->database->inspect($this->getConnection()->getSchemaManager(), $this->getSchema());
-			$this->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $this->database)));
+			$this->initDatabase();
 		}
 		return $this->database;
 	}
+
+	/**
+	 *
+	 * init database
+	 */
+	protected function initDatabase()
+	{
+		$this->dispatch(Event::DATABASE_BEFORE_INSPECT);
+		$this->database->inspect($this->getConnection()->getSchemaManager(), $this->getSchema());
+		$this->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $this->database)));
+
+		$this->dispatch(Event::DATABASE_BEFORE_CONFIGURE, new Event(array('database' => $this->database)));
+		$this->database->configure();
+		$this->dispatch(Event::DATABASE_AFTER_CONFIGURE, new Event(array('database' => $this->database)));
+	}
+
 
 	/**
 	 *

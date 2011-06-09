@@ -18,6 +18,8 @@ class Event extends sfEvent
 	 */
 	const DATABASE_BEFORE_INSPECT = 'database.before_inspect';
 	const DATABASE_AFTER_INSPECT = 'database.after_inspect';
+	const DATABASE_BEFORE_CONFIGURE = 'database.before_configure';
+	const DATABASE_AFTER_CONFIGURE = 'database.after_configure';
 	const VIEW_INIT = 'view.init';
 	const VIEW_MODULE_CREATE = 'view.module_create';
 	const CLI_READY = 'cli.ready';

@@ -3,7 +3,8 @@ schema:
     tablename: bender_persons
   Post:
     tablename: bender_posts
-    options: { crud: 1}
+    options: 
+      crud: true
   User:
     tablename: bender_users
   Worker:

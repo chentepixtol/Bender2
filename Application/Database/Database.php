@@ -23,17 +23,41 @@ class Database {
 	/**
 	 *
 	 *
+	 * @param AbstractSchemaManager $schemaManager
+	 * @param Schema $schema
 	 */
 	public function inspect(AbstractSchemaManager $schemaManager, Schema $schema)
 	{
 		$tables = $schemaManager->listTables();
 		foreach ($tables as $doctrineTable){
 			$table = new Table($doctrineTable);
-			$table->setDatabase($this);
+
 			$configuration = $schema->createConfiguration($table->getName()->toString());
 			$table->setConfiguration($configuration);
+
+			$table->setDatabase($this);
 			$this->tables->append($table);
 		}
+		$this->tables->rewind();
+	}
+
+	/**
+	 *
+	 *
+	 */
+	public function configure()
+	{
+		$this->tables->rewind();
+		while ($this->tables->valid()) {
+			$table = $this->tables->read();
+
+			$extends = $table->getConfiguration()->get('extends', false);
+			if( $extends && $this->tables->contains($extends) ){
+				$parent = $this->tables->getByPK($extends);
+				$table->setParent($parent);
+			}
+		}
+		$this->tables->rewind();
 	}
 
 	/**
