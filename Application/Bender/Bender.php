@@ -97,8 +97,8 @@ final class Bender extends Singleton
 		if( null == $this->connection ){
 			$connectionParams = array(
 			    'dbname' => 'bender',
-			    'user' => 'root',
-			    'password' => '2002080879',
+			    'user' => 'bender',
+			    'password' => '123',
 			    'host' => 'localhost',
 			    'driver' => 'pdo_mysql',
 			);
