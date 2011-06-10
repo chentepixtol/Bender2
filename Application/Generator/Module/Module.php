@@ -27,5 +27,12 @@ interface Module
 	 * @return array
 	 */
 	public function getTemplateDirs();
+
+	/**
+	 *
+	 * @return Symfony\Component\EventDispatcher\EventSubscriberInterface
+	 */
+	public function getSubscriber();
+
 }
 

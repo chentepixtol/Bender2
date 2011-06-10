@@ -1,7 +1,6 @@
 <?php
 namespace Modules\Bean;
 
-
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
 use Application\Generator\Module\AbstractModule;
@@ -44,8 +43,5 @@ class Bean extends AbstractModule
 
 		return $files;
 	}
-
-
-
 
 }

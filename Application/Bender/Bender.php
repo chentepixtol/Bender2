@@ -1,5 +1,4 @@
 <?php
-
 namespace Application\Bender;
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
@@ -13,7 +12,8 @@ use Application\Generator\Module\Module;
 use Application\Database\Database;
 use Application\CLI\CLI;
 use Application\Config\Schema;
-
+use Application\Generator\Module\ModuleCollection;
+use Application\Generator\Module\Finder;
 
 require_once 'Application/Bender/Singleton.php';
 
@@ -69,6 +69,12 @@ final class Bender extends Singleton
 	 * @var Application\Config\Schema
 	 */
 	protected $schema;
+
+	/**
+	 *
+	 * @var Application\Generator\Module\ModuleCollection
+	 */
+	protected $modules;
 
 	/**
 	 *
@@ -181,7 +187,7 @@ final class Bender extends Singleton
 	}
 
 	/**
-	 * @return Application\Bender\Configuration
+	 * @return Application\Config\Configuration
 	 */
 	public function getConfiguration()
 	{
@@ -227,6 +233,21 @@ final class Bender extends Singleton
 			$event = new Event();
 		}
 		$this->getEventDispatcher()->dispatch($eventName, $event);
+	}
+
+	/**
+	 *
+	 * @return Application\Generator\Module\ModuleCollection
+	 */
+	public function getModules()
+	{
+		if( null == $this->modules ){
+			$directories = $this->getConfiguration()->get('modulesPath');
+			$finder = new Finder($directories);
+			$this->modules = $finder->getModules();
+			$this->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
+		}
+		return $this->modules;
 	}
 
 }

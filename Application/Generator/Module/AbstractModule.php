@@ -1,6 +1,8 @@
 <?php
 namespace Application\Generator\Module;
 
+use Application\Bender\Event\EmptyEventSubscriber;
+
 use Application\Bender\Bender;
 use Application\Generator\File\FileCollection;
 use Application\Database\TableCollection;
@@ -44,6 +46,14 @@ abstract class AbstractModule implements Module
 	public function getModulesPath()
 	{
 		return $this->getBender()->getConfiguration()->get('modulesPath');
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Generator\Module.Module::getSubscriber()
+	 */
+	public function getSubscriber(){
+		return new EmptyEventSubscriber();
 	}
 
 }

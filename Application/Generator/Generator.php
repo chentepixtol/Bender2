@@ -63,5 +63,13 @@ class Generator
 		$this->modules->rewind();
 		return $this->modules;
 	}
+
+	/**
+	 *
+	 * @param Application\Generator\Module\ModuleCollection $modules
+	 */
+	public function setModules(ModuleCollection $modules){
+		$this->modules = $modules;
+	}
 }
 

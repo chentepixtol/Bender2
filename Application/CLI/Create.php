@@ -6,7 +6,6 @@ use Application\Bender\Event\Event;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Application\Generator\Module\Finder;
 use Application\Generator\Module\Module;
 use Application\Generator\Generator;
 
@@ -40,23 +39,20 @@ class Create extends Command
 	 */
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
-		$modulesParams = $input->getArgument('module');
-		if( empty($modulesParams) ){
+		$onlyModules = $input->getArgument('module');
+		if( empty($onlyModules) ){
 			throw new \Exception('Not enough arguments.');
 		}
 
-		$directories = $this->getBender()->getConfiguration()->get('modulesPath');
-
 		$generator = new Generator();
-		$finder = new Finder($directories);
-		$finder->getModules()->each(function(Module $module) use ($generator, $modulesParams){
-			if( in_array($module->getName(), $modulesParams) ){
+		$modules = $this->getBender()->getModules();
+		while ( $modules->valid() ) {
+			$module = $modules->read();
+			if( in_array($module->getName(), $onlyModules) ){
 				$generator->addModule($module);
+				$this->getBender()->getEventDispatcher()->addSubscriber($module->getSubscriber());
 			}
-		});
-
-		$this->getBender()->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $generator->getModules())));
-
+		}
 		$generator->generate();
 	}
 
