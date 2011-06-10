@@ -29,6 +29,7 @@ class Create extends Command
         	->setDescription('Genera el codigo para los distintos modulos')
         	->setHelp("php bender create modules Schema")
         	->setDefinition(array(
+        		new InputArgument('project', InputArgument::REQUIRED, 'Proyecto'),
             	new InputArgument('module', InputArgument::IS_ARRAY, 'Modulos'),
         	));
 	}
@@ -39,13 +40,14 @@ class Create extends Command
 	 */
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
+		$project = $input->getArgument('project');
 		$onlyModules = $input->getArgument('module');
 		if( empty($onlyModules) ){
 			throw new \Exception('Not enough arguments.');
 		}
 
 		$generator = new Generator();
-		$modules = $this->getBender()->getModules();
+		$modules = $this->getBender()->getModules($project);
 		while ( $modules->valid() ) {
 			$module = $modules->read();
 			if( in_array($module->getName(), $onlyModules) ){

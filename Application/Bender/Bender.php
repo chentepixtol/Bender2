@@ -239,10 +239,10 @@ final class Bender extends Singleton
 	 *
 	 * @return Application\Generator\Module\ModuleCollection
 	 */
-	public function getModules()
+	public function getModules($project)
 	{
 		if( null == $this->modules ){
-			$directories = $this->getConfiguration()->get('modulesPath');
+			$directories = $this->getConfiguration()->get('modulesPath') .$project;
 			$finder = new Finder($directories);
 			$this->modules = $finder->getModules();
 			$this->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));

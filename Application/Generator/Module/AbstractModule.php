@@ -24,8 +24,8 @@ abstract class AbstractModule implements Module
 	 */
 	public function getTemplateDirs(){
 		return array(
-			$this->getModulePath().'/templates/',
-			$this->getModulesPath().'templates/',
+			$this->getModulePath(). '/templates/',
+			$this->getModulesPath().'/templates/',
 		);
 	}
 
@@ -35,8 +35,8 @@ abstract class AbstractModule implements Module
 	 */
 	public function getModulePath()
 	{
-		$path = preg_match('$\/([a-z]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
-		return $this->getModulesPath().'/'.$path;
+		$path = preg_match('$\/([a-z\/]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
+		return $this->getBender()->getConfiguration()->get('modulesPath').$path;
 	}
 
 	/**
@@ -45,7 +45,8 @@ abstract class AbstractModule implements Module
 	 */
 	public function getModulesPath()
 	{
-		return $this->getBender()->getConfiguration()->get('modulesPath');
+		$path = preg_match('$\/([a-z]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
+		return $this->getBender()->getConfiguration()->get('modulesPath'). $path;
 	}
 
 	/**

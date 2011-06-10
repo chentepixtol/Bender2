@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Bean;
+namespace Modules\MyProject\Bean;
 
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;

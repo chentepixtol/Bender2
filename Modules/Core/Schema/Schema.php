@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Schema;
+namespace Modules\Core\Schema;
 
 use Symfony\Component\Yaml\Yaml;
 use Application\Generator\File\FileCollection;
@@ -50,8 +50,9 @@ class Schema extends AbstractModule
 		$schema = array( 'schema' => array());
 		while ($tables->valid()) {
 			$table = $tables->read();
-			$schema['schema'][$table->getName()->toString()] = array(
-				'tablename' => $table->getName()->toString(),
+			$tablename = $table->getName()->toString();
+			$schema['schema'][$tablename] = array(
+				'tablename' => $tablename,
 			);
 		}
 		return $schema;
