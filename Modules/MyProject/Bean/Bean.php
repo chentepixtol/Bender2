@@ -32,14 +32,18 @@ class Bean extends AbstractModule
 		$view =  $this->getBender()->getView($this);
 
 		$files = new FileCollection();
-		$tables->each(function (Table $table) use ($view, $files) {
+		while ( $tables->valid() )
+		{
+			$table = $tables->read();
+
 			$view->clear();
 			$view->table = $table;
+
 			$content = $view->fetch('bean.tpl');
 			$files->append(
 				new File('application/models/beans/'.$table->getObject()->toUpperCamelCase().'.php', $content)
 			);
-		});
+		}
 
 		return $files;
 	}

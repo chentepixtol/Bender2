@@ -55,9 +55,11 @@ class Settings
 	 *
 	 * @return Application\Config\Configuration
 	 */
-	public function getOptions(){
+	public function getOptions()
+	{
 		if( null == $this->options ){
-			$this->options = new Configuration($this->settings['settings']['options']);
+			$parameters = isset($this->settings['settings']['options']) ? $this->settings['settings']['options'] : array();
+			$this->options = new Configuration($parameters);
 		}
 		return $this->options;
 	}

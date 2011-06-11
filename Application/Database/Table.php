@@ -74,7 +74,7 @@ class Table
 
 	/**
 	 *
-	 *
+	 * Create the columns
 	 */
 	private function createColumns(){
 		$this->columns = new ColumnCollection();
@@ -124,8 +124,24 @@ class Table
 	 *
 	 * @return Application\Native\String
 	 */
-	public function getObject(){
-		return $this->configuration->get('object', new String($this->getName()->toString()));
+	public function getObject()
+	{
+		if( !$this->configuration->has('object') ){
+			$this->configuration->set('object', new String($this->getName()->toString()));
+		}
+		return $this->configuration->get('object');
+	}
+
+	/**
+	 *
+	 * @return Application\Config\Configuration
+	 */
+	public function getOptions()
+	{
+		if( !$this->configuration->has('options') ){
+			$this->configuration->set('options', new Configuration());
+		}
+		return $this->configuration->get('options');
 	}
 
 	/**
@@ -198,9 +214,6 @@ class Table
 	public function setForeignKeys($foreignKeys) {
 		$this->foreignKeys = $foreignKeys;
 	}
-
-
-
 
 
 }

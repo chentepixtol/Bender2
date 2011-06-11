@@ -56,4 +56,12 @@ class Configuration
 		return isset($this->parameters[$parameter]) ?  $this->parameters[$parameter] : $default;
 	}
 
+	/**
+	 *
+	 * @param string $parameter
+	 */
+	public function has($parameter){
+		return isset($this->parameters[$parameter]);
+	}
+
 }
