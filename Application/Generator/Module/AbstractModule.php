@@ -1,14 +1,28 @@
 <?php
+
 namespace Application\Generator\Module;
 
 use Application\Bender\Event\EmptyEventSubscriber;
-
+use Application\Bender\View;
 use Application\Bender\Bender;
 use Application\Generator\File\FileCollection;
 use Application\Database\TableCollection;
 
 abstract class AbstractModule implements Module
 {
+	/**
+	 *
+	 * @var Application\Bender\View
+	 */
+	protected $view;
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Generator\Module.Module::init()
+	 */
+	public function init(){
+		$this->view =  $this->getBender()->getView($this);
+	}
 
 	/**
 	 *

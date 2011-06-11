@@ -34,5 +34,11 @@ interface Module
 	 */
 	public function getSubscriber();
 
+	/**
+	 *
+	 * Initialization
+	 */
+	public function init();
+
 }
 

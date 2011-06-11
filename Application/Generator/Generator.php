@@ -37,6 +37,7 @@ class Generator
 		$this->modules->rewind();
 		while ( $this->modules->valid() ) {
 			$module = $this->modules->read();
+			$module->init();
 			$files = $module->getFiles();
 			while ( $files->valid() ) {
 				$file = $files->read();
