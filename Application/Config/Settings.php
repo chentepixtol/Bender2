@@ -72,4 +72,22 @@ class Settings
 		return $this->options;
 	}
 
+	/**
+	 *
+	 * @return array
+	 */
+	public function getAlias($alias){
+		return $this->settings['settings']['alias'][$alias];
+	}
+
+	/**
+	 *
+	 * Enter description here ...
+	 * @param unknown_type $alias
+	 * @return boolean
+	 */
+	public function hasAlias($alias){
+		return isset($this->settings['settings']['alias'][$alias]);
+	}
+
 }

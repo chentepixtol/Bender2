@@ -9,3 +9,7 @@ settings:
     driver:   pdo_mysql 
   options:
     author:   chente
+  alias:
+    all:
+      project: MyProject
+      modules: [ Bean ]

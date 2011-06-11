@@ -40,8 +40,20 @@ class Create extends Command
 	 */
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
+		$bender = $this->getBender();
+		$settings = $bender->getSettings();
+
 		$project = $input->getArgument('project');
-		$onlyModules = $input->getArgument('module');
+
+		if( $settings->hasAlias($project) ){
+			$alias = $settings->getAlias($project);
+			$project = $alias['project'];
+			$onlyModules = $alias['modules'];
+		}
+		else{
+			$onlyModules = $input->getArgument('module');
+		}
+
 		if( empty($onlyModules) ){
 			throw new \Exception('Not enough arguments.');
 		}
@@ -49,12 +61,12 @@ class Create extends Command
 		$this->getBender()->getConfiguration()->set('project', $project);
 
 		$generator = new Generator();
-		$modules = $this->getBender()->getModules($project);
+		$modules = $bender->getModules($project);
 		while ( $modules->valid() ) {
 			$module = $modules->read();
 			if( in_array($module->getName(), $onlyModules) ){
 				$generator->addModule($module);
-				$this->getBender()->getEventDispatcher()->addSubscriber($module->getSubscriber());
+				$bender->getEventDispatcher()->addSubscriber($module->getSubscriber());
 			}
 		}
 		$generator->generate();
