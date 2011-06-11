@@ -25,6 +25,8 @@ class Event extends sfEvent
 	const CLI_READY = 'cli.ready';
 	const CONNECTION_ESTABILISHED = 'connection.estabilished';
 	const LOAD_MODULES = 'load.modules';
+	const LOAD_SETTINGS = 'load.settings';
+	const LOAD_SCHEMA = 'load.schema';
 
 	/**
 	 *

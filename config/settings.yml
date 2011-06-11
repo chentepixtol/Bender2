@@ -1,0 +1,10 @@
+settings:
+  encoding:   utf-8
+  db:
+    dbname:   bender
+    user:     bender
+    password: 123
+    host:     localhost
+    driver:   pdo_mysql 
+  options:
+    author:   chente

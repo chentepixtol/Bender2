@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Bender;
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
@@ -14,6 +15,7 @@ use Application\CLI\CLI;
 use Application\Config\Schema;
 use Application\Generator\Module\ModuleCollection;
 use Application\Generator\Module\Finder;
+use Application\Config\Settings;
 
 require_once 'Application/Bender/Singleton.php';
 
@@ -78,6 +80,12 @@ final class Bender extends Singleton
 
 	/**
 	 *
+	 * @var Application\Config\Settings
+	 */
+	protected $settings;
+
+	/**
+	 *
 	 * @return Application\Bender\Bender
 	 */
 	public function registerAutoloader()
@@ -109,13 +117,7 @@ final class Bender extends Singleton
 	 */
 	public function getConnection(){
 		if( null == $this->connection ){
-			$connectionParams = array(
-			    'dbname' => 'bender',
-			    'user' => 'bender',
-			    'password' => '123',
-			    'host' => 'localhost',
-			    'driver' => 'pdo_mysql',
-			);
+			$connectionParams = $this->getSettings()->getConnectionParams();
 			$this->connection = DriverManager::getConnection($connectionParams);
 			$this->dispatch(Event::CONNECTION_ESTABILISHED, new Event(array('connection' => $this->connection)));
 		}
@@ -133,6 +135,19 @@ final class Bender extends Singleton
 			$this->initDatabase();
 		}
 		return $this->database;
+	}
+
+	/**
+	 *
+	 * @return Application\Config\Settings
+	 */
+	public function getSettings(){
+		if( null == $this->settings ){
+			$this->settings = new Settings();
+			$this->settings->load(APPLICATION_PATH.'/config/settings.yml');
+			$this->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
+		}
+		return $this->settings;
 	}
 
 	/**
@@ -206,6 +221,7 @@ final class Bender extends Singleton
 		if( null == $this->schema ){
 			$this->schema = new Schema();
 			$this->schema->load(APPLICATION_PATH.'/config/schema.yml');
+			$this->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
 		}
 		return $this->schema;
 	}
