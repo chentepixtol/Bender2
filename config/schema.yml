@@ -7,6 +7,7 @@ schema:
       crud: true
   User:
     tablename: bender_users
+    extends: Person
   Worker:
     tablename: bender_workers
     extends: Person

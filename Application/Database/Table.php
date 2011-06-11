@@ -1,9 +1,13 @@
 <?php
+
+
 namespace Application\Database;
 
 use Doctrine\DBAL\Schema\Table as DoctrineTable;
 use Application\Native\String;
 use Application\Config\Configuration;
+use Application\Database\ColumnCollection;
+use Application\Database\ForeignKeyCollection;
 
 /**
  *
@@ -48,6 +52,12 @@ class Table
 
 	/**
 	 *
+	 * @var Application\Database\ForeignKeyCollection
+	 */
+	protected $foreignKeys;
+
+	/**
+	 *
 	 *
 	 * @param DoctrineTable $table
 	 */
@@ -85,6 +95,29 @@ class Table
 			$this->name = new String($this->doctrineTable->getName(), String::UNDERSCORE);
 		}
 		return $this->name;
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getDataForeignKeys()
+	{
+		$foreignKeys = array();
+		foreach ($this->doctrineTable->getForeignKeys() as $foreignKey){
+			$colums = $foreignKey->getForeignColumns();
+			$foreignColumn = $colums[0];
+			$colums = $foreignKey->getLocalColumns();
+			$localColum = $colums[0];
+			$foreignKeys[] = array(
+				'name' => $foreignKey->getName(),
+				'local' => $localColum,
+				'localTable' => $foreignKey->getLocalTableName(),
+				'foreign' => $foreignColumn,
+				'foreignTable' => $foreignKey->getForeignTableName(),
+			);
+		}
+		return $foreignKeys;
 	}
 
 	/**
@@ -142,6 +175,28 @@ class Table
 	 */
 	public function setParent($parent) {
 		$this->parent = $parent;
+	}
+
+	/**
+	 *
+	 * @return Application\Database\ColumnCollection
+	 */
+	public function getColumns(){
+		return $this->columns;
+	}
+
+	/**
+	 * @return Application\Database\ForeignKeyCollection
+	 */
+	public function getForeignKeys() {
+		return $this->foreignKeys;
+	}
+
+	/**
+	 * @param Application\Database\ForeignKeyCollection $foreignKeys
+	 */
+	public function setForeignKeys($foreignKeys) {
+		$this->foreignKeys = $foreignKeys;
 	}
 
 
