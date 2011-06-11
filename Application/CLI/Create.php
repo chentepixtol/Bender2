@@ -46,6 +46,8 @@ class Create extends Command
 			throw new \Exception('Not enough arguments.');
 		}
 
+		$this->getBender()->getConfiguration()->set('project', $project);
+
 		$generator = new Generator();
 		$modules = $this->getBender()->getModules($project);
 		while ( $modules->valid() ) {

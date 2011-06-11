@@ -45,10 +45,18 @@ class Settings
 
 	/**
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function getEnconding(){
-		return isset($this->settings['settings']['encoding']) ? $this->settings['settings']['encoding'] : 'utf-8';
+		return isset($this->settings['settings']['encoding']) ? $this->settings['settings']['encoding'] : 'UTF-8';
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getOutputDir(){
+		return isset($this->settings['settings']['output_dir']) ? $this->settings['settings']['output_dir'] : 'output';
 	}
 
 	/**

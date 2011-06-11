@@ -1,5 +1,6 @@
 settings:
-  encoding:   utf-8
+  encoding:   UTF-8
+  output_dir: output
   db:
     dbname:   bender
     user:     bender

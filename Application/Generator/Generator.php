@@ -2,6 +2,10 @@
 
 namespace Application\Generator;
 
+use Application\Bender\Bender;
+
+use Application\Generator\File\Writer;
+
 use Application\Generator\Module\ModuleCollection;
 use Application\Generator\Module\Module;
 
@@ -22,9 +26,18 @@ class Generator
 	/**
 	 *
 	 *
+	 * @var Application\Generator\File\Writer
+	 */
+	protected $writer;
+
+	/**
+	 *
+	 *
 	 */
 	public function __construct(){
 		$this->modules = new ModuleCollection();
+		$encoding = $this->getBender()->getSettings()->getEnconding();
+		$this->writer = new Writer($encoding);
 	}
 
 	/**
@@ -41,7 +54,11 @@ class Generator
 			$files = $module->getFiles();
 			while ( $files->valid() ) {
 				$file = $files->read();
-				echo $file->getFullpath() . " => \n" . $file->getContent() ."\n";
+
+				$fullpath = APPLICATION_PATH .'/'. $this->getBender()->getSettings()->getOutputDir() .'/';
+				$fullpath.= $this->getBender()->getConfiguration()->get('project', 'default') .'/'. $file->getFullpath();
+
+				$this->writer->save($fullpath, $file->getContent());
 			}
 		}
 		$this->modules->rewind();
@@ -71,6 +88,14 @@ class Generator
 	 */
 	public function setModules(ModuleCollection $modules){
 		$this->modules = $modules;
+	}
+
+	/**
+	 *
+	 * @return Application\Bender\Bender
+	 */
+	public function getBender(){
+		return Bender::getInstance();
 	}
 }
 
