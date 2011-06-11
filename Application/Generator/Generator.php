@@ -2,6 +2,8 @@
 
 namespace Application\Generator;
 
+use Application\Bender\Event\Event;
+
 use Application\Bender\Bender;
 
 use Application\Generator\File\Writer;
@@ -48,17 +50,29 @@ class Generator
 	public function generate()
 	{
 		$this->modules->rewind();
-		while ( $this->modules->valid() ) {
+		while ( $this->modules->valid() )
+		{
 			$module = $this->modules->read();
 			$module->init();
+
 			$files = $module->getFiles();
-			while ( $files->valid() ) {
+			$this->getBender()->dispatch(Event::SAVE_FILES, new Event(array(
+				'module' => $module,
+			)));
+
+			while ( $files->valid() )
+			{
 				$file = $files->read();
 
-				$fullpath = APPLICATION_PATH .'/'. $this->getBender()->getSettings()->getOutputDir() .'/';
-				$fullpath.= $this->getBender()->getConfiguration()->get('project', 'default') .'/'. $file->getFullpath();
+				$filename = $this->getBender()->getConfiguration()->get('project', 'default') .'/'. $file->getFullpath();
+				$fullpath = APPLICATION_PATH .'/'. $this->getBender()->getSettings()->getOutputDir() .'/' . $filename;
 
 				$this->writer->save($fullpath, $file->getContent());
+				$this->getBender()->dispatch(Event::SAVE_FILE, new Event(array(
+					'module' => $module,
+					'fullpath' => $fullpath,
+					'filename' => $filename,
+				)));
 			}
 		}
 		$this->modules->rewind();

@@ -27,6 +27,8 @@ class Event extends sfEvent
 	const LOAD_MODULES = 'load.modules';
 	const LOAD_SETTINGS = 'load.settings';
 	const LOAD_SCHEMA = 'load.schema';
+	const SAVE_FILE = 'save.file';
+	const SAVE_FILES = 'save.files';
 
 	/**
 	 *

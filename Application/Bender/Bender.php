@@ -2,6 +2,8 @@
 
 namespace Application\Bender;
 
+use Application\Bender\Event\CoreListener;
+
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\DBAL\DriverManager;
@@ -178,6 +180,16 @@ final class Bender extends Singleton
 			$this->dispatch(Event::CLI_READY, new Event(array('cli' => $this->cli)));
 		}
 		return $this->cli;
+	}
+
+	/**
+	 *
+	 * run
+	 */
+	public function run(){
+		$this->registerAutoloader();
+		$this->getEventDispatcher()->addSubscriber(new CoreListener());
+		$this->getCLI()->run();
 	}
 
 	/**
