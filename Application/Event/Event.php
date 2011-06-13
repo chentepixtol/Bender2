@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Bender\Event;
+namespace Application\Event;
 
 use Symfony\Component\EventDispatcher\Event as sfEvent;
 
@@ -47,7 +47,7 @@ class Event extends sfEvent
 			throw new \Exception("Parameters no permitidos");
 
 		foreach ($parameters as $parameter => $value){
-			$this->setParameter($parameter, $value);
+			$this->set($parameter, $value);
 		}
 	}
 
@@ -57,7 +57,7 @@ class Event extends sfEvent
 	 * @param string $parameter
 	 * @param mixed $value
 	 */
-	public function setParameter($parameter, $value){
+	public function set($parameter, $value){
 		$this->parameters[$parameter] = $value;
 	}
 
@@ -68,7 +68,7 @@ class Event extends sfEvent
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function getParameter($paremeter, $default = null){
+	public function get($paremeter, $default = null){
 		return isset($this->parameters[$paremeter]) ? $this->parameters[$paremeter] : $default;
 	}
 

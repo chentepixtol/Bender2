@@ -4,7 +4,7 @@ namespace Application\Database;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Application\Bender\Event\Event;
+use Application\Event\Event;
 use Application\Config\Schema;
 use Application\Database\Database;
 

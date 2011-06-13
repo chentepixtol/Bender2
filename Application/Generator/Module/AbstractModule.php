@@ -2,11 +2,11 @@
 
 namespace Application\Generator\Module;
 
-use Application\Bender\Event\EmptyEventSubscriber;
 use Application\Bender\View;
 use Application\Bender\Bender;
 use Application\Generator\File\FileCollection;
 use Application\Database\TableCollection;
+use Application\Event\EmptySubscriber;
 
 abstract class AbstractModule implements Module
 {
@@ -68,7 +68,7 @@ abstract class AbstractModule implements Module
 	 * @see Application\Generator\Module.Module::getSubscriber()
 	 */
 	public function getSubscriber(){
-		return new EmptyEventSubscriber();
+		return new EmptySubscriber();
 	}
 
 }

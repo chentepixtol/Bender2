@@ -2,23 +2,24 @@
 
 namespace Application\Bender;
 
-
-use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Doctrine\DBAL\DriverManager;
 use Application\Bender\View;
 use Application\Bender\Singleton;
-use Application\Bender\Event\Event;
 use Application\Config\Configuration;
 use Application\Generator\Module\Module;
 use Application\Database\Database;
+use Application\Database\DatabaseBuilder;
 use Application\CLI\CLI;
+use Application\Config\Settings;
 use Application\Config\Schema;
 use Application\Generator\Module\ModuleCollection;
 use Application\Generator\Module\Finder;
-use Application\Config\Settings;
-use Application\Database\DatabaseBuilder;
-use Application\Bender\Event\CoreListener;
+use Application\Event\Event;
+use Application\Event\CoreListener;
+use Application\Event\Dispatcher;
+
 
 require_once 'Application/Bender/Singleton.php';
 
@@ -65,9 +66,9 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * @var EventDispatcher
+	 * @var Symfony\Component\EventDispatcher\EventDispatcher
 	 */
-	protected $eventDispatcher;
+	protected $dispatcher;
 
 	/**
 	 *
@@ -135,9 +136,7 @@ final class Bender extends Singleton
 	{
 		if( null == $this->database ){
 			$schemaManager = $this->getConnection()->getSchemaManager();
-			$schema = $this->getSchema();
-			$eventDispatcher = $this->getEventDispatcher();
-			$databaseBuilder = new DatabaseBuilder($schemaManager, $schema, $eventDispatcher);
+			$databaseBuilder = new DatabaseBuilder($schemaManager, $this->getSchema(), $this->getEventDispatcher());
 			$this->database = $databaseBuilder->build();
 		}
 		return $this->database;
@@ -164,7 +163,6 @@ final class Bender extends Singleton
 	{
 		if( null == $this->cli ){
 			$this->cli = new CLI();
-			$this->cli->loadCommands();
 			$this->dispatch(Event::CLI_READY, new Event(array('cli' => $this->cli)));
 		}
 		return $this->cli;
@@ -228,20 +226,20 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * @return Symfony\Component\EventDispatcher\EventDispatcher
+	 * @return Application\Event\Dispatcher
 	 */
 	public function getEventDispatcher()
 	{
-		if( null == $this->eventDispatcher ){
-			$this->eventDispatcher = new EventDispatcher();
+		if( null == $this->dispatcher ){
+			$this->dispatcher = new EventDispatcher();
 		}
-		return $this->eventDispatcher;
+		return $this->dispatcher;
 	}
 
 	/**
 	 *
 	 * @param string $eventName
-	 * @param CoreEvent $event
+	 * @param Event $event
 	 */
 	public function dispatch($eventName, Event $event = null)
 	{
@@ -251,6 +249,8 @@ final class Bender extends Singleton
 		$this->getEventDispatcher()->dispatch($eventName, $event);
 	}
 
+
+
 	/**
 	 *
 	 * @return Application\Generator\Module\ModuleCollection
@@ -258,11 +258,12 @@ final class Bender extends Singleton
 	public function getModules($project)
 	{
 		if( null == $this->modules ){
-			$directories = $this->getConfiguration()->get('modulesPath') .$project;
+			$directories = $this->getConfiguration()->get('modulesPath').$project;
 			$finder = new Finder($directories);
-			$this->modules = $finder->getModules();
+			$this->modules = $finder->findModules();
 			$this->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
 		}
+		$this->modules->rewind();
 		return $this->modules;
 	}
 

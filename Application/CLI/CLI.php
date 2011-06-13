@@ -39,13 +39,14 @@ class CLI extends Application
     public function __construct()
     {
         parent::__construct('Welcome to Bender', '2.0');
+        $this->loadCommands();
     }
 
     /**
      *
      *
      */
-    public function loadCommands()
+    private function loadCommands()
     {
         $create = new Create();
         $this->addCommands(array(

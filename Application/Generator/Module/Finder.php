@@ -47,7 +47,7 @@ class Finder
 	 *
 	 *
 	 */
-	protected function inspect()
+	protected function find()
 	{
 		$this->modules = new ModuleCollection();
 
@@ -71,9 +71,9 @@ class Finder
 	 *
 	 * @return Application\Generator\Module\ModuleCollection
 	 */
-	public function getModules(){
+	public function findModules(){
 		if( !($this->modules instanceof ModuleCollection) ){
-			$this->inspect();
+			$this->find();
 		}
 		$this->modules->rewind();
 		return $this->modules;

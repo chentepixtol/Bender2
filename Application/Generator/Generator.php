@@ -2,14 +2,13 @@
 
 namespace Application\Generator;
 
-use Application\Bender\Event\Event;
+
 
 use Application\Bender\Bender;
-
-use Application\Generator\File\Writer;
-
+use Application\Event\Event;
 use Application\Generator\Module\ModuleCollection;
 use Application\Generator\Module\Module;
+use Application\Generator\File\Writer;
 
 /**
  *

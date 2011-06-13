@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Bender\Event;
+namespace Application\Event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @author chente
  *
  */
-class EmptyEventSubscriber implements EventSubscriberInterface
+class EmptySubscriber implements EventSubscriberInterface
 {
 
 	/**

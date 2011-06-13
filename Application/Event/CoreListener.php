@@ -1,10 +1,10 @@
 <?php
 
-namespace Application\Bender\Event;
-
-use Application\Bender\Bender;
+namespace Application\Event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Application\Bender\Bender;
+
 
 /**
  *
@@ -33,7 +33,7 @@ class CoreListener implements EventSubscriberInterface
 	public function onSaveFile(Event $event){
 		static $i = 0;
 		$i++;
-		$this->getOutput()->writeln(sprintf("<info>  {$i}. %s</info>" , $event->getParameter('filename')));
+		$this->getOutput()->writeln(sprintf("<info>  {$i}. %s</info>" , $event->get('filename')));
 	}
 
 	/**
@@ -42,7 +42,7 @@ class CoreListener implements EventSubscriberInterface
 	 * @param Event $event
 	 */
 	public function onSaveFiles(Event $event){
-		$this->getOutput()->writeln(sprintf("<info>%s</info>" , $event->getParameter('module')->getName()));
+		$this->getOutput()->writeln(sprintf("<info>%s</info>" , $event->get('module')->getName()));
 	}
 
 	/**
