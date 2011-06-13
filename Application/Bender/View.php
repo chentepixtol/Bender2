@@ -2,8 +2,6 @@
 
 namespace Application\Bender;
 
-use Application\Generator\Module\Module;
-
 /**
  *
  * @author chente

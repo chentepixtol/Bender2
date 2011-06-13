@@ -2,7 +2,6 @@
 
 namespace Application\Bender;
 
-use Application\Bender\Event\CoreListener;
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -18,6 +17,8 @@ use Application\Config\Schema;
 use Application\Generator\Module\ModuleCollection;
 use Application\Generator\Module\Finder;
 use Application\Config\Settings;
+use Application\Database\DatabaseBuilder;
+use Application\Bender\Event\CoreListener;
 
 require_once 'Application/Bender/Singleton.php';
 
@@ -133,8 +134,11 @@ final class Bender extends Singleton
 	public function getDatabase()
 	{
 		if( null == $this->database ){
-			$this->database = new Database();
-			$this->initDatabase();
+			$schemaManager = $this->getConnection()->getSchemaManager();
+			$schema = $this->getSchema();
+			$eventDispatcher = $this->getEventDispatcher();
+			$databaseBuilder = new DatabaseBuilder($schemaManager, $schema, $eventDispatcher);
+			$this->database = $databaseBuilder->getDatabase();
 		}
 		return $this->database;
 	}
@@ -151,22 +155,6 @@ final class Bender extends Singleton
 		}
 		return $this->settings;
 	}
-
-	/**
-	 *
-	 * init database
-	 */
-	protected function initDatabase()
-	{
-		$this->dispatch(Event::DATABASE_BEFORE_INSPECT);
-		$this->database->inspect($this->getConnection()->getSchemaManager(), $this->getSchema());
-		$this->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $this->database)));
-
-		$this->dispatch(Event::DATABASE_BEFORE_CONFIGURE, new Event(array('database' => $this->database)));
-		$this->database->configure();
-		$this->dispatch(Event::DATABASE_AFTER_CONFIGURE, new Event(array('database' => $this->database)));
-	}
-
 
 	/**
 	 *

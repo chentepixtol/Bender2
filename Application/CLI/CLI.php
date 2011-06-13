@@ -5,7 +5,6 @@ namespace Application\CLI;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Application;
-use Application\Bender\Bender;
 
 /**
  * Bender
