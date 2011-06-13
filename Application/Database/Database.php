@@ -1,6 +1,8 @@
 <?php
 namespace Application\Database;
 
+use Application\Database\TableCollection;
+
 /**
  *
  * @author chente

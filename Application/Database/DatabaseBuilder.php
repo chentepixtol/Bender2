@@ -8,62 +8,97 @@ use Application\Bender\Event\Event;
 use Application\Config\Schema;
 use Application\Database\Database;
 
-
+/**
+ *
+ *
+ * @author chente
+ *
+ */
 class DatabaseBuilder
 {
 
 	/**
 	 *
-	 * @var Database
+	 *
+	 * @var Doctrine\DBAL\Schema\AbstractSchemaManager
 	 */
-	protected $database;
+	protected $schemaManager;
+
+	/**
+	 *
+	 *
+	 * @var Application\Config\Schema
+	 */
+	protected $schema;
+
+	/**
+	 *
+	 *
+	 * @var Symfony\Component\EventDispatcher\EventDispatcher
+	 */
+	protected $eventDispatcher;
 
 	/**
 	 *
 	 *
 	 * @param AbstractSchemaManager $schemaManager
 	 * @param Schema $schema
+	 * @param EventDispatcher $eventDispatcher
 	 */
 	public function __construct(AbstractSchemaManager $schemaManager, Schema $schema, EventDispatcher $eventDispatcher)
 	{
-		$this->database = new Database();
-
-		$eventDispatcher->dispatch(Event::DATABASE_BEFORE_INSPECT, new Event());
-		$this->inspect($schemaManager, $schema);
-		$eventDispatcher->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $this->database)));
-
-		$eventDispatcher->dispatch(Event::DATABASE_BEFORE_CONFIGURE, new Event(array('database' => $this->database)));
-		$this->configure();
-		$eventDispatcher->dispatch(Event::DATABASE_AFTER_CONFIGURE, new Event(array('database' => $this->database)));
+		$this->schemaManager = $schemaManager;
+		$this->schema = $schema;
+		$this->eventDispatcher = $eventDispatcher;
 	}
+
+
+	/**
+	 *
+	 * @return Application\Database\Database
+	 */
+	public function build()
+	{
+		$database = new Database();
+
+		$this->eventDispatcher->dispatch(Event::DATABASE_BEFORE_INSPECT, new Event());
+		$this->inspect($database);
+		$this->eventDispatcher->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $database)));
+
+		$this->eventDispatcher->dispatch(Event::DATABASE_BEFORE_CONFIGURE, new Event(array('database' => $database)));
+		$this->configure($database);
+		$this->eventDispatcher->dispatch(Event::DATABASE_AFTER_CONFIGURE, new Event(array('database' => $database)));
+
+		return $database;
+	}
+
 
 	/**
 	 *
 	 *
-	 * @param AbstractSchemaManager $schemaManager
-	 * @param Schema $schema
+	 * @param Application\Database\Database $database
 	 */
-	private function inspect(AbstractSchemaManager $schemaManager, Schema $schema)
+	private function inspect($database)
 	{
-		$tables = $schemaManager->listTables();
+		$tableBuilder = new TableBuilder($this->schema);
+
+		$tables = $this->schemaManager->listTables();
 		foreach ($tables as $doctrineTable){
-			$table = new Table($doctrineTable);
+			$table = $tableBuilder->build($doctrineTable);
 
-			$configuration = $schema->createConfiguration($table->getName()->toString());
-			$table->setConfiguration($configuration);
-
-			$table->setDatabase($this->database);
-			$this->database->getTables()->append($table);
+			$table->setDatabase($database);
+			$database->getTables()->append($table);
 		}
 	}
 
 	/**
 	 *
 	 *
+	 * @param Application\Database\Database $database
 	 */
-	private function configure()
+	private function configure($database)
 	{
-		$tables = $this->database->getTables();
+		$tables = $database->getTables();
 
 		while ( $tables->valid() ) {
 			$table = $tables->read();
@@ -88,14 +123,6 @@ class DatabaseBuilder
 
 		}
 		$tables->rewind();
-	}
-
-	/**
-	 *
-	 * @return Application\Database\Database
-	 */
-	public function getDatabase(){
-		return $this->database;
 	}
 
 }

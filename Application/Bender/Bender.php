@@ -138,7 +138,7 @@ final class Bender extends Singleton
 			$schema = $this->getSchema();
 			$eventDispatcher = $this->getEventDispatcher();
 			$databaseBuilder = new DatabaseBuilder($schemaManager, $schema, $eventDispatcher);
-			$this->database = $databaseBuilder->getDatabase();
+			$this->database = $databaseBuilder->build();
 		}
 		return $this->database;
 	}

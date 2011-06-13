@@ -63,7 +63,7 @@ class Table
 	 */
 	public function __construct(DoctrineTable $table){
 		$this->doctrineTable = $table;
-		$this->createColumns();
+		$this->columns = new ColumnCollection();
 	}
 
 	/**
@@ -71,19 +71,6 @@ class Table
 	 * @var Application\Native\String
 	 */
 	protected $name;
-
-	/**
-	 *
-	 * Create the columns
-	 */
-	private function createColumns(){
-		$this->columns = new ColumnCollection();
-		foreach($this->doctrineTable->getColumns() as $doctrineColumn){
-			$column = new Column($doctrineColumn);
-			$column->setTable($this);
-			$this->columns->append($column);
-		}
-	}
 
 	/**
 	 *
@@ -198,6 +185,7 @@ class Table
 	 * @return Application\Database\ColumnCollection
 	 */
 	public function getColumns(){
+		$this->columns->rewind();
 		return $this->columns;
 	}
 
