@@ -59,7 +59,8 @@ class Finder
 			if( class_exists($namespaceClassName) ){
 				$reflectionClass = new \ReflectionClass($namespaceClassName);
 
-				if( $reflectionClass->implementsInterface('Application\\Generator\\Module\\Module') ){
+				if( $reflectionClass->implementsInterface('Application\\Generator\\Module\\Module')
+					&& !$reflectionClass->isAbstract()){
 					$module = $reflectionClass->newInstance();
 					$this->modules->append($module);
 				}

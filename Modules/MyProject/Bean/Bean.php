@@ -3,15 +3,15 @@ namespace Modules\MyProject\Bean;
 
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
-use Application\Generator\Module\AbstractModule;
 use Application\Database\Table;
+use Modules\MyProject\BaseModule;
 
 /**
  *
  * @author chente
  *
  */
-class Bean extends AbstractModule
+class Bean extends BaseModule
 {
 
 	/**
@@ -34,9 +34,7 @@ class Bean extends AbstractModule
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
-
-			$this->view->clear();
-			$this->view->table = $table;
+			$this->shorcuts($table);
 
 			$content = $this->view->fetch('bean.tpl');
 			$files->append(
