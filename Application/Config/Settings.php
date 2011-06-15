@@ -29,10 +29,11 @@ class Settings
 	 */
 	public function load($file)
 	{
-		if( !file_exists($file) ){
+		$fileName = APPLICATION_PATH .'/' . $file;
+		if( !file_exists($fileName) ){
 			throw new \Exception("No se ha definido el archivo settings.yml");
 		}
-		$this->settings = Yaml::load($file);
+		$this->settings = Yaml::load($fileName);
 	}
 
 	/**

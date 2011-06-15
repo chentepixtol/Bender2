@@ -149,7 +149,7 @@ final class Bender extends Singleton
 	public function getSettings(){
 		if( null == $this->settings ){
 			$this->settings = new Settings();
-			$this->settings->load(APPLICATION_PATH.'/config/settings.yml');
+			$this->settings->load('config/settings.yml');
 			$this->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
 		}
 		return $this->settings;
@@ -218,7 +218,7 @@ final class Bender extends Singleton
 	{
 		if( null == $this->schema ){
 			$this->schema = new Schema();
-			$this->schema->load(APPLICATION_PATH.'/config/schema.yml');
+			$this->schema->load('config/schema.yml');
 			$this->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
 		}
 		return $this->schema;

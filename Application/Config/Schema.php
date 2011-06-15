@@ -24,8 +24,9 @@ class Schema
 	 */
 	public function load($file)
 	{
-		if( file_exists($file) ){
-			$this->schema = Yaml::load($file);
+		$fileName = APPLICATION_PATH .'/' . $file;
+		if( file_exists($fileName) ){
+			$this->schema = Yaml::load($fileName);
 		}
 	}
 
