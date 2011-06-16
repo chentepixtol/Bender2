@@ -6,7 +6,11 @@ namespace Application\Native;
  *
  *
  * @author chente
- *
+ * @method string toUnderscore
+ * @method string toUpperCamelCase
+ * @method string toCamelCase
+ * @method string toUpperCase
+ * @method string toSlug
  */
 class String
 {
@@ -15,8 +19,11 @@ class String
 	 *
 	 * @var string
 	 */
-	const UNDERSCORE = 'underscore';
-	const UPPERCAMELCASE = 'uppercamelcase';
+	const UNDERSCORE = 'Underscore';
+	const UPPERCAMELCASE = 'UpperCamelCase';
+	const CAMELCASE = 'CamelCase';
+    const UPPERCASE = 'UpperCase';
+    const SLUG = 'Slug';
 
 	/**
 	 *
@@ -68,21 +75,33 @@ class String
 
 	/**
 	 *
+	 * @param string $method
+	 * @param array $args
 	 * @return string
+	 * @throws \Exception
 	 */
-	public function toUpperCamelCase(){
-		if( $this->mode == self::UPPERCAMELCASE ) return $this->string;
-		$method = $this->mode . '_to_' . self::UPPERCAMELCASE;
-		return $this->{$method}();
+	public function __call($method, $args)
+	{
+		$method = str_replace('to', '', $method);
+		if( $this->mode == $method ){
+			return $this->string;
+		}
+
+		$internalMethod = lcfirst($this->mode).'To'.$method;
+		if( !method_exists($this, $internalMethod) ){
+			throw new \Exception("El metodo ". $internalMethod. " no existe");
+		}
+
+		return $this->{$internalMethod}();
 	}
 
     /**
      * MY_PUBLIC_VAR >>  myPubliVar
      * @return string
      */
-    protected function upperCaseToCammelCase()
+    protected function upperCaseToCamelCase()
     {
-      return $this->_toCamelCase(strtolower($this->string),'_',false);
+      return $this->_toCamelCase('_', false, true);
     }
 
     /**
@@ -90,9 +109,9 @@ class String
      * @param string $this->string
      * @return string
      */
-    protected function upperCaseToUpperCammelCase()
+    protected function upperCaseToUpperCamelCase()
     {
-      return $this->_toCamelCase(strtolower($this->string),'_',true);
+      return $this->_toCamelCase('_', true, true);
     }
 
     /**
@@ -122,7 +141,7 @@ class String
      */
     protected function camelCaseToUpperCase()
     {
-      return strtoupper($this->toSeparatedString($this->string,'_'));
+      return strtoupper($this->toSeparatedString('_'));
     }
 
     /**
@@ -132,7 +151,7 @@ class String
      */
     protected function camelCaseToUnderscore()
     {
-      return $this->toSeparatedString($this->string,'_');
+      return $this->toSeparatedString('_');
     }
 
     /**
@@ -152,7 +171,7 @@ class String
      */
     protected function camelCaseToSlug()
     {
-      return $this->toSeparatedString($this->string,'-');
+      return $this->toSeparatedString('-');
     }
 
     /**
@@ -162,8 +181,7 @@ class String
      */
     protected function upperCamelCaseToCamelCase()
     {
-      $this->string{0} = strtolower($this->string{0});
-      return $this->string;
+      return lcfirst($this->string);
     }
 
     /**
@@ -173,7 +191,7 @@ class String
      */
     protected function upperCamelCaseToUpperCase()
     {
-      return strtoupper($this->toSeparatedString($this->string,'_'));
+      return strtoupper($this->toSeparatedString('_'));
     }
 
     /**
@@ -183,7 +201,7 @@ class String
      */
     protected function upperCamelCaseToUnderScore()
     {
-      return $this->toSeparatedString($this->string,'_');
+      return $this->toSeparatedString('_');
     }
 
     /**
@@ -193,7 +211,7 @@ class String
      */
     protected function upperCamelCaseToSlug()
     {
-      return $this->toSeparatedString($this->string,'-');
+      return $this->toSeparatedString('-');
     }
 
     /**
@@ -203,7 +221,7 @@ class String
      */
     protected function underScoreToCamelCase()
     {
-      return $this->_toCamelCase($this->string,'_',false);
+      return $this->_toCamelCase('_',false);
     }
 
     /**
@@ -211,9 +229,9 @@ class String
      * @param string $this->string
      * @return string
      */
-    protected function underscore_to_uppercamelcase()
+    protected function underscoreToUpperCamelCase()
     {
-      	return $this->_toCamelCase('_', true);
+      	return $this->_toCamelCase('_',true);
     }
 
     /**
@@ -253,7 +271,7 @@ class String
      */
     protected function slugToUpperCamelCase()
     {
-      return $this->_toCamelCase($this->string,'-',true);
+      return $this->_toCamelCase('-',true);
     }
 
     /**
@@ -263,7 +281,7 @@ class String
      */
     protected function slugToCamelCase()
     {
-      return $this->_toCamelCase($this->string,'-',false);
+      return $this->_toCamelCase('-',false);
     }
 
     /**
@@ -282,9 +300,10 @@ class String
      * @param string $separator [OPTIONAL]
      * @param boolean $first [OPTIONAL]
      */
-    private function _toCamelCase($separator = '-', $first = false)
+    private function _toCamelCase($separator = '-', $first = false, $toLower = false)
     {
-        $parts = explode($separator, $this->string);
+    	$string = $toLower ? strtolower($this->string) : $this->string;
+        $parts = explode($separator, $string);
         $newString = '';
         $i = 0;
         foreach ( $parts as $part )
@@ -295,6 +314,7 @@ class String
                 $newString .= ucfirst($part);
             $i ++;
         }
+
         return $newString;
     }
 
@@ -304,9 +324,9 @@ class String
      */
     private function toSeparatedString($separator = '-')
     {
-      $this->string[0] = strtolower($this->string[0]);
-      $func = create_function('$c', 'return "'.$separator.'" . strtolower($c[1]);');
-      return preg_replace_callback('/([A-Z])/', $func, $this->string);
+    	$newString = lcfirst($this->string);
+      	$func = create_function('$c', 'return "'.$separator.'" . strtolower($c[1]);');
+      	return preg_replace_callback('/([A-Z])/', $func, $newString);
     }
 
 
