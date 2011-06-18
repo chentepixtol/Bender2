@@ -2,6 +2,7 @@
 namespace Application\Database;
 
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
+use Application\Base\Collectable;
 
 /**
  *
@@ -9,7 +10,7 @@ use Doctrine\DBAL\Schema\Column as DoctrineColumn;
  * @author chente
  *
  */
-class Column
+class Column implements Collectable
 {
 
 	/**
@@ -32,6 +33,14 @@ class Column
 	 */
 	public function __construct(DoctrineColumn $column){
 		$this->doctrineColumn = $column;
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Base.Collectable::getIndex()
+	 */
+	public function getIndex(){
+		return $this->getName();
 	}
 
 	/**

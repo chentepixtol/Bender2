@@ -34,6 +34,14 @@ abstract class AbstractModule implements Module
 
 	/**
 	 * (non-PHPdoc)
+	 * @see Application\Base.Collectable::getIndex()
+	 */
+	public function getIndex(){
+		return $this->getName();
+	}
+
+	/**
+	 * (non-PHPdoc)
 	 * @see Application\Generator\Module.Module::getTemplateDirs()
 	 */
 	public function getTemplateDirs(){

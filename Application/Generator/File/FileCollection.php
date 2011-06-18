@@ -16,12 +16,4 @@ use Application\Base\BaseCollection;
 class FileCollection extends BaseCollection
 {
 
-    /**
-	 * @param File $table
-	 * @return int
-	 */
-	protected function getIndex($column){
-		return $column->getFullPath();
-	}
-
 }

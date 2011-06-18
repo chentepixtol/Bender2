@@ -16,13 +16,4 @@ use Application\Base\BaseCollection;
 class ModuleCollection extends BaseCollection
 {
 
-	/**
-	 *
-	 *
-	 * @param Module $module
-	 */
-    public function getIndex($module){
-		return $module->getName();
-   	}
-
 }

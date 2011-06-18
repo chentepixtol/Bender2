@@ -16,12 +16,5 @@ use Application\Base\BaseCollection;
 class ColumnCollection extends BaseCollection
 {
 
-	/**
-	 * @param Column $table
-	 * @return int
-	 */
-	protected function getIndex($column){
-		return $column->getName();
-	}
 
 }

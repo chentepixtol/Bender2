@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Bender;
+namespace Application\Base;
 
 /**
  *

@@ -6,7 +6,9 @@ namespace Application\Generator\File;
  * @author chente
  *
  */
-class File
+use Application\Base\Collectable;
+
+class File implements Collectable
 {
 
 	/**
@@ -32,6 +34,14 @@ class File
 	public function __construct($fullpath, $content){
 		$this->setFullpath($fullpath);
 		$this->setContent($content);
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Base.Collectable::getIndex()
+	 */
+	public function getIndex(){
+		return $this->getFullpath();
 	}
 
 	/**

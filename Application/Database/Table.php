@@ -3,6 +3,8 @@
 
 namespace Application\Database;
 
+use Application\Base\Collectable;
+
 use Doctrine\DBAL\Schema\Table as DoctrineTable;
 use Application\Native\String;
 use Application\Config\Configuration;
@@ -15,7 +17,7 @@ use Application\Database\ForeignKeyCollection;
  * @author chente
  *
  */
-class Table
+class Table implements Collectable
 {
 
 	/**
@@ -58,6 +60,12 @@ class Table
 
 	/**
 	 *
+	 * @var Application\Native\String
+	 */
+	protected $name;
+
+	/**
+	 *
 	 *
 	 * @param DoctrineTable $table
 	 */
@@ -67,10 +75,12 @@ class Table
 	}
 
 	/**
-	 *
-	 * @var Application\Native\String
+	 * (non-PHPdoc)
+	 * @see Application\Base.Collectable::getIndex()
 	 */
-	protected $name;
+	public function getIndex(){
+		return $this->getObject()->toString();
+	}
 
 	/**
 	 *

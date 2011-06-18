@@ -221,4 +221,15 @@ class BaseCollectionTest extends BaseTest
 		$this->assertEquals(array('apple'), $withA);
 	}
 
+	/**
+	 *
+	 * @test
+	 * @expectedException Exception
+	 */
+	public function validate()
+	{
+		$myCollection = new MyCollection();
+		$myCollection->append(new \stdClass());
+	}
+
 }

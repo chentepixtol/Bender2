@@ -28,21 +28,14 @@ class TableCollection extends BaseCollection
 	public function append($object)
 	{
 		parent::append($object);
-		$this->tablenames[$object->getName()->toString()] = $this->getIndex($object);
-	}
-
-	/**
-	 * @param Table $table
-	 * @return int
-	 */
-	protected function getIndex($table){
-		return $table->getObject()->toString();
+		$this->tablenames[$object->getName()->toString()] = $object->getIndex();
 	}
 
 	/**
 	 * @return Application\Database\TableCollection
 	 */
-	public function getByTablename($tablename){
+	public function getByTablename($tablename)
+	{
 		return $this->getByPK($this->tablenames[$tablename]);
 	}
 

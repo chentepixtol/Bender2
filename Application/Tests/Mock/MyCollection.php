@@ -15,12 +15,5 @@ use Application\Base\BaseCollection;
  */
 class MyCollection extends BaseCollection
 {
-	/**
-	 * (non-PHPdoc)
-	 * @see Application\Bender.BaseCollection::getIndex()
-	 */
-	protected function getIndex($object)
-	{
-		return $object->getId();
-	}
+
 }

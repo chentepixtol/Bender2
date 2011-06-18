@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Doctrine\DBAL\DriverManager;
 use Application\Bender\View;
-use Application\Bender\Singleton;
+use Application\Base\Singleton;
 use Application\Config\Configuration;
 use Application\Generator\Module\Module;
 use Application\Database\Database;
@@ -21,7 +21,7 @@ use Application\Event\CoreListener;
 use Application\Event\Dispatcher;
 
 
-require_once 'Application/Bender/Singleton.php';
+require_once 'Application/Base/Singleton.php';
 
 defined('APPLICATION_PATH') or die("No se ha definido la constante APPLICATION_PATH");
 

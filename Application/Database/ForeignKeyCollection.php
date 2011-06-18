@@ -17,12 +17,5 @@ use Application\Database\ForeignKey;
 class ForeignKeyCollection extends BaseCollection
 {
 
-	/**
-	 * @param Application\Database\ForeignKey $table
-	 * @return int
-	 */
-	protected function getIndex($foreignKey){
-		return $foreignKey->getName();
-	}
 
 }

@@ -2,7 +2,6 @@
 
 namespace Application\Tests;
 
-use Application\Bender\Singleton;
 use Application\Tests\Mock\BSingleton;
 use Application\Tests\Mock\ASingleton;
 

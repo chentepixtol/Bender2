@@ -2,7 +2,9 @@
 
 namespace Application\Tests\Mock;
 
-class Item
+use Application\Base\Collectable;
+
+class Item implements Collectable
 {
 	private $id;
 
@@ -11,6 +13,14 @@ class Item
 	public function __construct($id, $value){
 		$this->setId($id);
 		$this->setValue($value);
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Base.Collectable::getIndex()
+	 */
+	public function getIndex(){
+		return $this->getId();
 	}
 
 	/**

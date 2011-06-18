@@ -10,14 +10,6 @@ namespace Application\Base;
 abstract class BaseCollection extends \ArrayIterator
 {
 
-	/**
-     *
-     *
-     * @param mixed $object
-     * @return int|string
-     */
-    abstract protected function getIndex($object);
-
     /**
      *
      *
@@ -28,18 +20,31 @@ abstract class BaseCollection extends \ArrayIterator
     }
 
     /**
+     *
+     * validate object
+     * @param Collectable $object
+     */
+    protected function validate($object)
+    {
+		if( !($object instanceof Collectable) ){
+			throw new \Exception("Debe de cumplir con la Interface Collectable");
+		}
+    }
+
+    /**
      * Appends the value
-     * @param Object $object
+     * @param Collectable $object
      */
     public function append($object)
     {
-        parent::offsetSet($this->getIndex($object), $object);
+    	$this->validate($object);
+        parent::offsetSet($object->getIndex(), $object);
         $this->rewind();
     }
 
     /**
      * Return current array entry
-     * @return Object
+     * @return Collectable
      */
     public function current()
     {
@@ -49,7 +54,7 @@ abstract class BaseCollection extends \ArrayIterator
     /**
      * Return current array entry and
      * move to next entry
-     * @return Object
+     * @return Collectable
      */
     public function read()
     {
@@ -61,7 +66,7 @@ abstract class BaseCollection extends \ArrayIterator
     /**
      * Get the first array entry
      * if exists or null if not
-     * @return Object|null
+     * @return Collectable|null
      */
     public function getOne()
     {
@@ -104,7 +109,7 @@ abstract class BaseCollection extends \ArrayIterator
         while( $baseCollection->valid() )
         {
             $object = $baseCollection->read();
-            if( !$this->containsIndex( $this->getIndex($object) ) )
+            if( !$this->containsIndex( $object->getIndex() ) )
                 $this->append($object);
         }
         $baseCollection->rewind();
@@ -121,16 +126,16 @@ abstract class BaseCollection extends \ArrayIterator
         while( $baseCollection->valid() )
         {
             $object = $baseCollection->read();
-            if( $this->containsIndex( $this->getIndex($object) ) )
-                $this->remove($this->getIndex($object));
+            if( $this->containsIndex( $object->getIndex() ) )
+                $this->remove($object->getIndex());
         }
         $baseCollection->rewind();
     }
 
     /**
      * Intersect two Collections
-     * @param ObjectCollection $objectCollection
-     * @return ObjectCollection
+     * @param CollectableCollection $objectCollection
+     * @return CollectableCollection
      */
     public function intersect(BaseCollection $objectCollection)
     {
@@ -139,7 +144,7 @@ abstract class BaseCollection extends \ArrayIterator
         while($objectCollection->valid())
         {
             $object = $objectCollection->read();
-            if( $this->containsIndex( $this->getIndex($object) ) )
+            if( $this->containsIndex( $object->getIndex() ) )
                 $newobjectCollection->append($object);
         }
         $objectCollection->rewind();
@@ -156,9 +161,9 @@ abstract class BaseCollection extends \ArrayIterator
     }
 
     /**
-     * Retrieve the Object with primary key
+     * Retrieve the Collectable with primary key
      * @param  int $name
-     * @return Object
+     * @return Collectable
      */
     public function getByPK($index)
     {

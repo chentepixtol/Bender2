@@ -3,7 +3,7 @@
 namespace Application\Tests\Mock;
 
 
-use Application\Bender\Singleton;
+use Application\Base\Singleton;
 
 class BSingleton extends Singleton
 {

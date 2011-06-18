@@ -2,10 +2,12 @@
 
 namespace Application\Database;
 
+use Application\Base\Collectable;
+
 use Application\Database\Table;
 use Application\Database\Column;
 
-class ForeignKey
+class ForeignKey implements Collectable
 {
 
 	/**
@@ -53,6 +55,10 @@ class ForeignKey
 		$this->setForeign($foreign);
 		$this->setLocalTable($localTable);
 		$this->setForeignTable($foreignTable);
+	}
+
+	public function getIndex(){
+		return $this->getName();
 	}
 
 	/**

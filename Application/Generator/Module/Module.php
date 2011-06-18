@@ -7,7 +7,9 @@ namespace Application\Generator\Module;
  * @author chente
  *
  */
-interface Module
+use Application\Base\Collectable;
+
+interface Module extends Collectable
 {
 
 	/**
