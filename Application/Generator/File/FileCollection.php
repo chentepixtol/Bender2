@@ -1,7 +1,7 @@
 <?php
 namespace Application\Generator\File;
 
-use Application\Bender\BaseCollection;
+use Application\Base\BaseCollection;
 
 /**
  *

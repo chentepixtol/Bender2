@@ -1,7 +1,7 @@
 <?php
 namespace Application\Database;
 
-use Application\Bender\BaseCollection;
+use Application\Base\BaseCollection;
 
 /**
  *

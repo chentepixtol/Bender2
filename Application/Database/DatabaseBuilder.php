@@ -105,7 +105,7 @@ class DatabaseBuilder
 
 			// Herencia
 			$extends = $table->getConfiguration()->get('extends', false);
-			if( $extends && $tables->contains($extends) ){
+			if( $extends && $tables->containsIndex($extends) ){
 				$parent = $tables->getByPK($extends);
 				$table->setParent($parent);
 			}

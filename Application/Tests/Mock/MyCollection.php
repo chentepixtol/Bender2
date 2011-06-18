@@ -2,7 +2,7 @@
 
 namespace Application\Tests\Mock;
 
-use Application\Bender\BaseCollection;
+use Application\Base\BaseCollection;
 
 /**
  *

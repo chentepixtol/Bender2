@@ -3,7 +3,6 @@
 namespace Application\Tests;
 
 use Application\Tests\Mock\Item;
-
 use Application\Tests\Mock\MyCollection;
 
 require_once 'Application/Tests/BaseTest.php';
@@ -54,7 +53,7 @@ class BaseCollectionTest extends BaseTest
 		$myCollection->append($item3);
 		$item3Ref = $myCollection->getByPK($item3->getId());
 
-		$this->assertTrue($myCollection->contains($item3->getId()));
+		$this->assertTrue($myCollection->containsIndex($item3->getId()));
 		$this->assertTrue($item3 === $item3Ref);
 		$this->assertEquals(1, $myCollection->count());
 		$this->assertFalse($myCollection->isEmpty());
@@ -163,7 +162,7 @@ class BaseCollectionTest extends BaseTest
 		$newCollection = $myCollection1->intersect($myCollection2);
 
 		$this->assertEquals(1 ,$newCollection->count());
-		$this->assertTrue($newCollection->contains($item3->getId()));
+		$this->assertTrue($newCollection->containsIndex($item3->getId()));
 		$this->assertEquals(array(3), $newCollection->getPrimaryKeys());
 	}
 
@@ -189,8 +188,8 @@ class BaseCollectionTest extends BaseTest
 		$myCollection1->diff($myCollection2);
 
 		$this->assertEquals(1, $myCollection1->count());
-		$this->assertFalse($myCollection1->contains($item3->getId()));
-		$this->assertTrue($myCollection1->contains($item1->getId()));
+		$this->assertFalse($myCollection1->containsIndex($item3->getId()));
+		$this->assertTrue($myCollection1->containsIndex($item1->getId()));
 		$this->assertEquals(array(1), $myCollection1->getPrimaryKeys());
 	}
 

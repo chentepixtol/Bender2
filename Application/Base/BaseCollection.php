@@ -1,5 +1,5 @@
 <?php
-namespace Application\Bender;
+namespace Application\Base;
 
 /**
  *
@@ -78,7 +78,7 @@ abstract class BaseCollection extends \ArrayIterator
      * @param  int $index
      * @return boolean
      */
-    public function contains($index)
+    public function containsIndex($index)
     {
         return parent::offsetExists($index);
     }
@@ -89,7 +89,7 @@ abstract class BaseCollection extends \ArrayIterator
      */
     public function remove($index)
     {
-        if( $this->contains($index) )
+        if( $this->containsIndex($index) )
             $this->offsetUnset($index);
     }
 
@@ -104,7 +104,7 @@ abstract class BaseCollection extends \ArrayIterator
         while( $baseCollection->valid() )
         {
             $object = $baseCollection->read();
-            if( !$this->contains( $this->getIndex($object) ) )
+            if( !$this->containsIndex( $this->getIndex($object) ) )
                 $this->append($object);
         }
         $baseCollection->rewind();
@@ -121,7 +121,7 @@ abstract class BaseCollection extends \ArrayIterator
         while( $baseCollection->valid() )
         {
             $object = $baseCollection->read();
-            if( $this->contains( $this->getIndex($object) ) )
+            if( $this->containsIndex( $this->getIndex($object) ) )
                 $this->remove($this->getIndex($object));
         }
         $baseCollection->rewind();
@@ -139,7 +139,7 @@ abstract class BaseCollection extends \ArrayIterator
         while($objectCollection->valid())
         {
             $object = $objectCollection->read();
-            if( $this->contains( $this->getIndex($object) ) )
+            if( $this->containsIndex( $this->getIndex($object) ) )
                 $newobjectCollection->append($object);
         }
         $objectCollection->rewind();
@@ -162,7 +162,7 @@ abstract class BaseCollection extends \ArrayIterator
      */
     public function getByPK($index)
     {
-        return $this->contains($index) ? $this[$index] : null;
+        return $this->containsIndex($index) ? $this[$index] : null;
     }
 
     /**
