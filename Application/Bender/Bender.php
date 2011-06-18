@@ -172,7 +172,8 @@ final class Bender extends Singleton
 	 *
 	 * run
 	 */
-	public function run(){
+	public function run()
+	{
 		$this->registerAutoloader();
 		$this->getEventDispatcher()->addSubscriber(new CoreListener());
 		$this->getCLI()->run();

@@ -1,4 +1,5 @@
 <?php
+namespace Application\Tests;
 
 use Application\Bender\Bender;
 
@@ -7,7 +8,7 @@ use Application\Bender\Bender;
  * @author chente
  *
  */
-abstract class BaseTest extends PHPUnit_Framework_TestCase
+abstract class BaseTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**

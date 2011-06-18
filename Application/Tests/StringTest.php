@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Tests;
+
 require_once 'Application/Tests/BaseTest.php';
 
 use Application\Native\String;
