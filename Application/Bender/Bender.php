@@ -53,16 +53,15 @@ final class Bender extends Singleton
 
 	/**
 	 *
+	 * @var Application\Bender\View
+	 */
+	protected $view;
+
+	/**
 	 *
 	 * @var Application\CLI\CLI
 	 */
 	protected $cli;
-
-	/**
-	 *
-	 * @var Application\Bender\View
-	 */
-	protected $view;
 
 	/**
 	 *
@@ -178,7 +177,8 @@ final class Bender extends Singleton
 	 *
 	 * @return Application\Config\Settings
 	 */
-	public function getSettings(){
+	public function getSettings()
+	{
 		if( null == $this->settings ){
 			$this->settings = $this->getContainer()->get('settings');
 			$this->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
@@ -250,7 +250,7 @@ final class Bender extends Singleton
 	public function getView(Module $module)
 	{
 		if( null == $this->view ){
-			$this->view = new View();
+			$this->view = $this->getContainer()->get('view');
 			$this->dispatch(Event::VIEW_INIT, new Event(array('view' => $this->view)));
 		}
 
