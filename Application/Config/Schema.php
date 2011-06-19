@@ -18,18 +18,24 @@ class Schema
 
 	/**
 	 *
+	 * file
+	 * @var string
+	 */
+	protected $filename;
+
+	/**
 	 *
+	 * construct
 	 * @param string $file
 	 * @throws \Exception
 	 */
-	public function load($file)
+	public function __construct($file)
 	{
-		$fileName = APPLICATION_PATH .'/' . $file;
-		if( file_exists($fileName) ){
-			$this->schema = Yaml::load($fileName);
+		$this->filename = APPLICATION_PATH.'/'.$file;
+		if( file_exists($this->filename) ){
+			$this->schema = Yaml::load($this->filename);
 		}
 	}
-
 
 	/**
 	 *

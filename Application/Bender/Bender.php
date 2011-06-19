@@ -90,6 +90,17 @@ final class Bender extends Singleton
 
 	/**
 	 *
+	 * run
+	 */
+	public function run()
+	{
+		$this->registerAutoloader();
+		$this->getEventDispatcher()->addSubscriber(new CoreListener());
+		$this->getCLI()->run();
+	}
+
+	/**
+	 *
 	 * @return Application\Bender\Bender
 	 */
 	public function registerAutoloader()
@@ -119,7 +130,8 @@ final class Bender extends Singleton
 	 *
 	 * @return Doctrine\DBAL\Connection
 	 */
-	public function getConnection(){
+	public function getConnection()
+	{
 		if( null == $this->connection ){
 			$connectionParams = $this->getSettings()->getConnectionParams();
 			$this->connection = DriverManager::getConnection($connectionParams);
@@ -143,16 +155,39 @@ final class Bender extends Singleton
 	}
 
 	/**
+	 * @return Application\Config\Configuration
+	 */
+	public function getConfiguration()
+	{
+		if( null == $this->configuration ){
+			$this->configuration = new Configuration();
+		}
+		return $this->configuration;
+	}
+
+	/**
 	 *
 	 * @return Application\Config\Settings
 	 */
 	public function getSettings(){
 		if( null == $this->settings ){
-			$this->settings = new Settings();
-			$this->settings->load('config/settings.yml');
+			$this->settings = new Settings('config/settings.yml');
 			$this->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
 		}
 		return $this->settings;
+	}
+
+	/**
+	 *
+	 * @return Application\Config\Schema
+	 */
+	public function getSchema()
+	{
+		if( null == $this->schema ){
+			$this->schema = new Schema('config/schema.yml');
+			$this->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
+		}
+		return $this->schema;
 	}
 
 	/**
@@ -166,63 +201,6 @@ final class Bender extends Singleton
 			$this->dispatch(Event::CLI_READY, new Event(array('cli' => $this->cli)));
 		}
 		return $this->cli;
-	}
-
-	/**
-	 *
-	 * run
-	 */
-	public function run()
-	{
-		$this->registerAutoloader();
-		$this->getEventDispatcher()->addSubscriber(new CoreListener());
-		$this->getCLI()->run();
-	}
-
-	/**
-	 *
-	 * @param Module $module
-	 * @return Application\Bender\View
-	 */
-	public function getView(Module $module)
-	{
-		if( null == $this->view ){
-			$this->view = new View();
-			$this->dispatch(Event::VIEW_INIT, new Event(array('view' => $this->view)));
-		}
-
-		if( $this->view->toggleToDirectory($module->getTemplateDirs()) ){
-			$this->dispatch(Event::VIEW_MODULE_CREATE, new Event(
-				array('view' => $this->view, 'module' => $module)
-			));
-		}
-
-		return $this->view;
-	}
-
-	/**
-	 * @return Application\Config\Configuration
-	 */
-	public function getConfiguration()
-	{
-		if( null == $this->configuration ){
-			$this->configuration = new Configuration();
-		}
-		return $this->configuration;
-	}
-
-	/**
-	 *
-	 * @return Application\Config\Schema
-	 */
-	public function getSchema()
-	{
-		if( null == $this->schema ){
-			$this->schema = new Schema();
-			$this->schema->load('config/schema.yml');
-			$this->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
-		}
-		return $this->schema;
 	}
 
 	/**
@@ -250,13 +228,32 @@ final class Bender extends Singleton
 		$this->getEventDispatcher()->dispatch($eventName, $event);
 	}
 
+	/**
+	 *
+	 * @param Module $module
+	 * @return Application\Bender\View
+	 */
+	public function getView(Module $module)
+	{
+		if( null == $this->view ){
+			$this->view = new View();
+			$this->dispatch(Event::VIEW_INIT, new Event(array('view' => $this->view)));
+		}
 
+		if( $this->view->toggleToDirectory($module->getTemplateDirs()) ){
+			$this->dispatch(Event::VIEW_MODULE_CREATE, new Event(
+				array('view' => $this->view, 'module' => $module)
+			));
+		}
+
+		return $this->view;
+	}
 
 	/**
 	 *
 	 * @return Application\Generator\Module\ModuleCollection
 	 */
-	public function getModules($project)
+	public function getModules($project = '')
 	{
 		if( null == $this->modules ){
 			$directories = $this->getConfiguration()->get('modulesPath').$project;
