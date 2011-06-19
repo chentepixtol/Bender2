@@ -45,7 +45,7 @@ class Settings
 	{
 		$this->filename = APPLICATION_PATH.'/'.$file;
 		if( !file_exists($this->filename) ){
-			throw new \Exception("No se ha definido el archivo settings.yml");
+			throw new \Exception("El archivo no existe ".$this->filename);
 		}
 	}
 

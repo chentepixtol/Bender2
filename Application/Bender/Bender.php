@@ -1,7 +1,13 @@
 <?php
 
+
 namespace Application\Bender;
 
+use Symfony\Component\Config\FileLocator;
+
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Doctrine\DBAL\DriverManager;
@@ -60,18 +66,6 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * @var Configuration
-	 */
-	protected $configuration;
-
-	/**
-	 *
-	 * @var Symfony\Component\EventDispatcher\EventDispatcher
-	 */
-	protected $dispatcher;
-
-	/**
-	 *
 	 * @var Application\Config\Schema
 	 */
 	protected $schema;
@@ -90,13 +84,33 @@ final class Bender extends Singleton
 
 	/**
 	 *
+	 * Container Dependency Injection
+	 * @var Symfony\Component\DependencyInjection\Container
+	 */
+	protected $container;
+
+	/**
+	 *
 	 * run
 	 */
 	public function run()
 	{
 		$this->registerAutoloader();
+		$this->loadContainer();
+		$this->getConfiguration()->set('modulesPath', APPLICATION_PATH.'/Modules/');
 		$this->getEventDispatcher()->addSubscriber(new CoreListener());
 		$this->getCLI()->run();
+	}
+
+	/**
+	 *
+	 * Load Dependecy Injection Container
+	 */
+	public function loadContainer()
+	{
+		$this->container = new ContainerBuilder();
+		$loader = new XmlFileLoader($this->container, new FileLocator(APPLICATION_PATH.'/config/'));
+		$loader->load('Services.xml');
 	}
 
 	/**
@@ -120,8 +134,6 @@ final class Bender extends Singleton
 		));
 
 		$loader->register();
-
-		$this->getConfiguration()->set('modulesPath', APPLICATION_PATH.'/Modules/');
 
 		return $this;
 	}
@@ -159,10 +171,7 @@ final class Bender extends Singleton
 	 */
 	public function getConfiguration()
 	{
-		if( null == $this->configuration ){
-			$this->configuration = new Configuration();
-		}
-		return $this->configuration;
+		return $this->getContainer()->get('configuration');
 	}
 
 	/**
@@ -171,7 +180,7 @@ final class Bender extends Singleton
 	 */
 	public function getSettings(){
 		if( null == $this->settings ){
-			$this->settings = new Settings('config/settings.yml');
+			$this->settings = $this->getContainer()->get('settings');
 			$this->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
 		}
 		return $this->settings;
@@ -184,7 +193,7 @@ final class Bender extends Singleton
 	public function getSchema()
 	{
 		if( null == $this->schema ){
-			$this->schema = new Schema('config/schema.yml');
+			$this->schema = $this->getContainer()->get('schema');
 			$this->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
 		}
 		return $this->schema;
@@ -197,7 +206,7 @@ final class Bender extends Singleton
 	public function getCLI()
 	{
 		if( null == $this->cli ){
-			$this->cli = new CLI();
+			$this->cli = $this->getContainer()->get('cli');
 			$this->dispatch(Event::CLI_READY, new Event(array('cli' => $this->cli)));
 		}
 		return $this->cli;
@@ -205,14 +214,19 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * @return Application\Event\Dispatcher
+	 * @return Symfony\Component\EventDispatcher\EventDispatcher
 	 */
 	public function getEventDispatcher()
 	{
-		if( null == $this->dispatcher ){
-			$this->dispatcher = new EventDispatcher();
-		}
-		return $this->dispatcher;
+		return $this->getContainer()->get('eventDispatcher');
+	}
+
+	/**
+	 *
+	 * Symfony\Component\DependencyInjection\Container;
+	 */
+	public function getContainer(){
+		return $this->container;
 	}
 
 	/**
