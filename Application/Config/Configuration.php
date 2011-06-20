@@ -64,4 +64,13 @@ class Configuration
 		return isset($this->parameters[$parameter]);
 	}
 
+	/**
+	 *
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return $this->parameters;
+	}
+
 }

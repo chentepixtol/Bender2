@@ -13,3 +13,6 @@ settings:
     all:
       project: MyProject
       modules: [ Bean ]
+    schema:
+      project: Core
+      modules: [ Schema ]

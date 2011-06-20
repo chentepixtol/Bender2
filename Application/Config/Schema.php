@@ -31,7 +31,7 @@ class Schema
 	 */
 	public function __construct($file)
 	{
-		$this->filename = APPLICATION_PATH.'/'.$file;
+		$this->filename = $file;
 		if( file_exists($this->filename) ){
 			$this->schema = Yaml::load($this->filename);
 		}

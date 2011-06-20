@@ -43,7 +43,7 @@ class Settings
 	 */
 	public function __construct($file)
 	{
-		$this->filename = APPLICATION_PATH.'/'.$file;
+		$this->filename = $file;
 		if( !file_exists($this->filename) ){
 			throw new \Exception("El archivo no existe ".$this->filename);
 		}

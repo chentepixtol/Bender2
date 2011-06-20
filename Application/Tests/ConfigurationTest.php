@@ -30,6 +30,17 @@ class ConfigurationTest extends BaseTest
     /**
      *
      * @test
+     */
+    public function toArray(){
+    	$params = array('particula' => 'beta');
+    	$configuration = new Configuration($params);
+    	$configuration->set('pi', 3.1416);
+    	$this->assertEquals(array('particula' => 'beta', 'pi' => 3.1416), $configuration->toArray());
+    }
+
+    /**
+     *
+     * @test
      * @expectedException Exception
      */
     public function notArray()
