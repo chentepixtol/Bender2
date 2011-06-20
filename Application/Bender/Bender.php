@@ -144,7 +144,7 @@ final class Bender extends Singleton
 	public function getConnection()
 	{
 		if( null == $this->connection ){
-			$connectionParams = $this->getSettings()->getConnectionParams();
+			$connectionParams = $this->getSettings()->getConnectionParams()->toArray();
 			$this->connection = DriverManager::getConnection($connectionParams);
 			$this->dispatch(Event::CONNECTION_ESTABILISHED, new Event(array('connection' => $this->connection)));
 		}

@@ -47,8 +47,8 @@ class Create extends Command
 
 		if( $settings->hasAlias($project) ){
 			$alias = $settings->getAlias($project);
-			$project = $alias['project'];
-			$onlyModules = $alias['modules'];
+			$project = $alias->get('project');
+			$onlyModules = $alias->get('modules')->toArray();
 		}
 		else{
 			$onlyModules = $input->getArgument('module');

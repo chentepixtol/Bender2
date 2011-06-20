@@ -130,24 +130,11 @@ class SettingsTest extends BaseTest
 	 *
 	 * @test
 	 */
-	public function load()
-	{
-		$settings = new Settings($this->filename);
-
-		$this->assertFalse($settings->isLoaded());
-		$settings->load();
-		$this->assertTrue($settings->isLoaded());
-	}
-
-	/**
-	 *
-	 * @test
-	 */
 	public function getters()
 	{
 		$settings = new Settings($this->filename);
 
-		$this->assertEquals($this->getConnectionParams(), $settings->getConnectionParams());
+		$this->assertEquals($this->getConnectionParams(), $settings->getConnectionParams()->toArray());
 		$this->assertEquals($this->getEncoding(), $settings->getEnconding());
 		$this->assertEquals($this->getOptions(), $settings->getOptions()->toArray());
 		$this->assertEquals($this->getOutputDir(), $settings->getOutputDir());
@@ -162,8 +149,17 @@ class SettingsTest extends BaseTest
 	{
 		$settings = new Settings($this->filename);
 		$this->assertTrue($settings->hasAlias('schema'));
-		$this->assertEquals($this->getAliasSchema(), $settings->getAlias('schema'));
+		$this->assertEquals($this->getAliasSchema(), $settings->getAlias('schema')->toArray());
 		$this->assertFalse($settings->hasAlias('notFound'));
+	}
+
+	/**
+	 *
+	 * @test
+	 */
+	public function defaultOption(){
+		$settings = new Settings($this->filename);
+		$this->assertNull($settings->get('notExists', null));
 	}
 
 

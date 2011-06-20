@@ -6,14 +6,8 @@ use Symfony\Component\Yaml\Yaml;
 use Application\Native\String;
 use Application\Config\Configuration;
 
-class Settings
+class Settings extends Configuration
 {
-
-	/**
-	 *
-	 * @var array
-	 */
-	protected $settings = array();
 
 	/**
 	 *
@@ -24,47 +18,35 @@ class Settings
 
 	/**
 	 *
-	 * @var Application\Config\Configuration
-	 */
-	protected $options;
-
-	/**
-	 *
-	 * loaded
-	 * @var boolean
-	 */
-	protected $isLoaded = false;
-
-	/**
-	 *
 	 * construct
 	 * @param string $file
 	 * @throws \Exception
 	 */
 	public function __construct($file)
 	{
+		parent::__construct();
 		$this->filename = $file;
 		if( !file_exists($this->filename) ){
 			throw new \Exception("El archivo no existe ".$this->filename);
 		}
+		$this->load();
 	}
 
 	/**
 	 *
 	 * @throws \Exception
 	 */
-	public function load()
+	protected function load()
 	{
-		$this->settings = Yaml::load($this->filename);
-		$this->isLoaded = true;
+		$this->set('settings', Yaml::load($this->filename));
 	}
 
 	/**
 	 *
-	 * @return array
+	 * @return Application\Config\Configuration
 	 */
 	public function getConnectionParams(){
-		return $this->get('db', array());
+		return $this->get('db', new Configuration());
 	}
 
 	/**
@@ -89,20 +71,15 @@ class Settings
 	 */
 	public function getOptions()
 	{
-		if( null == $this->options ){
-			$parameters = $this->get('options', array());
-			$this->options = new Configuration($parameters);
-		}
-		return $this->options;
+		return $this->get('options', new Configuration());
 	}
 
 	/**
 	 *
-	 * @return array
+	 * @return Application\Config\Configuration
 	 */
 	public function getAlias($alias){
-		$aliases = $this->get('alias');
-		return $aliases[$alias];
+		return $this->get('alias')->get($alias);
 	}
 
 	/**
@@ -112,15 +89,7 @@ class Settings
 	 * @return boolean
 	 */
 	public function hasAlias($alias){
-		$aliases = $this->get('alias');
-		return isset($aliases[$alias]);
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function isLoaded() {
-		return $this->isLoaded;
+		return $this->get('alias', new Configuration())->has($alias);
 	}
 
 	/**
@@ -129,12 +98,12 @@ class Settings
 	 * @param string $index
 	 * @param mixed $default
 	 */
-	private function get($index, $default = null)
+	public function get($index, $default = null)
 	{
-		if( !$this->isLoaded() ){
-			$this->load();
+		if( ! parent::get('settings')->get('settings')->has($index) ){
+			return $default;
 		}
-		return isset($this->settings['settings'][$index]) ? $this->settings['settings'][$index] : $default;
+		return parent::get('settings')->get('settings')->get($index);
 	}
 
 }

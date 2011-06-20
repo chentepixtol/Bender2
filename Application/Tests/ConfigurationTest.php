@@ -38,6 +38,18 @@ class ConfigurationTest extends BaseTest
     	$this->assertEquals(array('particula' => 'beta', 'pi' => 3.1416), $configuration->toArray());
     }
 
+	/**
+     *
+     * @test
+     */
+    public function getParameters(){
+    	$params = array('particula' => array('beta', 'gamma'));
+    	$configuration = new Configuration($params);
+    	$parameters = $configuration->getParameters();
+    	$this->assertTrue(isset($parameters['particula']));
+    	$this->assertTrue($parameters['particula'] instanceof Configuration);
+    }
+
     /**
      *
      * @test

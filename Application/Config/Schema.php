@@ -7,14 +7,8 @@ use Symfony\Component\Yaml\Yaml;
 use Application\Native\String;
 use Application\Config\Configuration;
 
-class Schema
+class Schema extends Configuration
 {
-
-	/**
-	 *
-	 * @var array
-	 */
-	protected $schema = array();
 
 	/**
 	 *
@@ -36,7 +30,7 @@ class Schema
 			throw new \Exception("El archivo no existe ".$this->filename);
 		}
 
-		$this->schema = Yaml::load($this->filename);
+		$this->set('schema', Yaml::load($this->filename));
 	}
 
 	/**
@@ -47,13 +41,13 @@ class Schema
 	public function createConfiguration($tablename)
 	{
 		$configuration = new Configuration();
-		if( isset($this->schema['schema']) ){
-			foreach ($this->schema['schema'] as $object => $options ){
-				if( isset($options['tablename']) && $tablename == $options['tablename'] ){
+		if( $this->has('schema') && $this->get('schema')->has('schema') ){
+
+			foreach ( $this->get('schema')->get('schema')->getParameters() as $object => $options ){
+				if( $options->has('tablename') && $tablename == $options->get('tablename') ){
 					$configuration->set('object', new String($object, String::UPPERCAMELCASE));
-					$parameters = isset($options['options']) ? $options['options'] : array();
-					$configuration->set('options', new Configuration($parameters));
-					$configuration->set('extends', isset($options['extends']) ? $options['extends'] : false);
+					$configuration->set('options', $options->get('options', array()));
+					$configuration->set('extends', $options->get('extends', false));
 					break;
 				}
 			}

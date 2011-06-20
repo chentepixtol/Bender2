@@ -40,8 +40,15 @@ class Configuration
 	 * @param mixed $value
 	 * @return Application\Bender\Configuration
 	 */
-	public function set($parameter, $value){
-		$this->parameters[$parameter] = $value;
+	public function set($parameter, $value)
+	{
+		if( is_array($value) ){
+			$this->parameters[$parameter] = new Configuration($value);
+		}
+		else{
+			$this->parameters[$parameter] = $value;
+		}
+
 		return $this;
 	}
 
@@ -70,6 +77,18 @@ class Configuration
 	 */
 	public function toArray()
 	{
+		$array = array();
+		foreach ($this->parameters as $index => $parameter){
+			$array[$index] = $parameter instanceof Configuration ? $parameter->toArray() : $parameter;
+		}
+		return $array;
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getParameters(){
 		return $this->parameters;
 	}
 
