@@ -65,6 +65,34 @@ class Configuration
 
 	/**
 	 *
+	 * @param mixed $path
+	 */
+	public function getByPath($path)
+	{
+		$parts = explode('.', $path);
+
+		$find = $parts[0];
+		unset($parts[0]);
+
+		if( $this->has($find) ){
+			$children = $this->get($find);
+			if( count($parts) ){
+				if( $children instanceof Configuration ){
+					$path = implode('.', $parts);
+					return $children->getByPath($path);
+				}else{
+					return null;
+				}
+			}
+			else{
+				return $children;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 *
 	 * @param string $parameter
 	 */
 	public function has($parameter){

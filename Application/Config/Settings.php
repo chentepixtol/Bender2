@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 use Application\Native\String;
 use Application\Config\Configuration;
 
-class Settings extends Configuration
+class Settings
 {
 
 	/**
@@ -18,13 +18,18 @@ class Settings extends Configuration
 
 	/**
 	 *
+	 * @var Application\Config\Configuration
+	 */
+	protected $configuration;
+
+	/**
+	 *
 	 * construct
 	 * @param string $file
 	 * @throws \Exception
 	 */
 	public function __construct($file)
 	{
-		parent::__construct();
 		$this->filename = $file;
 		if( !file_exists($this->filename) ){
 			throw new \Exception("El archivo no existe ".$this->filename);
@@ -38,7 +43,8 @@ class Settings extends Configuration
 	 */
 	protected function load()
 	{
-		$this->set('settings', Yaml::load($this->filename));
+		$this->configuration = new Configuration();
+		$this->configuration->set('settings', Yaml::load($this->filename));
 	}
 
 	/**
@@ -100,10 +106,10 @@ class Settings extends Configuration
 	 */
 	public function get($index, $default = null)
 	{
-		if( ! parent::get('settings')->get('settings')->has($index) ){
+		if( ! $this->configuration->get('settings')->get('settings')->has($index) ){
 			return $default;
 		}
-		return parent::get('settings')->get('settings')->get($index);
+		return $this->configuration->get('settings')->get('settings')->get($index);
 	}
 
 }

@@ -61,6 +61,33 @@ class ConfigurationTest extends BaseTest
     	$configuration = new Configuration($stdClass);
     }
 
+    /**
+     *
+     * @test
+     */
+    public function path(){
+    	$configuration = new Configuration(array(
+    		'a1' => array(
+    			'b1' => array(
+    				'c1'=>'value'
+    			), 'b2' => array(
+    				'c1' => 'value2',
+    			)
+    		)
+    	));
+    	$this->assertEquals('value', $configuration->getByPath('a1.b1.c1'));
+    	$this->assertNull($configuration->getByPath('l99'));
+    	$this->assertEquals(array('c1' => 'value'), $configuration->getByPath('a1.b1')->toArray());
+    	$this->assertNull($configuration->getByPath('a1.b2.c1.z4'));
+    	$this->assertEquals(array(
+    			'b1' => array(
+    				'c1'=>'value'
+    			), 'b2' => array(
+    				'c1' => 'value2',
+    			)
+    		), $configuration->getByPath('a1')->toArray());
+    }
+
 }
 
 

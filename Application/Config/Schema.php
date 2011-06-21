@@ -7,7 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 use Application\Native\String;
 use Application\Config\Configuration;
 
-class Schema extends Configuration
+class Schema
 {
 
 	/**
@@ -16,6 +16,12 @@ class Schema extends Configuration
 	 * @var string
 	 */
 	protected $filename;
+
+	/**
+	 *
+	 * @var Application\Config\Configuration
+	 */
+	protected $configuration;
 
 	/**
 	 *
@@ -29,8 +35,8 @@ class Schema extends Configuration
 		if( !file_exists($this->filename) ){
 			throw new \Exception("El archivo no existe ".$this->filename);
 		}
-
-		$this->set('schema', Yaml::load($this->filename));
+		$this->configuration = new Configuration();
+		$this->configuration->set('schema', Yaml::load($this->filename));
 	}
 
 	/**
@@ -41,9 +47,9 @@ class Schema extends Configuration
 	public function createConfiguration($tablename)
 	{
 		$configuration = new Configuration();
-		if( $this->has('schema') && $this->get('schema')->has('schema') ){
+		if( $this->has('schema') ){
 
-			foreach ( $this->get('schema')->get('schema')->getParameters() as $object => $options ){
+			foreach ( $this->get('schema')->getParameters() as $object => $options ){
 				if( $options->has('tablename') && $tablename == $options->get('tablename') ){
 					$configuration->set('object', new String($object, String::UPPERCAMELCASE));
 					$configuration->set('options', $options->get('options', array()));
@@ -53,6 +59,22 @@ class Schema extends Configuration
 			}
 		}
 		return $configuration;
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Config.Configuration::get()
+	 */
+	protected function get($parameter, $default = null){
+		return $this->configuration->get('schema')->get($parameter, $default);
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Config.Configuration::has()
+	 */
+	protected function has($parameter){
+		return $this->configuration->get('schema')->has($parameter);
 	}
 
 }
