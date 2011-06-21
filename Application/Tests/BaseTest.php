@@ -29,12 +29,20 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function registerAutoloader()
 	{
+		$this->getBender()->registerAutoloader();
+	}
+
+	/**
+	 *
+	 * @return Application\Bender\Bender
+	 */
+	public function getBender()
+	{
 		if( !defined('APPLICATION_PATH') ){
 			define('APPLICATION_PATH', realpath("."));
 			require_once 'Application/Bender/Bender.php';
-
-			Bender::getInstance()->registerAutoloader();
 		}
+		return Bender::getInstance();
 	}
 
 	/**

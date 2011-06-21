@@ -1,0 +1,18 @@
+settings:
+  encoding:   UTF-8
+  output_dir: output
+  db:
+    dbname:   bender
+    user:     bender
+    password: 123
+    host:     localhost
+    driver:   pdo_mysql 
+  options:
+    author:   chente
+  alias:
+    all:
+      project: MyProject
+      modules: [ Bean ]
+    schema:
+      project: Core
+      modules: [ Schema ]

@@ -90,26 +90,16 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * run
-	 */
-	public function run()
-	{
-		$this->registerAutoloader();
-		$this->loadContainer();
-		$this->getConfiguration()->set('modulesPath', APPLICATION_PATH.'/Modules/');
-		$this->getEventDispatcher()->addSubscriber(new CoreListener());
-		$this->getCLI()->run();
-	}
-
-	/**
-	 *
 	 * Load Dependecy Injection Container
+	 * @return Application\Bender\Bender
 	 */
-	public function loadContainer()
+	public function loadContainer($services)
 	{
 		$this->container = new ContainerBuilder();
-		$loader = new XmlFileLoader($this->container, new FileLocator(APPLICATION_PATH.'/config/'));
-		$loader->load('Services.xml');
+		$loader = new XmlFileLoader($this->container, new FileLocator(APPLICATION_PATH));
+		$loader->load($services);
+
+		return $this;
 	}
 
 	/**

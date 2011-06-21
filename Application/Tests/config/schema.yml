@@ -1,0 +1,13 @@
+schema:
+  Person:
+    tablename: bender_persons
+  Post:
+    tablename: bender_posts
+    options: 
+      crud: true
+  User:
+    tablename: bender_users
+    extends: Person
+  Worker:
+    tablename: bender_workers
+    extends: Person

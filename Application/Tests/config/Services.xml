@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	
+  <parameters>
+        <parameter key="configuration.class">Application\Config\Configuration</parameter>
+        <parameter key="cli.class">Application\CLI\CLI</parameter>
+        <parameter key="eventDispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
+		<parameter key="view.class">Application\Bender\View</parameter>
+		
+        <parameter key="settings.class">Application\Config\Settings</parameter>
+		<parameter key="settings.file">Application/Tests/config/settings.yml</parameter>
+		
+        <parameter key="schema.class">Application\Config\Schema</parameter>
+		<parameter key="schema.file">Application/Tests/config/schema.yml</parameter>
+  </parameters>
+	
+  <services>
+  	 
+	<service id="configuration" class="%configuration.class%"></service>
+	<service id="cli" class="%cli.class%"></service>
+	<service id="eventDispatcher" class="%eventDispatcher.class%"></service>
+	<service id="view" class="%view.class%"></service>
+	
+    <service id="settings" class="%settings.class%">
+      <argument>%settings.file%</argument>
+    </service>
+	
+	<service id="schema" class="%schema.class%">
+      <argument>%schema.file%</argument>
+    </service>
+	
+  </services>
+</container>
