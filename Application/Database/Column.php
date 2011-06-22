@@ -42,6 +42,12 @@ class Column implements Collectable
 
 	/**
 	 *
+	 * @var boolean
+	 */
+	protected $isUnique;
+
+	/**
+	 *
 	 *
 	 * @param Doctrine\DBAL\Schema\Column $column
 	 */
@@ -94,6 +100,21 @@ class Column implements Collectable
 	 */
 	public function setTable(Table $table) {
 		$this->table = $table;
+	}
+
+	/**
+	 * @param boolean $isUnique
+	 */
+	public function setIsUnique($isUnique) {
+		$this->isUnique = $isUnique;
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function isUnique(){
+		return $this->isUnique;
 	}
 
 }

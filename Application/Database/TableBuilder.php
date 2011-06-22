@@ -66,11 +66,21 @@ class TableBuilder
 		$columnPrimaries = $doctrineTable->getPrimaryKey()->getColumns();
 		$columnPrimary = $table->getColumns()->getByPK($columnPrimaries[0]);
 
+		$uniques = array();
+		foreach ($doctrineTable->getIndexes() as $key => $index){
+			if( $index->isUnique() ){
+				$columnsUnique = $index->getColumns();
+				$uniques[] = $columnsUnique[0];
+			}
+		}
+
 		foreach($doctrineTable->getColumns() as $doctrineColumn)
 		{
 			$column = $table->getColumns()->getByPK($doctrineColumn->getName());
 			$isPrimary = ($columnPrimary === $column);
 			$column->setIsPrimaryKey($isPrimary);
+			$column->setIsUnique(in_array($column->getName()->toString(), $uniques));
+			if( $isPrimary ) $table->setPrimaryKey($column);
 		}
 	}
 }

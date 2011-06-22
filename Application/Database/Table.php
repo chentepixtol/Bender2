@@ -66,6 +66,12 @@ class Table implements Collectable
 
 	/**
 	 *
+	 * @var Application\Database\Column
+	 */
+	protected $primaryKey;
+
+	/**
+	 *
 	 *
 	 * @param DoctrineTable $table
 	 */
@@ -212,6 +218,32 @@ class Table implements Collectable
 	public function setForeignKeys($foreignKeys) {
 		$this->foreignKeys = $foreignKeys;
 	}
+
+	/**
+	 * @return the $primaryKey
+	 */
+	public function getPrimaryKey() {
+		return $this->primaryKey;
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function hasPrimaryKey(){
+		return ( ($this->primaryKey instanceof Column)
+		 && $this->primaryKey->isPrimaryKey());
+	}
+
+	/**
+	 * @param Column $primaryKey
+	 */
+	public function setPrimaryKey($primaryKey) {
+		$this->primaryKey = $primaryKey;
+	}
+
+
+
 
 
 }

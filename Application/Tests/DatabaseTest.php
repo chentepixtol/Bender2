@@ -90,6 +90,7 @@ class DatabaseTest extends BaseTest
 
 		$this->assertTrue($personTable instanceof Table);
 		$this->assertTrue($personTable->getDatabase() === $database);
+		$this->assertTrue($personTable->hasPrimaryKey());
 		$this->assertFalse($personTable->hasParent());
 		$this->assertNull($personTable->getParent());
 		$this->assertEquals('bender_persons', $personTable->getName()->toString());
@@ -112,6 +113,7 @@ class DatabaseTest extends BaseTest
 		$this->assertTrue($userTable instanceof Table);
 		$this->assertTrue($userTable->getDatabase() === $database);
 		$this->assertTrue($userTable->hasParent());
+		$this->assertTrue($personTable->hasPrimaryKey());
 		$this->assertTrue( $personTable === $userTable->getParent() );
 		$this->assertEquals('bender_users', $userTable->getName()->toString());
 		$this->assertEquals('User', $userTable->getObject()->toString());
@@ -173,6 +175,10 @@ class DatabaseTest extends BaseTest
 		$this->assertTrue($columnIdPerson->getTable() === $userTable);
 		$this->assertTrue($columnIdPerson->getName() instanceof String);
 		$this->assertTrue($columnIdUser->isPrimaryKey());
+		$this->assertTrue($userTable->hasPrimaryKey());
+		$this->assertTrue($columnIdUser == $userTable->getPrimaryKey());
+		$this->assertTrue($columnIdUser->isUnique());
+		$this->assertTrue($columnIdPerson->isUnique());
 		$this->assertEquals('idPerson', $columnIdPerson->getName()->toCamelCase());
 	}
 
