@@ -1,6 +1,8 @@
 <?php
 namespace Application\Database;
 
+use Application\Native\String;
+
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
 use Application\Base\Collectable;
 
@@ -16,7 +18,7 @@ class Column implements Collectable
 	/**
 	 *
 	 *
-	 * @var DoctrineColumn
+	 * @var Doctrine\DBAL\Schema\Column
 	 */
 	protected $doctrineColumn;
 
@@ -28,8 +30,20 @@ class Column implements Collectable
 
 	/**
 	 *
+	 * @var Application\Native\String
+	 */
+	protected $name;
+
+	/**
 	 *
-	 * @param DoctrineColumn $column
+	 * @var boolean
+	 */
+	protected $isPrimaryKey;
+
+	/**
+	 *
+	 *
+	 * @param Doctrine\DBAL\Schema\Column $column
 	 */
 	public function __construct(DoctrineColumn $column){
 		$this->doctrineColumn = $column;
@@ -40,15 +54,32 @@ class Column implements Collectable
 	 * @see Application\Base.Collectable::getIndex()
 	 */
 	public function getIndex(){
-		return $this->getName();
+		return $this->getName()->toString();
 	}
 
 	/**
 	 *
-	 * @return string
+	 * @return Application\Native\String
 	 */
 	public function getName(){
-		return $this->doctrineColumn->getName();
+		if( null == $this->name ){
+			$this->name = new String($this->doctrineColumn->getName(), String::UNDERSCORE);
+		}
+		return $this->name;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isPrimaryKey() {
+		return $this->isPrimaryKey;
+	}
+
+	/**
+	 * @param boolean $isPrimaryKey
+	 */
+	public function setIsPrimaryKey($isPrimaryKey) {
+		$this->isPrimaryKey = $isPrimaryKey;
 	}
 
 	/**

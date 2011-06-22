@@ -43,11 +43,34 @@ class TableBuilder
 		$configuration = $this->schema->createConfiguration($table->getName()->toString());
 		$table->setConfiguration($configuration);
 
-		foreach($doctrineTable->getColumns() as $doctrineColumn){
+		foreach($doctrineTable->getColumns() as $doctrineColumn)
+		{
 			$column = new Column($doctrineColumn);
 			$column->setTable($table);
 			$table->getColumns()->append($column);
 		}
+
+		$this->configure($table, $doctrineTable);
+
 		return $table;
+	}
+
+	/**
+	 *
+	 *
+	 * @param Application\Database\Table $table
+	 * @param DoctrineTable $doctrineTable
+	 */
+	protected function configure(Table $table, $doctrineTable)
+	{
+		$columnPrimaries = $doctrineTable->getPrimaryKey()->getColumns();
+		$columnPrimary = $table->getColumns()->getByPK($columnPrimaries[0]);
+
+		foreach($doctrineTable->getColumns() as $doctrineColumn)
+		{
+			$column = $table->getColumns()->getByPK($doctrineColumn->getName());
+			$isPrimary = ($columnPrimary === $column);
+			$column->setIsPrimaryKey($isPrimary);
+		}
 	}
 }

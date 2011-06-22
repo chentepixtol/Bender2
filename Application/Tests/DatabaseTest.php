@@ -2,6 +2,12 @@
 
 namespace Application\Tests;
 
+use Application\Database\ColumnCollection;
+
+use Application\Database\Column;
+
+use Application\Database\ForeignKey;
+
 use Application\Config\Configuration;
 
 use Application\Database\Table;
@@ -91,6 +97,85 @@ class DatabaseTest extends BaseTest
 
 		$this->checkConfiguration($personTable);
 	}
+
+	/**
+	 *
+	 * @test
+	 * @depends tableCollection
+	 */
+	public function userTable()
+	{
+		$database = $this->getBender()->getDatabase();
+		$userTable = $database->getTables()->getByPK('User');
+		$personTable = $database->getTables()->getByPK('Person');
+
+		$this->assertTrue($userTable instanceof Table);
+		$this->assertTrue($userTable->getDatabase() === $database);
+		$this->assertTrue($userTable->hasParent());
+		$this->assertTrue( $personTable === $userTable->getParent() );
+		$this->assertEquals('bender_users', $userTable->getName()->toString());
+		$this->assertEquals('User', $userTable->getObject()->toString());
+
+		$this->checkConfiguration($userTable);
+	}
+
+	/**
+	 *
+	 * @test
+	 * @depends tableCollection
+	 */
+	public function foreignKeys()
+	{
+		$database = $this->getBender()->getDatabase();
+		$userTable = $database->getTables()->getByPK('User');
+		$personTable = $database->getTables()->getByPK('Person');
+
+		$foreignKey = $userTable->getForeignKeys()->getOne();
+
+		$this->assertTrue($foreignKey instanceof ForeignKey);
+		$this->assertTrue( $foreignKey->getLocalTable() === $userTable);
+		$this->assertTrue( $foreignKey->getForeignTable() === $personTable);
+		$this->assertTrue( $foreignKey->getLocal() instanceof Column);
+		$this->assertTrue( $foreignKey->getForeign() instanceof Column);
+	}
+
+	/**
+	 *
+	 * @test
+	 * @depends tableCollection
+	 */
+	public function columnCollection()
+	{
+		$database = $this->getBender()->getDatabase();
+		$userTable = $database->getTables()->getByPK('User');
+
+		$columns = $userTable->getColumns();
+
+		$this->assertTrue($columns instanceof ColumnCollection);
+		$this->assertTrue($columns->containsIndex('id_person'));
+	}
+
+	/**
+	 *
+	 * @test
+	 * @depends columnCollection
+	 */
+	public function column()
+	{
+		$database = $this->getBender()->getDatabase();
+		$userTable = $database->getTables()->getByPK('User');
+		$columns = $userTable->getColumns();
+
+		$columnIdPerson = $columns->getByPK('id_person');
+		$columnIdUser = $columns->getByPK('id_user');
+
+		$this->assertTrue($columnIdPerson instanceof Column);
+		$this->assertTrue($columnIdPerson->getTable() === $userTable);
+		$this->assertTrue($columnIdPerson->getName() instanceof String);
+		$this->assertTrue($columnIdUser->isPrimaryKey());
+		$this->assertEquals('idPerson', $columnIdPerson->getName()->toCamelCase());
+	}
+
 
 	/**
 	 *
