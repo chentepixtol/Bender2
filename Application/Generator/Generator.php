@@ -48,11 +48,20 @@ class Generator
 	 */
 	public function generate()
 	{
+		$this->initModules();
+		$this->generateFiles();
+	}
+
+	/**
+	 *
+	 * generate Files
+	 */
+	protected function generateFiles()
+	{
 		$this->modules->rewind();
 		while ( $this->modules->valid() )
 		{
 			$module = $this->modules->read();
-			$module->init();
 
 			$files = $module->getFiles();
 			$this->getBender()->dispatch(Event::SAVE_FILES, new Event(array(
@@ -73,6 +82,21 @@ class Generator
 					'filename' => $filename,
 				)));
 			}
+		}
+		$this->modules->rewind();
+	}
+
+	/**
+	 *
+	 * init
+	 */
+	protected function initModules()
+	{
+		$this->modules->rewind();
+		while ( $this->modules->valid() )
+		{
+			$module = $this->modules->read();
+			$module->init();
 		}
 		$this->modules->rewind();
 	}

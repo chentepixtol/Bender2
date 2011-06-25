@@ -182,6 +182,30 @@ class DatabaseTest extends BaseTest
 		$this->assertEquals('idPerson', $columnIdPerson->getName()->toCamelCase());
 	}
 
+	/**
+	 *
+	 * @test
+	 * @depends column
+	 */
+	public function columnDatatype()
+	{
+		$database = $this->getBender()->getDatabase();
+		$userTable = $database->getTables()->getByPK('User');
+
+		$idUser = $userTable->getColumns()->getByPK('id_user');
+
+		$this->assertTrue($idUser->getAutoincrement());
+		$this->assertTrue($idUser->getNotnull());
+		$this->assertEquals('integer', $idUser->getType());
+
+		$salary = $database->getTables()->getByPK('Worker')->getColumns()->getByPK('salary');
+		$idWorker = $database->getTables()->getByPK('Worker')->getColumns()->getByPK('id_worker');
+
+		$this->assertEquals('float', $salary->getType());
+		$this->assertEquals('1000', $salary->getDefault());
+		$this->assertFalse($salary->getNotnull());
+	}
+
 
 	/**
 	 *

@@ -6,6 +6,7 @@
         <parameter key="cli.class">Application\CLI\CLI</parameter>
         <parameter key="eventDispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
 		<parameter key="view.class">Application\Bender\View</parameter>
+		<parameter key="routes.class">Application\Generator\File\Routes</parameter>
 		
         <parameter key="settings.class">Application\Config\Settings</parameter>
 		<parameter key="settings.file">config/settings.yml</parameter>
@@ -20,6 +21,7 @@
 	<service id="cli" class="%cli.class%"></service>
 	<service id="eventDispatcher" class="%eventDispatcher.class%"></service>
 	<service id="view" class="%view.class%"></service>
+	<service id="routes" class="%routes.class%"></service>
 	
     <service id="settings" class="%settings.class%">
       <argument>%settings.file%</argument>

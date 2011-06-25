@@ -1,10 +1,10 @@
 <?php
 
 
+
 namespace Application\Bender;
 
 use Symfony\Component\Config\FileLocator;
-
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -15,6 +15,7 @@ use Application\Bender\View;
 use Application\Base\Singleton;
 use Application\Config\Configuration;
 use Application\Generator\Module\Module;
+use Application\Generator\File\Routes;
 use Application\Database\Database;
 use Application\Database\DatabaseBuilder;
 use Application\CLI\CLI;
@@ -230,6 +231,14 @@ final class Bender extends Singleton
 			$event = new Event();
 		}
 		$this->getEventDispatcher()->dispatch($eventName, $event);
+	}
+
+	/**
+	 *
+	 * @return Application\Generator\File\Routes
+	 */
+	public function getRoutes(){
+		return $this->getContainer()->get('routes');
 	}
 
 	/**

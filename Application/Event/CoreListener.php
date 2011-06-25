@@ -22,7 +22,17 @@ class CoreListener implements EventSubscriberInterface
 		return array(
 			Event::SAVE_FILE => 'onSaveFile',
 			Event::SAVE_FILES => 'onSaveFiles',
+			Event::VIEW_INIT => 'onViewInit',
 		);
+	}
+
+	/**
+	 *
+	 * @param Event $event
+	 */
+	public function onViewInit(Event $event){
+		$view = $event->get('view');
+		$view->addGlobal('routes', $this->getBender()->getRoutes());
 	}
 
 	/**
@@ -31,8 +41,7 @@ class CoreListener implements EventSubscriberInterface
 	 * @param Event $event
 	 */
 	public function onSaveFile(Event $event){
-		static $i = 0;
-		$i++;
+		static $i = 0; $i++;
 		$this->getOutput()->writeln(sprintf("<info>  {$i}. %s</info>" , $event->get('filename')));
 	}
 

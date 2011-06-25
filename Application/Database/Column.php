@@ -117,4 +117,58 @@ class Column implements Collectable
 		return $this->isUnique;
 	}
 
+	/**
+	 *
+	 * @return boolen
+	 */
+	public function getAutoincrement()
+    {
+        return $this->doctrineColumn->getAutoincrement();
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+	public function getType()
+    {
+        return $this->doctrineColumn->getType()->getName();
+    }
+
+    /**
+	 *
+	 * TODO getLength
+	 * @return int
+	 */
+
+
+    /**
+	 * TODO getUnsigned
+	 * @return boolen
+	 */
+
+    /**
+	 * TODO getComment
+	 * @return boolen
+	 */
+
+
+    /**
+	 *
+	 * @return boolen
+	 */
+    public function getNotnull()
+    {
+        return $this->doctrineColumn->getNotnull();
+    }
+
+    /**
+	 *
+	 * @return mixed
+	 */
+    public function getDefault()
+    {
+        return $this->doctrineColumn->getDefault();
+    }
+
 }

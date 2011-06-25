@@ -12,6 +12,6 @@ $bender = Bender::getInstance();
 $bender->registerAutoloader()
 	->loadContainer('config/Services.xml');
 
-$bender->getConfiguration()->set('modulesPath', APPLICATION_PATH.'/Modules/');
 $bender->getEventDispatcher()->addSubscriber(new CoreListener());
+$bender->getConfiguration()->set('modulesPath', APPLICATION_PATH.'/Modules/');
 $bender->getCLI()->run();
