@@ -141,17 +141,16 @@ class Column implements Collectable
 	 * @return int
 	 */
 
-
     /**
 	 * TODO getUnsigned
 	 * @return boolen
 	 */
 
+
     /**
 	 * TODO getComment
-	 * @return boolen
+	 * @return strin
 	 */
-
 
     /**
 	 *

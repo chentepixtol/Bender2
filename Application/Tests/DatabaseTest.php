@@ -193,6 +193,7 @@ class DatabaseTest extends BaseTest
 		$userTable = $database->getTables()->getByPK('User');
 
 		$idUser = $userTable->getColumns()->getByPK('id_user');
+		$username = $userTable->getColumns()->getByPK('username');
 
 		$this->assertTrue($idUser->getAutoincrement());
 		$this->assertTrue($idUser->getNotnull());
@@ -204,6 +205,7 @@ class DatabaseTest extends BaseTest
 		$this->assertEquals('float', $salary->getType());
 		$this->assertEquals('1000', $salary->getDefault());
 		$this->assertFalse($salary->getNotnull());
+
 	}
 
 
