@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
-use Doctrine\DBAL\DriverManager;
 use Application\Bender\View;
 use Application\Base\Singleton;
 use Application\Config\Configuration;
@@ -42,27 +41,9 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * @var Doctrine\DBAL\Connection
-	 */
-	protected $connection;
-
-	/**
-	 *
-	 * @var Application\Database\Database
-	 */
-	protected $database;
-
-	/**
-	 *
 	 * @var Application\Bender\View
 	 */
 	protected $view;
-
-	/**
-	 *
-	 * @var Application\CLI\CLI
-	 */
-	protected $cli;
 
 	/**
 	 *
@@ -134,12 +115,7 @@ final class Bender extends Singleton
 	 */
 	public function getConnection()
 	{
-		if( null == $this->connection ){
-			$connectionParams = $this->getSettings()->getConnectionParams()->toArray();
-			$this->connection = DriverManager::getConnection($connectionParams);
-			$this->dispatch(Event::CONNECTION_ESTABILISHED, new Event(array('connection' => $this->connection)));
-		}
-		return $this->connection;
+		return $this->getContainer()->get('connectionHolder')->getConnection();
 	}
 
 	/**
@@ -148,12 +124,7 @@ final class Bender extends Singleton
 	 */
 	public function getDatabase()
 	{
-		if( null == $this->database ){
-			$schemaManager = $this->getConnection()->getSchemaManager();
-			$databaseBuilder = new DatabaseBuilder($schemaManager, $this->getSchema(), $this->getEventDispatcher());
-			$this->database = $databaseBuilder->build();
-		}
-		return $this->database;
+		return $this->getContainer()->get('databaseBuilder')->build();
 	}
 
 	/**
@@ -172,7 +143,7 @@ final class Bender extends Singleton
 	{
 		if( null == $this->settings ){
 			$this->settings = $this->getContainer()->get('settings');
-			$this->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
+			$this->getEventDispatcher()->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
 		}
 		return $this->settings;
 	}
@@ -185,7 +156,7 @@ final class Bender extends Singleton
 	{
 		if( null == $this->schema ){
 			$this->schema = $this->getContainer()->get('schema');
-			$this->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
+			$this->getEventDispatcher()->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
 		}
 		return $this->schema;
 	}
@@ -196,11 +167,7 @@ final class Bender extends Singleton
 	 */
 	public function getCLI()
 	{
-		if( null == $this->cli ){
-			$this->cli = $this->getContainer()->get('cli');
-			$this->dispatch(Event::CLI_READY, new Event(array('cli' => $this->cli)));
-		}
-		return $this->cli;
+		return $this->getContainer()->get('cli');
 	}
 
 	/**
@@ -222,19 +189,6 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * @param string $eventName
-	 * @param Event $event
-	 */
-	public function dispatch($eventName, Event $event = null)
-	{
-		if( null == $event ){
-			$event = new Event();
-		}
-		$this->getEventDispatcher()->dispatch($eventName, $event);
-	}
-
-	/**
-	 *
 	 * @return Application\Generator\File\Routes
 	 */
 	public function getRoutes(){
@@ -248,18 +202,10 @@ final class Bender extends Singleton
 	 */
 	public function getView(Module $module)
 	{
-		if( null == $this->view ){
-			$this->view = $this->getContainer()->get('view');
-			$this->dispatch(Event::VIEW_INIT, new Event(array('view' => $this->view)));
-		}
+		$view = $this->getContainer()->get('view');
+		$view->toggleToModule($module);
 
-		if( $this->view->toggleToDirectory($module->getTemplateDirs()) ){
-			$this->dispatch(Event::VIEW_MODULE_CREATE, new Event(
-				array('view' => $this->view, 'module' => $module)
-			));
-		}
-
-		return $this->view;
+		return $view;
 	}
 
 	/**
@@ -272,7 +218,7 @@ final class Bender extends Singleton
 			$directories = $this->getConfiguration()->get('modulesPath').$project;
 			$finder = new Finder($directories);
 			$this->modules = $finder->findModules();
-			$this->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
+			$this->getEventDispatcher()->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
 		}
 		$this->modules->rewind();
 		return $this->modules;

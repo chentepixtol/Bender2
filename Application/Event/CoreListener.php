@@ -67,7 +67,7 @@ class CoreListener implements EventSubscriberInterface
 	 * @return Symfony\Component\Console\Output\ConsoleOutput
 	 */
 	public function getOutput(){
-		return $this->getBender()->getCLI()->getOutput();
+		return $this->getBender()->getContainer()->get('output');
 	}
 
 

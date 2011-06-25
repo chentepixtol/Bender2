@@ -64,7 +64,7 @@ class Generator
 			$module = $this->modules->read();
 
 			$files = $module->getFiles();
-			$this->getBender()->dispatch(Event::SAVE_FILES, new Event(array(
+			$this->getBender()->getEventDispatcher()->dispatch(Event::SAVE_FILES, new Event(array(
 				'module' => $module,
 			)));
 
@@ -76,7 +76,7 @@ class Generator
 				$fullpath = APPLICATION_PATH .'/'. $this->getBender()->getSettings()->getOutputDir() .'/' . $filename;
 
 				$this->writer->save($fullpath, $file->getContent());
-				$this->getBender()->dispatch(Event::SAVE_FILE, new Event(array(
+				$this->getBender()->getEventDispatcher()->dispatch(Event::SAVE_FILE, new Event(array(
 					'module' => $module,
 					'fullpath' => $fullpath,
 					'filename' => $filename,

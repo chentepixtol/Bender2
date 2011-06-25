@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Application\Database;
 
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
@@ -7,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Application\Event\Event;
 use Application\Config\Schema;
 use Application\Database\Database;
+use Application\Database\ConnectionHolder;
 
 /**
  *
@@ -20,9 +22,9 @@ class DatabaseBuilder
 	/**
 	 *
 	 *
-	 * @var Doctrine\DBAL\Schema\AbstractSchemaManager
+	 * @var ConnectionHolder
 	 */
-	protected $schemaManager;
+	protected $connectionHolder;
 
 	/**
 	 *
@@ -40,14 +42,20 @@ class DatabaseBuilder
 
 	/**
 	 *
+	 * @var Database
+	 */
+	protected $database;
+
+	/**
 	 *
-	 * @param AbstractSchemaManager $schemaManager
+	 *
+	 * @param ConnectionHolder $connectionHolder
 	 * @param Schema $schema
 	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct(AbstractSchemaManager $schemaManager, Schema $schema, EventDispatcher $eventDispatcher)
+	public function __construct(ConnectionHolder $connectionHolder, Schema $schema, EventDispatcher $eventDispatcher)
 	{
-		$this->schemaManager = $schemaManager;
+		$this->connectionHolder = $connectionHolder;
 		$this->schema = $schema;
 		$this->eventDispatcher = $eventDispatcher;
 	}
@@ -59,17 +67,19 @@ class DatabaseBuilder
 	 */
 	public function build()
 	{
-		$database = new Database();
+		if( null == $this->database ){
+			$this->database = new Database();
 
-		$this->eventDispatcher->dispatch(Event::DATABASE_BEFORE_INSPECT, new Event());
-		$this->inspect($database);
-		$this->eventDispatcher->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $database)));
+			$this->eventDispatcher->dispatch(Event::DATABASE_BEFORE_INSPECT, new Event());
+			$this->inspect($this->database);
+			$this->eventDispatcher->dispatch(Event::DATABASE_AFTER_INSPECT, new Event(array('database' => $this->database)));
 
-		$this->eventDispatcher->dispatch(Event::DATABASE_BEFORE_CONFIGURE, new Event(array('database' => $database)));
-		$this->configure($database);
-		$this->eventDispatcher->dispatch(Event::DATABASE_AFTER_CONFIGURE, new Event(array('database' => $database)));
+			$this->eventDispatcher->dispatch(Event::DATABASE_BEFORE_CONFIGURE, new Event(array('database' => $this->database)));
+			$this->configure($this->database);
+			$this->eventDispatcher->dispatch(Event::DATABASE_AFTER_CONFIGURE, new Event(array('database' => $this->database)));
+		}
 
-		return $database;
+		return $this->database;
 	}
 
 
@@ -82,7 +92,7 @@ class DatabaseBuilder
 	{
 		$tableBuilder = new TableBuilder($this->schema);
 
-		$tables = $this->schemaManager->listTables();
+		$tables = $this->connectionHolder->getConnection()->getSchemaManager()->listTables();
 		foreach ($tables as $doctrineTable){
 			$table = $tableBuilder->build($doctrineTable);
 

@@ -14,4 +14,6 @@ $bender->registerAutoloader()
 
 $bender->getEventDispatcher()->addSubscriber(new CoreListener());
 $bender->getConfiguration()->set('modulesPath', APPLICATION_PATH.'/Modules/');
-$bender->getCLI()->run();
+
+$output = $bender->getContainer()->get('output');
+$bender->getCLI()->run(null, $output);

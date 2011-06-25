@@ -2,6 +2,11 @@
 
 namespace Application\Bender;
 
+use Application\Generator\Module\Module;
+
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Application\Event\Event;
+
 /**
  *
  * @author chente
@@ -27,10 +32,25 @@ class View
 
 	/**
 	 *
+	 * @var Symfony\Component\EventDispatcher\EventDispatcher
+	 */
+	protected $eventDispatcher;
+
+	/**
+	 *
 	 *
 	 * @var \Twig_Environment
 	 */
 	protected $current;
+
+	/**
+	 *
+	 * @param EventDispatcher $eventDispatcher
+	 */
+	public function __construct(EventDispatcher $eventDispatcher){
+		$this->eventDispatcher = $eventDispatcher;
+		$this->eventDispatcher->dispatch(Event::VIEW_INIT, new Event(array('view' => $this)));
+	}
 
 	/**
 	 *
@@ -79,6 +99,19 @@ class View
 		$this->current = $this->twigs[$index];
 
 		return $create;
+	}
+
+	/**
+	 *
+	 * @param Module $module
+	 */
+	public function toggleToModule(Module $module)
+	{
+		if( $this->toggleToDirectory($module->getTemplateDirs()) ){
+			$this->eventDispatcher->dispatch(Event::VIEW_MODULE_CREATE, new Event(
+				array('view' => $this, 'module' => $module)
+			));
+		}
 	}
 
 	/**
