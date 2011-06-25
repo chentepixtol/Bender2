@@ -34,13 +34,18 @@ class ResponseListener
      *
      * @param FilterResponseEvent $event    A FilterResponseEvent instance
      */
-    public function onCoreResponse(FilterResponseEvent $event)
+    public function onKernelResponse(FilterResponseEvent $event)
     {
+        $request = $event->getRequest();
+        $response = $event->getResponse();
+
+        if ('HEAD' === $request->getMethod()) {
+            $response->setContent('');
+        }
+
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
-
-        $response = $event->getResponse();
 
         if (null === $response->getCharset()) {
             $response->setCharset($this->charset);
@@ -50,7 +55,6 @@ class ResponseListener
             return;
         }
 
-        $request = $event->getRequest();
         $format = $request->getRequestFormat();
         if ((null !== $format) && $mimeType = $request->getMimeType($format)) {
             $response->headers->set('Content-Type', $mimeType);

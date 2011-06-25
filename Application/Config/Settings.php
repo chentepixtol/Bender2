@@ -44,7 +44,7 @@ class Settings
 	protected function load()
 	{
 		$this->configuration = new Configuration();
-		$this->configuration->set('settings', Yaml::load($this->filename));
+		$this->configuration->set('settings', Yaml::parse($this->filename));
 	}
 
 	/**

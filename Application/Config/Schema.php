@@ -36,7 +36,7 @@ class Schema
 			throw new \Exception("El archivo no existe ".$this->filename);
 		}
 		$this->configuration = new Configuration();
-		$this->configuration->set('schema', Yaml::load($this->filename));
+		$this->configuration->set('schema', Yaml::parse($this->filename));
 	}
 
 	/**

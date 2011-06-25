@@ -43,11 +43,11 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
     {
         parent::__construct($inputTimezone, $outputTimezone);
 
-        if (is_null($dateFormat)) {
+        if (null === $dateFormat) {
             $dateFormat = \IntlDateFormatter::MEDIUM;
         }
 
-        if (is_null($timeFormat)) {
+        if (null === $timeFormat) {
             $timeFormat = \IntlDateFormatter::SHORT;
         }
 
@@ -84,6 +84,7 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         }
 
         // convert time to UTC before passing it to the formatter
+        $dateTime = clone $dateTime;
         if ('UTC' !== $this->inputTimezone) {
             $dateTime->setTimezone(new \DateTimeZone('UTC'));
         }
