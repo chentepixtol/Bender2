@@ -136,6 +136,94 @@ class Column implements Collectable
     }
 
     /**
+     *
+     * @return boolean
+     */
+    public function isBigint(){
+    	return $this->getType() == 'bigint';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isBoolean(){
+    	return $this->getType() == 'boolean';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isDatetime(){
+    	return in_array($this->getType(), array('datetime', 'datetimez'));
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isDate(){
+    	return $this->getType() == 'date';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isTime(){
+    	return $this->getType() == 'time';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isDecimal(){
+    	return $this->getType() == 'decimal';
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function isInteger(){
+    	return $this->getType() == 'integer';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isSmallint(){
+    	return $this->getType() == 'smallint';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isString(){
+    	return $this->getType() == 'string';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isText(){
+    	return $this->getType() == 'text';
+    }
+
+	/**
+     *
+     * @return boolean
+     */
+    public function isFloat(){
+    	return $this->getType() == 'float';
+    }
+
+    /**
 	 *
 	 * TODO getLength
 	 * @return int

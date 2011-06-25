@@ -34,8 +34,10 @@ class Bean extends BaseModule
 
 		$routes = $this->getBender()->getRoutes();
 		$this->getBender()->getDatabase()->getTables()->each(function (Table $table) use($routes){
-			$object = $table->getObject()->toString();
-			$routes->addRoute($object, "application/models/beans/{$object}.php");
+			if( $table->inSchema() ){
+				$object = $table->getObject()->toString();
+				$routes->addRoute($object, "application/models/beans/{$object}.php");
+			}
 		});
 	}
 
@@ -52,11 +54,13 @@ class Bean extends BaseModule
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
-			$this->shortcuts($table);
-			$content = $this->view->fetch('bean.tpl');
-			$files->append(
-				new File($routes->getRoute($table->getObject()->toString()), $content)
-			);
+			if( $table->inSchema() ){
+				$this->shortcuts($table);
+				$content = $this->view->fetch('bean.tpl');
+				$files->append(
+					new File($routes->getRoute($table->getObject()->toString()), $content)
+				);
+			}
 		}
 
 		return $files;

@@ -120,4 +120,33 @@ class Configuration
 		return $this->parameters;
 	}
 
+	/**
+	 *
+	 * @return int
+	 */
+	public function count(){
+		return count($this->parameters);
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function isEmpty(){
+		return $this->count() == 0;
+	}
+
+	/**
+	 *
+	 * @return int
+	 */
+	public function countTotal(){
+		$count = 0;
+		foreach ($this->parameters as $index => $parameter){
+			$inc = $parameter instanceof Configuration ? $parameter->countTotal() : 1;
+			$count += $inc;
+		}
+		return $count;
+	}
+
 }

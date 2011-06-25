@@ -42,6 +42,7 @@ class TableBuilder
 		$table = new Table($doctrineTable);
 		$configuration = $this->schema->createConfiguration($table->getName()->toString());
 		$table->setConfiguration($configuration);
+		$table->setInSchema($configuration->has('object'));
 
 		foreach($doctrineTable->getColumns() as $doctrineColumn)
 		{
@@ -63,8 +64,11 @@ class TableBuilder
 	 */
 	protected function configure(Table $table, $doctrineTable)
 	{
-		$columnPrimaries = $doctrineTable->getPrimaryKey()->getColumns();
-		$columnPrimary = $table->getColumns()->getByPK($columnPrimaries[0]);
+		$columnPrimary = null;
+		if( $doctrineTable->hasPrimaryKey() ){
+			$columnPrimaries = $doctrineTable->getPrimaryKey()->getColumns();
+			$columnPrimary = $table->getColumns()->getByPK($columnPrimaries[0]);
+		}
 
 		$uniques = array();
 		foreach ($doctrineTable->getIndexes() as $key => $index){

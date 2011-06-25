@@ -65,6 +65,27 @@ class ConfigurationTest extends BaseTest
      *
      * @test
      */
+    public function countItems(){
+    	$configuration = new Configuration();
+
+    	$this->assertEquals(0, $configuration->count());
+    	$this->assertTrue($configuration->isEmpty());
+
+    	$configuration->set('pi', '3.1416');
+    	$this->assertEquals(1, $configuration->count());
+    	$this->assertFalse($configuration->isEmpty());
+
+    	$configuration->set('myArray', array('a', 'b', 'c'));
+    	$this->assertEquals(2, $configuration->count());
+    	$this->assertEquals(3, $configuration->get('myArray')->count());
+
+    	$this->assertEquals(4, $configuration->countTotal());
+    }
+
+    /**
+     *
+     * @test
+     */
     public function path(){
     	$configuration = new Configuration(array(
     		'a1' => array(

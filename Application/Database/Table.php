@@ -176,6 +176,22 @@ class Table implements Collectable
 	}
 
 	/**
+	 *
+	 * @param boolean $inSchema
+	 */
+	public function setInSchema($inSchema){
+		$this->configuration->set('inSchema', $inSchema);
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function inSchema(){
+		return $this->configuration->get('inSchema', false);
+	}
+
+	/**
 	 * @return boolean
 	 */
 	public function hasParent() {

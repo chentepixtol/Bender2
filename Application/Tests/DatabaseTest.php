@@ -65,7 +65,7 @@ class DatabaseTest extends BaseTest
 		$this->assertTrue($tableCollection->containsIndex('User'));
 		$this->assertTrue($tableCollection->containsIndex('Worker'));
 
-		$this->assertEquals(4, $tableCollection->count());
+		$this->assertEquals(5, $tableCollection->count());
 
 		$personTable = $tableCollection->getByTablename('bender_persons');
 		$postTable = $tableCollection->getByTablename('bender_posts');
@@ -205,6 +205,27 @@ class DatabaseTest extends BaseTest
 		$this->assertEquals('float', $salary->getType());
 		$this->assertEquals('1000', $salary->getDefault());
 		$this->assertFalse($salary->getNotnull());
+
+		$types = $database->getTables()->getByPK('data_type');
+
+		$asserts = array('integer',
+			'string',
+			'text',
+			'date',
+			'bigint',
+			'decimal',
+			'float',
+			'smallint',
+			'datetime',
+			'datetime',
+		);
+		$columns = $types->getColumns();
+		$i = 0;
+		while ($columns->valid()) {
+			$column = $columns->read();
+			$this->assertEquals($asserts[$i], $column->getType());
+			$i++;
+		}
 
 	}
 
