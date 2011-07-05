@@ -1,5 +1,1 @@
 <?php
-
-/**
- * class {{ table.getObject() }}
- */

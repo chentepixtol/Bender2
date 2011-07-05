@@ -36,7 +36,7 @@ class Bean extends BaseModule
 		$this->getBender()->getDatabase()->getTables()->each(function (Table $table) use($routes){
 			if( $table->inSchema() ){
 				$object = $table->getObject()->toString();
-				$routes->addRoute($object, "application/models/beans/{$object}.php");
+				$routes->addRoute($object, "Application/Model/Bean/{$object}.php");
 			}
 		});
 	}
