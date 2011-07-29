@@ -194,4 +194,25 @@ abstract class BaseCollection extends \ArrayIterator
         $this->rewind();
     }
 
+    /**
+     *
+     * @param \Closure $fn
+     * @return BaseCollection
+     */
+    public function filter($fn)
+    {
+    	$baseColletion = $this->makeColletion();
+    	$this->rewind();
+        while( $this->valid() )
+        {
+            $object = $this->read();
+            if( $fn($object) ){
+            	$baseColletion->append($object);
+            }
+        }
+        $this->rewind();
+        $baseColletion->rewind();
+        return $baseColletion;
+    }
+
 }

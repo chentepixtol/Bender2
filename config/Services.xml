@@ -7,7 +7,7 @@
         <parameter key="cli.class">Application\CLI\CLI</parameter>
         <parameter key="eventDispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
 		<parameter key="view.class">Application\Bender\View</parameter>
-		<parameter key="routes.class">Application\Generator\File\Routes</parameter>
+		<parameter key="classes.class">Application\Generator\Classes</parameter>
 		<parameter key="output.class">Symfony\Component\Console\Output\ConsoleOutput</parameter>
 		<parameter key="connectionHolder.class">Application\Database\ConnectionHolder</parameter>
 		<parameter key="databaseBuilder.class">Application\Database\DatabaseBuilder</parameter>
@@ -24,7 +24,7 @@
   	 
 	<service id="configuration" class="%configuration.class%"></service>
 	<service id="eventDispatcher" class="%eventDispatcher.class%"></service>
-	<service id="routes" class="%routes.class%"></service>
+	<service id="classes" class="%classes.class%"></service>
 	<service id="output" class="%output.class%"></service>
 	
     <service id="settings" class="%settings.class%">

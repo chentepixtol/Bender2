@@ -1,13 +1,14 @@
 {% include 'header.tpl' %}
 
-namespace Application\Model\Bean;
+namespace {{ classes.get('Bean').getNamespace() }};
 
 {% if parent %}
-require_once '{{ routes.getRoute( parent.getObject().toUpperCamelCase() ) }}';
+require_once '{{ classes.get( parent.getObject().toUpperCamelCase() ).getRoute() }}';
+{% else %}
+use {{ classes.get('Bean').getNamespacedName() }};
 {% endif %}
 
-class {{ Bean }}{% if parent %} extends {{ parent.getObject().toUpperCamelCase() }}{% endif %}
-
+class {{ Bean }}{% if parent %} extends {{ parent.getObject().toUpperCamelCase() }}{% else %} implements Bean{% endif %}
 {
 
     const TABLENAME = '{{ table.getName() }}';

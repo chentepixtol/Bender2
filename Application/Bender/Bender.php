@@ -189,10 +189,10 @@ final class Bender extends Singleton
 
 	/**
 	 *
-	 * @return Application\Generator\File\Routes
+	 * @return Application\Generator\Classes
 	 */
-	public function getRoutes(){
-		return $this->getContainer()->get('routes');
+	public function getClasses(){
+		return $this->getContainer()->get('classes');
 	}
 
 	/**

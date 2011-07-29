@@ -32,7 +32,7 @@ class CoreListener implements EventSubscriberInterface
 	 */
 	public function onViewInit(Event $event){
 		$view = $event->get('view');
-		$view->addGlobal('routes', $this->getBender()->getRoutes());
+		$view->addGlobal('classes', $this->getBender()->getClasses());
 	}
 
 	/**

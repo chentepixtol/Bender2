@@ -2,6 +2,8 @@
 
 namespace Application\Tests;
 
+use Application\Base\BaseCollection;
+
 use Application\Tests\Mock\Item;
 use Application\Tests\Mock\MyCollection;
 
@@ -219,6 +221,34 @@ class BaseCollectionTest extends BaseTest
 		});
 
 		$this->assertEquals(array('apple'), $withA);
+	}
+
+	/**
+	 *
+	 * @test
+	 */
+	public function filter()
+	{
+		$myCollection = new MyCollection();
+
+		$item1 = new Item(1, 'apple');
+		$item2 = new Item(2, 'orange');
+		$item3 = new Item(3, 'banana');
+		$item4 = new Item(4, 'beach');
+
+		$myCollection->append($item1);
+		$myCollection->append($item2);
+		$myCollection->append($item3);
+		$myCollection->append($item4);
+
+		$myCollectionWithO = $myCollection->filter(function (Item $item){
+			return preg_match('/o/i', $item->getValue());
+		});
+
+		$this->assertTrue($myCollectionWithO instanceof MyCollection);
+		$this->assertEquals(1, $myCollectionWithO->count());
+		$this->assertTrue($myCollectionWithO->containsIndex(2));
+		$this->assertEquals($item2, $myCollectionWithO->read());
 	}
 
 	/**
