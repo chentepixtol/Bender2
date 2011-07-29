@@ -100,9 +100,20 @@ class OraclePlatform extends AbstractPlatform
         return 'SYS_GUID()';
     }
 
+    /**
+     * Get the number of days difference between two dates.
+     * 
+     * Note: Since Oracle timestamp differences are calculated down to the microsecond we have to truncate
+     * them to the difference in days. This is obviously a restriction of the original functionality, but we
+     * need to make this a portable function.
+     * 
+     * @param type $date1
+     * @param type $date2
+     * @return type 
+     */
     public function getDateDiffExpression($date1, $date2)
     {
-        return '('.$date1 . '-'.$date2.')';
+        return "TRUNC(TO_NUMBER(SUBSTR((" . $date1 . "-" . $date2 . "), 1, INSTR(" . $date1 . "-" . $date2 .", ' '))))";
     }
 
     public function getDateAddDaysExpression($date, $days)
@@ -141,6 +152,12 @@ class OraclePlatform extends AbstractPlatform
         return 'CREATE SEQUENCE ' . $sequence->getQuotedName($this) .
                ' START WITH ' . $sequence->getInitialValue() .
                ' MINVALUE ' . $sequence->getInitialValue() . 
+               ' INCREMENT BY ' . $sequence->getAllocationSize();
+    }
+    
+    public function getAlterSequenceSQL(\Doctrine\DBAL\Schema\Sequence $sequence)
+    {
+        return 'ALTER SEQUENCE ' . $sequence->getQuotedName($this) . 
                ' INCREMENT BY ' . $sequence->getAllocationSize();
     }
 
@@ -549,7 +566,7 @@ LEFT JOIN all_cons_columns r_cols
             $fields[] = $column->getQuotedName($this);
         }
         if (count($fields)) {
-            $sql[] = 'ALTER TABLE ' . $diff->name . ' DROP COLUMN ' . implode(', ', $fields);
+            $sql[] = 'ALTER TABLE ' . $diff->name . ' DROP (' . implode(', ', $fields).')';
         }
 
         if ($diff->newName !== false) {
