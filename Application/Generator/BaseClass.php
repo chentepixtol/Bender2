@@ -1,5 +1,8 @@
 <?php
+
 namespace Application\Generator;
+
+use Application\Native\String;
 
 /**
  *
@@ -12,7 +15,7 @@ class BaseClass
 	/**
 	 *
 	 *
-	 * @var string
+	 * @var String
 	 */
 	protected $name;
 
@@ -39,6 +42,12 @@ class BaseClass
 
 	/**
 	 *
+	 * @var boolean
+	 */
+	protected static $addIncludes = true;
+
+	/**
+	 *
 	 *
 	 * @param string $name
 	 * @param string $route
@@ -46,13 +55,13 @@ class BaseClass
 	 */
 	public function __construct($name, $route, $namespace)
 	{
-		$this->setName($name);
+		$this->setName(new String($name, String::UPPERCAMELCASE));
 		$this->setRoute($route);
 		$this->setNamespace($namespace);
 	}
 
 	/**
-	 * @return the $name
+	 * @return Application\Native\String
 	 */
 	public function getName() {
 		return $this->name;
@@ -62,7 +71,23 @@ class BaseClass
 	 *
 	 * @return string
 	 */
-	public function getNamespacedName(){
+	public function __toString(){
+		return $this->toString();
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function toString(){
+		return $this->getName()->toString();
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getFullName(){
 		return $this->getNamespace().$this->separatorNamespace.$this->getName();
 	}
 
@@ -99,6 +124,14 @@ class BaseClass
 	 */
 	public function setNamespace($namespace) {
 		$this->namespace = $namespace;
+	}
+
+	/**
+	 *
+	 * @param boolean $bool
+	 */
+	public static function addIncludes($bool){
+		self::$addIncludes = $bool;
 	}
 
 }

@@ -180,6 +180,9 @@ class DatabaseTest extends BaseTest
 		$this->assertTrue($columnIdUser->isUnique());
 		$this->assertTrue($columnIdPerson->isUnique());
 		$this->assertEquals('idPerson', $columnIdPerson->getName()->toCamelCase());
+		$this->assertEquals('id_person', "$columnIdPerson");
+		$this->assertEquals('getIdPerson', $columnIdPerson->getter());
+		$this->assertEquals('setIdPerson', $columnIdPerson->setter());
 	}
 
 	/**

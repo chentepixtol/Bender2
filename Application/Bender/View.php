@@ -92,7 +92,7 @@ class View
 		$index = is_array($directories) ? implode(',', $directories) : $directories;
 		if( !array_key_exists($index, $this->twigs) ){
 			$loader = new \Twig_Loader_Filesystem($directories);
-			$this->twigs[$index] = new \Twig_Environment($loader, array());
+			$this->twigs[$index] = new \Twig_Environment($loader, array('autoescape' => false));
 			$create = true;
 		}
 

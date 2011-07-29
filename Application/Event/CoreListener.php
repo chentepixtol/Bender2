@@ -2,6 +2,7 @@
 
 namespace Application\Event;
 
+use Application\Generator\BaseClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Application\Bender\Bender;
 
@@ -23,6 +24,7 @@ class CoreListener implements EventSubscriberInterface
 			Event::SAVE_FILE => 'onSaveFile',
 			Event::SAVE_FILES => 'onSaveFiles',
 			Event::VIEW_INIT => 'onViewInit',
+			Event::LOAD_SETTINGS => 'onLoadSettings',
 		);
 	}
 
@@ -33,6 +35,15 @@ class CoreListener implements EventSubscriberInterface
 	public function onViewInit(Event $event){
 		$view = $event->get('view');
 		$view->addGlobal('classes', $this->getBender()->getClasses());
+	}
+
+	/**
+	 *
+	 * @param Event $event
+	 */
+	public function onLoadSettings(Event $event){
+		//TODO Cambiar esto al settings
+		BaseClass::addIncludes(true);
 	}
 
 	/**

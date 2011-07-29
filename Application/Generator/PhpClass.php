@@ -28,4 +28,31 @@ class PhpClass extends BaseClass
 		parent::__construct($name, $route, $namespace);
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
+	public function printUse(){
+		return "use {$this->getFullName()};";
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function printNamespace(){
+		return "namespace {$this->getNamespace()};";
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function printRequire()
+	{
+		if( self::$addIncludes ){
+			return "require_once '{$this->getRoute()}';";
+		}
+	}
+
 }

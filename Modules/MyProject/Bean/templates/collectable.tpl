@@ -1,14 +1,16 @@
 {% include 'header.tpl' %}
 
-namespace Application\Base;
+{% set Collectable = classes.get('Collectable') %}
+
+{{ Collectable.printNamespace() }}
 
 /**
  *
- * {{ classes.get('Collectable').getName() }}
+ * {{ Collectable }}
  * @author chente
  *
  */
-interface {{ classes.get('Collectable').getName() }}
+interface {{ Collectable }}
 {
 
 	/**

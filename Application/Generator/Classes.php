@@ -44,7 +44,8 @@ class Classes
 	 *
 	 * @return Application\Generator\BaseClass
 	 */
-	public function get($name){
+	public function get($name)
+	{
 		if( is_object($name) && method_exists($name,'__toString') ){
 			return $this->configuration->get($name->__toString());
 		}else{

@@ -65,6 +65,22 @@ class Column implements Collectable
 
 	/**
 	 *
+	 * @return string
+	 */
+	public function toString(){
+		return $this->getName()->toString();
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function __toString(){
+		return $this->toString();
+	}
+
+	/**
+	 *
 	 * @return Application\Native\String
 	 */
 	public function getName(){
@@ -72,6 +88,22 @@ class Column implements Collectable
 			$this->name = new String($this->doctrineColumn->getName(), String::UNDERSCORE);
 		}
 		return $this->name;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getter(){
+		return 'get'.$this->getName()->toUpperCamelCase();
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function setter(){
+		return 'set'.$this->getName()->toUpperCamelCase();
 	}
 
 	/**
