@@ -13,16 +13,21 @@ namespace {{ classes.get(Bean).getNamespace() }};
 class {{ Bean }}{% if parent %} extends {{ parent.getObject() }}{% else %} implements {{ classes.get('Bean') }}{% endif %}
 {
 
+    /**
+     * TABLENAME
+     */
     const TABLENAME = '{{ table.getName() }}';
 
+    /**
+     * Constants Fields
+     */
 {% for field in fields %}
-    const {{ field.getName().toUpperCase() }} = "{{ field.getName() }}";
+    const {{ field.getName().toUpperCase() }} = '{{ field.getName() }}';
 {% endfor %}
-
 {% for field in fields %}
 
     /**
-     *
+     * @var {{ field.cast('php') }}
      */
     private ${{ field.getName().toCamelCase() }};
 {% endfor %}
@@ -38,19 +43,20 @@ class {{ Bean }}{% if parent %} extends {{ parent.getObject() }}{% else %} imple
 {% for field in fields %}
 
     /**
-     *
+     * @return {{ field.cast('php') }}
      */
 	public function {{ field.getter }}(){
 		return $this->{{ field.getName().toCamelCase() }};
 	}
 
     /**
-     * @param ${{ field.getName().toCamelCase()}}
+     * @param {{ field.cast('php') }} ${{ field.getName().toCamelCase()}}
+     * @return {{ Bean }}
      */
 	public function {{ field.setter }}(${{ field.getName().toCamelCase()}}){
 		$this->{{ field.getName().toCamelCase() }} = ${{ field.getName().toCamelCase()}};
+		return $this;
 	}
 {% endfor %}
-
 
 }
