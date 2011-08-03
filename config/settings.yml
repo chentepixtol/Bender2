@@ -12,7 +12,7 @@ settings:
   alias:
     all:
       project: MyProject
-      modules: [ Bean, Collection, Factory ]
+      modules: [ Bean, Collection, Factory, Catalog ]
     schema:
       project: Core
       modules: [ Schema ]
