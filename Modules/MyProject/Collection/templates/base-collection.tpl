@@ -2,6 +2,8 @@
 
 {% set Collection = classes.get('Collection') %}
 {% set collection = classes.get('Collection').getName().toCamelCase() %}
+{% set Collectable = classes.get('Collectable') %}
+{% set collectable = classes.get('Collectable').getName().toCamelCase() %}
 
 {{ Collection.printNamespace() }}
 
@@ -25,30 +27,30 @@ abstract class {{ Collection }} extends \ArrayIterator
 
     /**
      *
-     * validate object
-     * @param {{ classes.get('Collectable') }} $object
+     * validate {{ collectable }}
+     * @param {{ Collectable }} ${{ collectable }}
      */
-    protected function validate($object)
+    protected function validate(${{ collectable }})
     {
-		if( !($object instanceof {{ classes.get('Collectable') }}) ){
-			throw new \Exception("Debe de cumplir con la Interface {{ classes.get('Collectable') }}");
+		if( !(${{ collectable }} instanceof {{ Collectable }}) ){
+			throw new \Exception("Debe de cumplir con la Interface {{ Collectable }}");
 		}
     }
 
     /**
      * Appends the value
-     * @param {{ classes.get('Collectable') }} $object
+     * @param {{ Collectable }} ${{ collectable }}
      */
-    public function append($object)
+    public function append(${{ collectable }})
     {
-    	$this->validate($object);
-        parent::offsetSet($object->getIndex(), $object);
+    	$this->validate(${{ collectable }});
+        parent::offsetSet(${{ collectable }}->getIndex(), ${{ collectable }});
         $this->rewind();
     }
 
     /**
      * Return current array entry
-     * @return {{ classes.get('Collectable') }}
+     * @return {{ Collectable }}
      */
     public function current()
     {
@@ -58,19 +60,19 @@ abstract class {{ Collection }} extends \ArrayIterator
     /**
      * Return current array entry and
      * move to next entry
-     * @return {{ classes.get('Collectable') }}
+     * @return {{ Collectable }}
      */
     public function read()
     {
-        $object = $this->current();
+        ${{ collectable }} = $this->current();
         $this->next();
-        return $object;
+        return ${{ collectable }};
     }
 
     /**
      * Get the first array entry
      * if exists or null if not
-     * @return {{ classes.get('Collectable') }}|null
+     * @return {{ Collectable }}|null
      */
     public function getOne()
     {
@@ -83,7 +85,7 @@ abstract class {{ Collection }} extends \ArrayIterator
     }
 
     /**
-     * Contains one object with $name
+     * Contains one {{ collectable }} with $name
      * @param  int $index
      * @return boolean
      */
@@ -93,7 +95,7 @@ abstract class {{ Collection }} extends \ArrayIterator
     }
 
     /**
-     * Remove one object with $name
+     * Remove one {{ collectable }} with $name
      * @param  int $index
      */
     public function remove($index)
@@ -112,9 +114,9 @@ abstract class {{ Collection }} extends \ArrayIterator
         ${{ collection }}->rewind();
         while( ${{ collection }}->valid() )
         {
-            $object = ${{ collection }}->read();
-            if( !$this->containsIndex( $object->getIndex() ) )
-                $this->append($object);
+            ${{ collectable }} = ${{ collection }}->read();
+            if( !$this->containsIndex( ${{ collectable }}->getIndex() ) )
+                $this->append(${{ collectable }});
         }
         ${{ collection }}->rewind();
     }
@@ -129,9 +131,9 @@ abstract class {{ Collection }} extends \ArrayIterator
         ${{ collection }}->rewind();
         while( ${{ collection }}->valid() )
         {
-            $object = ${{ collection }}->read();
-            if( $this->containsIndex( $object->getIndex() ) )
-                $this->remove($object->getIndex());
+            ${{ collectable }} = ${{ collection }}->read();
+            if( $this->containsIndex( ${{ collectable }}->getIndex() ) )
+                $this->remove(${{ collectable }}->getIndex());
         }
         ${{ collection }}->rewind();
     }
@@ -147,9 +149,9 @@ abstract class {{ Collection }} extends \ArrayIterator
         ${{ collection }}->rewind();
         while(${{ collection }}->valid())
         {
-            $object = ${{ collection }}->read();
-            if( $this->containsIndex( $object->getIndex() ) )
-                ${{ collection }}->append($object);
+            ${{ collectable }} = ${{ collection }}->read();
+            if( $this->containsIndex( ${{ collectable }}->getIndex() ) )
+                ${{ collection }}->append(${{ collectable }});
         }
         ${{ collection }}->rewind();
         return ${{ collection }};
@@ -165,9 +167,9 @@ abstract class {{ Collection }} extends \ArrayIterator
     }
 
     /**
-     * Retrieve the {{ classes.get('Collectable') }} with primary key
+     * Retrieve the {{ Collectable }} with primary key
      * @param  int $name
-     * @return {{ classes.get('Collectable') }}
+     * @return {{ Collectable }}
      */
     public function getByPK($index)
     {
@@ -192,8 +194,8 @@ abstract class {{ Collection }} extends \ArrayIterator
     	$this->rewind();
         while( $this->valid() )
         {
-            $object = $this->read();
-            $fn($object);
+            ${{ collectable }} = $this->read();
+            $fn(${{ collectable }});
         }
         $this->rewind();
     }
@@ -209,9 +211,9 @@ abstract class {{ Collection }} extends \ArrayIterator
     	$this->rewind();
         while( $this->valid() )
         {
-            $object = $this->read();
-            if( $fn($object) ){
-            	${{ collection }}->append($object);
+            ${{ collectable }} = $this->read();
+            if( $fn(${{ collectable }}) ){
+            	${{ collection }}->append(${{ collectable }});
             }
         }
         $this->rewind();
