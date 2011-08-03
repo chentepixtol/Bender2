@@ -45,6 +45,12 @@ class View
 
 	/**
 	 *
+	 * @var string
+	 */
+	protected $currentIndex;
+
+	/**
+	 *
 	 * @param EventDispatcher $eventDispatcher
 	 */
 	public function __construct(EventDispatcher $eventDispatcher){
@@ -89,13 +95,18 @@ class View
 	public function toggleToDirectory($directories)
 	{
 		$create = false;
+
 		$index = is_array($directories) ? implode(',', $directories) : $directories;
+		if( $this->currentIndex == $index ){
+			return false;
+		}
+
 		if( !array_key_exists($index, $this->twigs) ){
 			$loader = new \Twig_Loader_Filesystem($directories);
 			$this->twigs[$index] = new \Twig_Environment($loader, array('autoescape' => false));
+			$this->currentIndex = $index;
 			$create = true;
 		}
-
 		$this->current = $this->twigs[$index];
 
 		return $create;

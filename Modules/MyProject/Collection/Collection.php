@@ -1,8 +1,7 @@
 <?php
-namespace Modules\MyProject\Bean;
+namespace Modules\MyProject\Collection;
 
 use Application\Generator\PhpClass;
-
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
@@ -15,7 +14,7 @@ use Modules\MyProject\BaseModule;
  * @author chente
  *
  */
-class Bean extends BaseModule
+class Collection extends BaseModule
 {
 
 	/**
@@ -23,7 +22,7 @@ class Bean extends BaseModule
 	 * @see Application\Generator\Module.Module::getName()
 	 */
 	public function getName(){
-		return 'Bean';
+		return 'Collection';
 	}
 
 	/**
@@ -33,12 +32,11 @@ class Bean extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Collectable', new PhpClass('Application/Base/Collectable.php'))
-				->add('Bean', new PhpClass("Application/Base/Bean.php"));
+		$classes->add('Collection', new PhpClass("Application/Base/Collection.php"));
 
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
-			$object = $table->getObject();
-			$classes->add($object, new PhpClass("Application/Model/Bean/{$object}.php"));
+			$object = $table->getObject() .'Collection';
+			$classes->add($object, new PhpClass("Application/Model/Collection/{$object}.php"));
 		});
 	}
 
@@ -52,16 +50,17 @@ class Bean extends BaseModule
 		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
 
 		$files = new FileCollection();
-		$files->append(new File($classes->get('Bean')->getRoute(), $this->getView()->fetch('bean-interface.tpl')));
-		$files->append(new File($classes->get('Collectable')->getRoute(), $this->getView()->fetch('collectable.tpl')));
+		$files->append(
+			new File($classes->get('Collection')->getRoute(), $this->getView()->fetch('base-collection.tpl'))
+		);
 
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
 			$this->shortcuts($table);
-			$content = $this->getView()->fetch('bean.tpl');
+			$content = $this->getView()->fetch('collection.tpl');
 			$files->append(
-				new File($classes->get($table->getObject())->getRoute(), $content)
+				new File($classes->get($table->getObject().'Collection')->getRoute(), $content)
 			);
 		}
 

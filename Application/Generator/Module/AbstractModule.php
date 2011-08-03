@@ -10,18 +10,21 @@ use Application\Event\EmptySubscriber;
 
 abstract class AbstractModule implements Module
 {
-	/**
-	 *
-	 * @var Application\Bender\View
-	 */
-	protected $view;
 
 	/**
 	 * (non-PHPdoc)
 	 * @see Application\Generator\Module.Module::init()
 	 */
 	public function init(){
-		$this->view =  $this->getBender()->getView($this);
+
+	}
+
+	/**
+	 *
+	 * @return Application\Bender\View
+	 */
+	public function getView(){
+		return $this->getBender()->getView($this);
 	}
 
 	/**

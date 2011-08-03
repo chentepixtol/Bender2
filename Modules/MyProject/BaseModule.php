@@ -14,10 +14,12 @@ abstract class BaseModule extends AbstractModule
 	 */
 	public function shortcuts(Table $table)
 	{
-		$this->view->table = $table;
-		$this->view->Bean = $table->getObject()->toUpperCamelCase();
-		$this->view->bean = $table->getObject()->toUpperCamelCase();
-		$this->view->parent = $table->getParent();
-		$this->view->fields = $table->getColumns();
+		$this->getView()->table = $table;
+		$this->getView()->Bean = $table->getObject()->toUpperCamelCase();
+		$this->getView()->bean = $table->getObject()->toCamelCase();
+		$this->getView()->Collection = $table->getObject()->toUpperCamelCase().'Collection';
+		$this->getView()->collection = $table->getObject()->toCamelCase().'Collection';
+		$this->getView()->parent = $table->getParent();
+		$this->getView()->fields = $table->getColumns();
 	}
 }
