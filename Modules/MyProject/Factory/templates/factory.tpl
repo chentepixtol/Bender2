@@ -3,13 +3,17 @@
 {{ classes.get(Factory).printNamespace() }}
 
 {{ classes.get(Bean).printRequire() }}
+{{ classes.get('Factory').printRequire() }}
 {{ classes.get(Bean).printUse() }}
+{{ classes.get('Factory').printUse() }}
 
-class {{ Factory }}
+class {{ Factory }} implements {{ classes.get('Factory') }}
 {
 
     /**
      *
+     * @static
+     * @param array $fields
      * @return {{ Bean }}
      */
     public static function createFromArray($fields)
