@@ -21,5 +21,6 @@ abstract class BaseModule extends AbstractModule
 		$this->getView()->collection = $table->getObject()->toCamelCase().'Collection';
 		$this->getView()->parent = $table->getParent();
 		$this->getView()->fields = $table->getColumns();
+		$this->getView()->Factory = $table->getObject()->toUpperCamelCase() .'Factory';
 	}
 }
