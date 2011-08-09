@@ -14,13 +14,24 @@ abstract class BaseModule extends AbstractModule
 	 */
 	public function shortcuts(Table $table)
 	{
+		$classes = $this->getBender()->getClasses();
+
 		$this->getView()->table = $table;
-		$this->getView()->Bean = $table->getObject()->toUpperCamelCase();
-		$this->getView()->bean = $table->getObject()->toCamelCase();
-		$this->getView()->Collection = $table->getObject()->toUpperCamelCase().'Collection';
-		$this->getView()->collection = $table->getObject()->toCamelCase().'Collection';
 		$this->getView()->parent = $table->getParent();
 		$this->getView()->fields = $table->getColumns();
-		$this->getView()->Factory = $table->getObject()->toUpperCamelCase() .'Factory';
+
+		$variableName = $table->getObject()->toCamelCase();
+		$className = $table->getObject()->toUpperCamelCase();
+
+		$this->getView()->Bean = $classes->get($className);
+		$this->getView()->bean = $variableName;
+		$this->getView()->Collection = $classes->get($className.'Collection');
+		$this->getView()->collection = $variableName.'Collection';
+		$this->getView()->Factory = $classes->get($className .'Factory');
+		$this->getView()->factory = $variableName .'Factory';
+		$this->getView()->Catalog = $classes->get($className .'Catalog');
+		$this->getView()->catalog = $variableName.'Catalog';
+		$this->getView()->Exception = $classes->get($className .'Exception');
+		$this->getView()->exception = $variableName.'Exception';
 	}
 }

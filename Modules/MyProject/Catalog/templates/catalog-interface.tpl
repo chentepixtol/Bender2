@@ -1,9 +1,9 @@
 {% include 'header.tpl' %}
-
 {% set Bean = classes.get('Bean') %}
 {% set Catalog = classes.get('Catalog') %}
 {% set Collection = classes.get('Collection') %}
 
+{{ Catalog.printNamespace() }}
 
 /**
  *
@@ -33,23 +33,10 @@ interface {{ Catalog }}
     public function update($object);
 
     /**
-     * Elimina de  la base de datos
-     * @param {{ Bean }} El bean que se va a eliminar
-     */
-    public function delete($object);
-
-    /**
      * Elimina de la base de datos por medio de llave primaria
      * @param int $idObject El id del bean que se eliminara
      */
     public function deleteById($idObject);
-
-    /**
-     * Obtiene un {{ Bean }} de la base de datos
-     * @param int $idObject
-     * @return mixed EL BEAN
-     */
-    public function getById($idObject);
 
     /**
      *

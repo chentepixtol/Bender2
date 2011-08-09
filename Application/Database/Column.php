@@ -39,13 +39,13 @@ class Column implements Collectable
 	 *
 	 * @var boolean
 	 */
-	protected $isPrimaryKey;
+	protected $isPrimaryKey = false;
 
 	/**
 	 *
 	 * @var boolean
 	 */
-	protected $isUnique;
+	protected $isUnique = false;
 
 	/**
 	 *

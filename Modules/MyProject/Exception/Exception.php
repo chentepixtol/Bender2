@@ -1,5 +1,5 @@
 <?php
-namespace Modules\MyProject\Catalog;
+namespace Modules\MyProject\Exception;
 
 use Application\Generator\PhpClass;
 
@@ -15,7 +15,7 @@ use Modules\MyProject\BaseModule;
  * @author chente
  *
  */
-class Catalog extends BaseModule
+class Exception extends BaseModule
 {
 
 	/**
@@ -23,7 +23,7 @@ class Catalog extends BaseModule
 	 * @see Application\Generator\Module.Module::getName()
 	 */
 	public function getName(){
-		return 'Catalog';
+		return 'Exception';
 	}
 
 	/**
@@ -33,13 +33,10 @@ class Catalog extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Catalog', new PhpClass('Application/Base/Catalog.php'))
-				->add('AbstractCatalog', new PhpClass('Application/Database/AbstractCatalog.php'))
-				->add('DBAO', new PhpClass('Application/Database/DBAO.php'))
-				->add('Singleton', new PhpClass('Application/Base/Singleton.php'));
+
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
-			$object = $table->getObject() .'Catalog';
-			$classes->add($object, new PhpClass("Application/Model/Catalog/{$object}.php"));
+			$object = $table->getObject().'Exception';
+			$classes->add($object, new PhpClass("Application/Model/Exception/{$object}.php"));
 		});
 	}
 
@@ -50,22 +47,16 @@ class Catalog extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-
 		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
 
 		$files = new FileCollection();
-		$files->append(new File($classes->get('Catalog')->getRoute(), $this->getView()->fetch('catalog-interface.tpl')));
-		$files->append(new File($classes->get('AbstractCatalog')->getRoute(), $this->getView()->fetch('abstract-catalog.tpl')));
-		$files->append(new File($classes->get('DBAO')->getRoute(), $this->getView()->fetch('dbao.tpl')));
-		$files->append(new File($classes->get('Singleton')->getRoute(), $this->getView()->fetch('singleton.tpl')));
-
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
 			$this->shortcuts($table);
-			$content = $this->getView()->fetch('catalog.tpl');
+			$content = $this->getView()->fetch('exception.tpl');
 			$files->append(
-				new File($classes->get($table->getObject().'Catalog')->getRoute(), $content)
+				new File($classes->get($table->getObject().'Exception')->getRoute(), $content)
 			);
 		}
 
