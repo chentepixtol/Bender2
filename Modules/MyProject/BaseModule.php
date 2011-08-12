@@ -33,5 +33,9 @@ abstract class BaseModule extends AbstractModule
 		$this->getView()->catalog = $variableName.'Catalog';
 		$this->getView()->Exception = $classes->get($className .'Exception');
 		$this->getView()->exception = $variableName.'Exception';
+		$this->getView()->Query = $classes->get($className .'Query');
+		$this->getView()->query = $variableName.'Query';
+		$this->getView()->Criteria = $classes->get($className .'Criteria');
+		$this->getView()->criteria = $variableName.'Criteria';
 	}
 }

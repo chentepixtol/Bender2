@@ -12,7 +12,7 @@ settings:
   alias:
     all:
       project: MyProject
-      modules: [ Bean, Collection, Factory, Catalog, Exception ]
+      modules: [ Bean, Collection, Factory, Catalog, Exception, Query ]
     schema:
       project: Core
       modules: [ Schema ]

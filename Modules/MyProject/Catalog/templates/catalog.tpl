@@ -1,19 +1,20 @@
 {% include 'header.tpl' %}
 {% set AbstractCatalog = classes.get('AbstractCatalog') %}
+{% set primaryKey = table.getPrimaryKey().getName().toCamelCase() %}
 
 {{ Catalog.printNamespace() }}
 
 {{ AbstractCatalog.printRequire() }}
-{{ classes.get(Bean).printRequire() }}
-{{ classes.get(Factory).printRequire() }}
-{{ classes.get(Collection).printRequire() }}
-{{ classes.get(Exception).printRequire() }}
+{{ Bean.printRequire() }}
+{{ Factory.printRequire() }}
+{{ Collection.printRequire() }}
+{{ Exception.printRequire() }}
 
 {{ AbstractCatalog.printUse() }}
-{{ classes.get(Bean).printUse() }}
-{{ classes.get(Factory).printUse() }}
-{{ classes.get(Collection).printUse() }}
-{{ classes.get(Exception).printUse() }}
+{{ Bean.printUse() }}
+{{ Factory.printUse() }}
+{{ Collection.printUse() }}
+{{ Exception.printUse() }}
 
 /**
  *
@@ -49,40 +50,107 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
 {% endif %}
 {% endfor %}
             );
-            $data = array_filter($data, array($this, 'notNull'));
+            $data = array_filter($data, array($this, 'isNotNull'));
             $this->getDb()->insert({{ Bean }}::TABLENAME, $data);
 {% if table.hasPrimaryKey() %}
             ${{ bean }}->{{ table.getPrimaryKey().setter() }}($this->getDb()->lastInsertId());
 {% endif %}
         }
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             throw new {{ Exception }}("The {{ Bean }} can't be saved \n" . $e->getMessage(), 500, $e);
         }
     }
 
     /**
-     * Actualiza el objeto en la base de datos
-     * @param Bean Un bean para actualizar
+     * Metodo para actualizar un {{ Bean }} en la base de datos
+     * @param {{ Bean }} ${{ bean }} Objeto {{ Bean }}
      */
-    public function update($object);
+    public function update(${{ bean }})
+    {
+        if( !(${{ bean }} instanceof {{ Bean }}) ){
+            throw new {{ Exception }}("passed parameter isn't a {{ Bean }} instance");
+        }
+        try
+        {
+            $data = array(
+{% for field in fields %}
+{% if field.isPrimaryKey() == false %}
+                '{{ field.getName() }}' => ${{ bean }}->{{ field.getter() }}(),
+{% endif %}
+{% endfor %}
+            );
+            $data = array_filter($data, array($this, 'isNotNull'));
+            $this->getDb()->update({{ Bean }}::TABLENAME, $data, "{{ table.getPrimaryKey() }} = '{${{ bean }}->{{ table.getPrimaryKey().getter() }}()}'");
+{% if table.hasPrimaryKey() %}
+            ${{ bean }}->{{ table.getPrimaryKey().setter() }}($this->getDb()->lastInsertId());
+{% endif %}
+{% if parent %}
+            parent::update(${{ bean }});
+{% endif %}
+        }
+        catch(\Exception $e)
+        {
+            throw new {{ Exception }}("The {{ Bean }} can't be saved \n" . $e->getMessage(), 500, $e);
+        }
+    }
 
     /**
-     * Elimina de la base de datos por medio de llave primaria
-     * @param int $idObject El id del bean que se eliminara
+     * Metodo para eliminar un {{ Bean }} a partir de su Id
+     * @param int ${{ primaryKey }}
      */
-    public function deleteById($idObject);
+    public function deleteById(${{ primaryKey }})
+    {
+        try
+        {
+            $where = array($this->db->quoteInto('{{ table.getPrimaryKey() }} = ?', ${{ primaryKey }}));
+            $this->db->delete({{ Bean }}::TABLENAME, $where);
+        }
+        catch(\Exception $e)
+        {
+            throw new {{ Exception }}("The {{ Bean }} can't be deleted\n" . $e->getMessage());
+        }
+    }
 
     /**
      *
-     * @return Collection
+     * @param {{ Query }} ${{ query }}
+     * @return {{ Collection }}
      */
-    public function getByQuery($query);
+    public function getByQuery(${{ query }})
+    {
+    	if( !(${{query}} instaceof {{ Query }}) ){
+    		throw new {{ Exception }}("No es un Query valido");
+    	}
+
+    	$this->db->setFetchMode(Zend_Db::FETCH_ASSOC);
+        try
+        {
+            ${{ collection }} = new {{ Collection }}();
+            foreach ($this->db->fetchAll(${{ query }}->createSql()) as $row){
+                ${{ collection }}->append({{ Factory }}::createFromArray($row)));
+            }
+        }
+        catch(\Exception $e)
+        {
+            throw new {{ Exception }}("Cant obtain {{ Collection }}\n" . $e->getMessage());
+        }
+        return ${{ collection }};
+
+    }
 
     /**
      *
-     * @return Bean
+     * @param ${{ query }} {{ Query }}
+     * @return {{ Bean }}
      */
-    public function getOneByQuery($query);
+    public function getOneByQuery(${{ query }})
+    {
+    	if( !(${{query}} instaceof {{ Query }}) ){
+    		throw new {{ Exception }}("No es un Query valido");
+    	}
+
+    	return $this->getByQuery(${{query}})->getOne();
+    }
 
  }
