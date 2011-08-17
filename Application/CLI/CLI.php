@@ -40,9 +40,9 @@ class CLI extends Application
      */
     private function loadCommands()
     {
-        $create = new Create();
         $this->addCommands(array(
-        	$create,
+        	new Create(),
+        	new Cache(),
         ));
     }
 }

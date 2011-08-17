@@ -102,6 +102,7 @@ final class Bender extends Singleton
 
 		$loader->registerPrefixes(array(
 		    'Twig_'  => APPLICATION_PATH.'/vendor/',
+			'Zend_'  => APPLICATION_PATH.'/vendor/',
 		));
 
 		$loader->register();

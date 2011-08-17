@@ -48,6 +48,12 @@ class DatabaseBuilder
 
 	/**
 	 *
+	 * @var \Zend_Cache_Frontend
+	 */
+	protected $cache;
+
+	/**
+	 *
 	 *
 	 * @param ConnectionHolder $connectionHolder
 	 * @param Schema $schema
@@ -58,6 +64,15 @@ class DatabaseBuilder
 		$this->connectionHolder = $connectionHolder;
 		$this->schema = $schema;
 		$this->eventDispatcher = $eventDispatcher;
+		$frontendOptions = array(
+		   'lifetime' => 7200*10,
+		   'automatic_serialization' => true
+		);
+
+		$backendOptions = array(
+		    'cache_dir' => './cache/'
+		);
+		$this->cache = \Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
 	}
 
 
@@ -67,6 +82,8 @@ class DatabaseBuilder
 	 */
 	public function build()
 	{
+		$this->database = $this->cache->load('database');
+
 		if( null == $this->database ){
 			$this->database = new Database();
 
@@ -77,6 +94,8 @@ class DatabaseBuilder
 			$this->eventDispatcher->dispatch(Event::DATABASE_BEFORE_CONFIGURE, new Event(array('database' => $this->database)));
 			$this->configure($this->database);
 			$this->eventDispatcher->dispatch(Event::DATABASE_AFTER_CONFIGURE, new Event(array('database' => $this->database)));
+
+			$this->cache->save($this->database, 'database');
 		}
 
 		return $this->database;
