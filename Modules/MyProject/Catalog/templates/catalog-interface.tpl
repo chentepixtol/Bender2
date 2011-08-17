@@ -50,4 +50,28 @@ interface {{ Catalog }}
      */
     public function getOneByQuery($query);
 
+    /**
+     *
+     * @return array
+     */
+    public function fetchAll($query);
+
+    /**
+     *
+     * @return array
+     */
+    public function fetchCol($query);
+
+    /**
+     *
+     * @return mixed
+     */
+    public function fetchOne($query);
+
+    /**
+     *
+     * @return mixed
+     */
+    public function fetchPairs($query);
+
 }

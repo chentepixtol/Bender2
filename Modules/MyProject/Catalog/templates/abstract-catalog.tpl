@@ -101,4 +101,60 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
         }
     }
 
+    /**
+     *
+     * @param  Query ${{ query }}
+     * @return {{ classes.get('Bean') }}
+     */
+    public function getOneByQuery($query)
+    {
+    	$this->validateQuery($query);
+    	return $this->getByQuery($query)->getOne();
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function fetchAll($query){
+    	$this->validateQuery($query);
+    	return $this->getDb()->fetchAll($query->createSql());
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function fetchCol($query){
+        $this->validateQuery($query);
+        return $this->getDb()->fetchCol($query->createSql());
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+    public function fetchOne($query){
+        $this->validateQuery($query);
+    	return $this->getDb()->fetchOne($query->createSql());
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+    public function fetchPairs($query){
+        $this->validateQuery($query);
+    	return $this->getDb()->fetchPairs($query->createSql());
+    }
+
+    /**
+     *
+     * Validate Query
+     * @param Query $query
+     * @throws Exception
+     */
+    abstract protected function validateQuery($query);
+
+
 }

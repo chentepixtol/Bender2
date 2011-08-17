@@ -1,7 +1,7 @@
 {% include 'header.tpl' %}
 {% set BaseQuery = classes.get('BaseQuery') %}
 
-{{ Query.printNamespace() }};
+{{ Query.printNamespace() }}
 
 {{ Catalog.printRequire() }}
 {{ Catalog.printUse() }}
@@ -25,7 +25,7 @@ class {{ Query }} extends{% if parentQuery %} {{ parentQuery}}{% else %} {{ Base
 	 */
 	protected function init(){
 		$this->setDefaultColumn("{{ Bean }}.*");
-		$this->from("{{ table.getObject().toUnderscore() }}", "{{ Bean }}");
+		$this->from("{{ table.getName() }}", "{{ Bean }}");
 {% set auxTable = table %}
 {% for i in 1..5 %}
 {% if auxTable.hasParent() %}
@@ -47,7 +47,7 @@ class {{ Query }} extends{% if parentQuery %} {{ parentQuery}}{% else %} {{ Base
 	 * (non-PHPdoc)
 	 * @see {{ classes.get('BaseQuery') }}::getCatalog()
 	 */
-	protected function getCatalog){
+	protected function getCatalog(){
 		return {{ Catalog }}::getInstance();
 	}
 

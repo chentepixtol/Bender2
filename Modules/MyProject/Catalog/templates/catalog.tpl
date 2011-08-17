@@ -21,6 +21,7 @@
  * {{ Catalog }}
  * @author chente
  * @method PersonCatalog getInstance
+ * @method {{ Bean }} getOneByQuery
  */
 class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ 'Catalog') }}{% else %}{{ AbstractCatalog }} {% endif %}
 {
@@ -119,16 +120,12 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
      */
     public function getByQuery(${{ query }})
     {
-    	if( !(${{query}} instaceof {{ Query }}) ){
-    		throw new {{ Exception }}("No es un Query valido");
-    	}
-
-    	$this->db->setFetchMode(Zend_Db::FETCH_ASSOC);
+    	$this->validateQuery($query);
         try
         {
             ${{ collection }} = new {{ Collection }}();
             foreach ($this->db->fetchAll(${{ query }}->createSql()) as $row){
-                ${{ collection }}->append({{ Factory }}::createFromArray($row)));
+                ${{ collection }}->append({{ Factory }}::createFromArray($row));
             }
         }
         catch(\Exception $e)
@@ -141,16 +138,15 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
 
     /**
      *
-     * @param ${{ query }} {{ Query }}
-     * @return {{ Bean }}
+     * Validate Query
+     * @param Query $query
+     * @throws RoundException
      */
-    public function getOneByQuery(${{ query }})
+    protected function validateQuery($query)
     {
-    	if( !(${{query}} instaceof {{ Query }}) ){
-    		throw new {{ Exception }}("No es un Query valido");
+    	if( !($query instanceof {{ Query }}) ){
+    		throw new RoundException("No es un Query valido");
     	}
-
-    	return $this->getByQuery(${{query}})->getOne();
     }
 
  }
