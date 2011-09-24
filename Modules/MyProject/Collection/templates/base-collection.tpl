@@ -228,7 +228,6 @@ abstract class {{ Collection }} extends \ArrayIterator
             	foreach($mapResult as $key => $value){
             		$array[$key] = $value;
             	}
-                $array
             }else{
             	$array[] = $mapResult;
             }
