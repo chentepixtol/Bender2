@@ -34,10 +34,12 @@ class Unit extends BaseModule
 	{
 		$classes = $this->getBender()->getClasses();
 		$classes->add('BaseTest', new PhpClass("Test/Unit/BaseTest.php"));
+		$classes->add('BaseCollectionTest', new PhpClass("Test/Unit/BaseCollectionTest.php"));
 
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
-			$object = $table->getObject().'Test';
-			$classes->add($object, new PhpClass("Test/Unit/{$object}.php"));
+			$object = $table->getObject();
+			$classes->add($object.'Test', new PhpClass("Test/Unit/{$object}Test.php"));
+			$classes->add($object.'FactoryTest', new PhpClass("Test/Unit/{$object}FactoryTest.php"));
 		});
 	}
 
@@ -52,14 +54,17 @@ class Unit extends BaseModule
 
 		$files = new FileCollection();
 		$files->append(new File($classes->get('BaseTest')->getRoute(), $this->getView()->fetch('base-test.tpl')));
+		$files->append(new File($classes->get('BaseCollectionTest')->getRoute(), $this->getView()->fetch('base-collection-test.tpl')));
 
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
 			$this->shortcuts($table);
-			$content = $this->getView()->fetch('bean.tpl');
 			$files->append(
-				new File($classes->get($table->getObject().'Test')->getRoute(), $content)
+				new File($classes->get($table->getObject().'Test')->getRoute(), $this->getView()->fetch('bean.tpl'))
+			);
+			$files->append(
+				new File($classes->get($table->getObject().'FactoryTest')->getRoute(), $this->getView()->fetch('factory.tpl'))
 			);
 		}
 

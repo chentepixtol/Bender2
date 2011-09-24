@@ -19,8 +19,9 @@ class {{ Factory }} implements {{ classes.get('Factory') }}
     public static function createFromArray($fields)
     {
     	${{ bean }} = new {{ Bean }}();
+
 {% for field in fields %}
-        ${{ bean }}->{{ field.setter }}($fields['{{ field }}']);
+        ${{ bean }}->{{ field.setter }}( isset($fields['{{ field }}']) ? $fields['{{ field }}'] : null);
 {% endfor %}
 
 		return ${{ bean }};

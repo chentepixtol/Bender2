@@ -148,16 +148,18 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function intersect({{ Collection }} ${{ collection }})
     {
-        ${{ collection }} = $this->makeCollection();
+       	$new{{ Collection }} = $this->makeCollection();
         ${{ collection }}->rewind();
-        while(${{ collection }}->valid())
+        while( ${{ collection }}->valid() )
         {
-            ${{ collectable }} = ${{ collection }}->read();
-            if( $this->containsIndex( ${{ collectable }}->getIndex() ) )
-                ${{ collection }}->append(${{ collectable }});
+            $object = ${{ collection }}->read();
+            if( $this->containsIndex( $object->getIndex() ) ){
+                $new{{ Collection }}->append($object);
+            }
         }
         ${{ collection }}->rewind();
-        return ${{ collection }};
+        $new{{ Collection }}->rewind();
+        return $new{{ Collection }};
     }
 
     /**
@@ -194,8 +196,8 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function each($fn)
     {
-    	if( !is_callable() ){
-    		throw new {{ Exception }}("Is not a callable function");
+    	if( !is_callable($fn) ){
+    		throw new \Exception("Is not a callable function");
     	}
 
     	$this->rewind();
@@ -214,8 +216,8 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function map($fn)
     {
-    	if( !is_callable() ){
-    		throw new {{ Exception }}("Is not a callable function");
+    	if( !is_callable($fn) ){
+    		throw new \Exception("Is not a callable function");
     	}
 
 		$array = array();
