@@ -45,14 +45,5 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
 		return Bender::getInstance();
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp()
-	{
-
-	}
-
 }
 
