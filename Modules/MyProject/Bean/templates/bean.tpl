@@ -59,4 +59,22 @@ class {{ Bean }}{% if parent %} extends {{ parent.getObject() }}{% else %} imple
 	}
 {% endfor %}
 
+	/**
+	 * Convert to array
+	 * @return array
+	 */
+	public function toArray()
+	{
+		$array = array(
+{% for field in fields %}
+			'{{ field.getName()}}' => $this->{{ field.getter }}(),
+{% endfor %}
+		);
+{%if parent %}
+		return array_merge(parent::toArray(), $array);
+{% else %}
+		return $array;
+{% endif %}
+	}
+
 }

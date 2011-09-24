@@ -25,12 +25,12 @@ class {{ Query }} extends{% if parentQuery %} {{ parentQuery}}{% else %} {{ Base
 	 */
 	protected function init(){
 		$this->setDefaultColumn("{{ Bean }}.*");
-		$this->from("{{ table.getName() }}", "{{ Bean }}");
+		$this->from({{ Bean }}::TABLENAME, "{{ Bean }}");
 {% set auxTable = table %}
 {% for i in 1..5 %}
 {% if auxTable.hasParent() %}
 {% set auxTable = auxTable.getParent() %}
-		$this->innerJoinUsing('{{ auxTable.getName() }}','{{ auxTable.getPrimaryKey() }}');
+		$this->innerJoin{{ auxTable.getObject().toUpperCamelCase() }}('{{ auxTable.getObject().toUpperCamelCase() }}');
 {% endif%}
 {% endfor %}
 	}
@@ -51,4 +51,21 @@ class {{ Query }} extends{% if parentQuery %} {{ parentQuery}}{% else %} {{ Base
 		return {{ Catalog }}::getInstance();
 	}
 
+{% for foreignKey in foreignKeys %}
+	/**
+	 * @return {{ Query }}
+	 */
+	public function innerJoin{{ foreignKey.getForeignTable().getObject() }}($alias = null)
+	{
+		if( null == $alias ){
+			$alias = {{ foreignKey.getForeignTable().getObject().toUpperCamelCase() }}::TABLENAME;
+		}
+
+		$this->innerJoinOn({{ foreignKey.getForeignTable().getObject().toUpperCamelCase() }}::TABLENAME, $alias)
+			->equalFields('{{ Bean }}.{{ foreignKey.getLocal() }}', "$alias.{{ foreignKey.getForeign() }}");
+
+		return $this;
+	}
+
+{% endfor %}
 }

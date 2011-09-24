@@ -194,6 +194,10 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function each($fn)
     {
+    	if( !is_callable() ){
+    		throw new {{ Exception }}("Is not a callable function");
+    	}
+
     	$this->rewind();
         while( $this->valid() )
         {
@@ -201,6 +205,37 @@ abstract class {{ Collection }} extends \ArrayIterator
             $fn(${{ collectable }});
         }
         $this->rewind();
+    }
+
+    /**
+     *
+     * @param \Closure $fn
+     * @return array
+     */
+    public function map($fn)
+    {
+    	if( !is_callable() ){
+    		throw new {{ Exception }}("Is not a callable function");
+    	}
+
+		$array = array();
+    	$this->rewind();
+        while( $this->valid() )
+        {
+            ${{ collectable }} = $this->read();
+            $mapResult = $fn(${{ collectable }});
+            if( is_array($mapResult) ){
+            	foreach($mapResult as $key => $value){
+            		$array[$key] = $value;
+            	}
+                $array
+            }else{
+            	$array[] = $mapResult;
+            }
+        }
+        $this->rewind();
+
+        return $array;
     }
 
     /**
@@ -222,6 +257,16 @@ abstract class {{ Collection }} extends \ArrayIterator
         $this->rewind();
         ${{ collection }}->rewind();
         return ${{ collection }};
+    }
+
+    /**
+     * convert to array
+     * @return array
+     */
+    public function toArray(){
+    	return $this->map(function({{ Collectable }} ${{ collectable }}){
+    		return array(${{ collectable }}->getIndex() => ${{ collectable }}->toArray());
+    	});
     }
 
 }

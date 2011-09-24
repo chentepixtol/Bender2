@@ -19,6 +19,7 @@ abstract class BaseModule extends AbstractModule
 		$this->getView()->table = $table;
 		$this->getView()->parent = $table->getParent();
 		$this->getView()->fields = $table->getColumns();
+		$this->getView()->foreignKeys = $table->getForeignKeys();
 
 		$variableName = $table->getObject()->toCamelCase();
 		$className = $table->getObject()->toUpperCamelCase();

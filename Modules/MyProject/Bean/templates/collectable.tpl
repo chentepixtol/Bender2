@@ -19,4 +19,10 @@ interface {{ Collectable }}
 	 */
 	public function getIndex();
 
+	/**
+	 * Convert to array
+	 * @return array
+	 */
+	public function toArray();
+
 }
