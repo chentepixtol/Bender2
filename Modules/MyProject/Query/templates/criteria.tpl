@@ -6,6 +6,8 @@
 	{% set parentCriteria = classes.get(parent.getObject()~'Criteria') %}
 {% else %}
 use Query\Criteria;
+use Query\Criterion;
+{{ Bean.printUse() }}
 {% endif %}
 
 /**
@@ -22,7 +24,7 @@ class {{ Criteria }} extends {% if parent %}{{ parentCriteria }}{% else %}Criter
 	public function fromArray($fields)
 	{
 {% for field in fields %}
-		if( isset($fields['{{ field }}']) ){
+		if( array_key_exists('{{ field }}', $fields) ){
 			$this->add{{ field.getName().toUpperCamelCase() }}($fields['{{ field }}']);
 		}
 {% endfor %}
@@ -50,7 +52,7 @@ class {{ Criteria }} extends {% if parent %}{{ parentCriteria }}{% else %}Criter
 	 */
 	public function add{{ field.getName().toUpperCamelCase() }}(${{ field.getName().toCamelCase() }}, $comparison = Criterion::AUTO, $mutatorColumn = null, $mutatorValue = null)
 	{
-		$this->set({{ Bean }}::{{ field.getName().toUpperCase() }}, ${{ field.getName().toCamelCase() }}, $comparison, $mutatorColumn, $mutatorValue);
+		$this->add({{ Bean }}::{{ field.getName().toUpperCase() }}, ${{ field.getName().toCamelCase() }}, $comparison, $mutatorColumn, $mutatorValue);
 		return $this;
 	}
 

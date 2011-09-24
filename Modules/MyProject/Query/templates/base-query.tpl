@@ -44,6 +44,16 @@ abstract class {{ BaseQuery }} extends Query
 
 	/**
 	 *
+	 * Filter the request
+	 * @return {{ BaseQuery }}
+	 */
+	public function filter($params){
+		$this->whereCriteria->filter($params);
+		return $this;
+	}
+
+	/**
+	 *
 	 * @return array
 	 */
 	public function fetchCol(){
