@@ -6,7 +6,7 @@ namespace {{ classes.get(Exception).getNamespace() }};
 {{ classes.get(parent.getObject()~'Exception').printRequire() }}
 {% endif %}
 
-class {{ Exception }} extends {% if parent %}{{ parent.getObject()~'Exception' }}{% else %}/Exception{% endif %}
+class {{ Exception }} extends {% if parent %}{{ parent.getObject()~'Exception' }}{% else %}\Exception{% endif %}
 {
 
 }

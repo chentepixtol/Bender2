@@ -7,13 +7,12 @@
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 require_once 'Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
-$includePath = explode(':', get_include_path());
-
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-	'Test' => 'Test',
 	'Application' => '.',
+	'Query' => 'QueryBuilder',
 ));
+$loader->registerNamespaceFallbacks(explode(':', get_include_path()));
 $loader->register();
 
 

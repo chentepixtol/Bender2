@@ -48,9 +48,9 @@ class PhpClass extends BaseClass
 	 *
 	 * @return string
 	 */
-	public function printRequire()
+	public function printRequire($force = false)
 	{
-		if( self::$addIncludes ){
+		if( self::$addIncludes || $force ){
 			return "require_once '{$this->getRoute()}';";
 		}
 	}

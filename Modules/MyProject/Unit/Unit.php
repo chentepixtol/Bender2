@@ -40,6 +40,7 @@ class Unit extends BaseModule
 			$object = $table->getObject();
 			$classes->add($object.'Test', new PhpClass("Test/Unit/{$object}Test.php"));
 			$classes->add($object.'FactoryTest', new PhpClass("Test/Unit/{$object}FactoryTest.php"));
+			$classes->add($object.'QueryTest', new PhpClass("Test/Unit/{$object}QueryTest.php"));
 		});
 	}
 
@@ -60,12 +61,11 @@ class Unit extends BaseModule
 		{
 			$table = $tables->read();
 			$this->shortcuts($table);
-			$files->append(
-				new File($classes->get($table->getObject().'Test')->getRoute(), $this->getView()->fetch('bean.tpl'))
-			);
-			$files->append(
-				new File($classes->get($table->getObject().'FactoryTest')->getRoute(), $this->getView()->fetch('factory.tpl'))
-			);
+			$files->appendFromArray(array(
+				new File($classes->get($table->getObject().'Test')->getRoute(), $this->getView()->fetch('bean.tpl')),
+				new File($classes->get($table->getObject().'FactoryTest')->getRoute(), $this->getView()->fetch('factory.tpl')),
+				new File($classes->get($table->getObject().'QueryTest')->getRoute(), $this->getView()->fetch('query.tpl')),
+			));
 		}
 
 		return $files;

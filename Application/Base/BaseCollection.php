@@ -43,6 +43,17 @@ abstract class BaseCollection extends \ArrayIterator
     }
 
     /**
+     *
+     * Append many
+     * @param array $objects
+     */
+    public function appendFromArray($objects){
+    	foreach ($objects as $object){
+    		$this->append($object);
+    	}
+    }
+
+    /**
      * Return current array entry
      * @return Collectable
      */

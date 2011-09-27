@@ -3,8 +3,20 @@
 
 {{ Query.printNamespace() }}
 
-{{ Catalog.printRequire() }}
 {{ Catalog.printUse() }}
+{{ Bean.printUse() }}
+
+{{ Catalog.printRequire() }}
+{{ Bean.printRequire() }}
+
+{% set auxTable = table %}
+{% for i in 1..5 %}
+{% if auxTable.hasParent() %}
+{% set auxTable = auxTable.getParent() %}
+{{ classes.get(auxTable.getObject).printUse() }}
+{{ classes.get(auxTable.getObject).printRequire() }}
+{% endif%}
+{% endfor %}
 
 {% if parent %}
 	{% set parentQuery = classes.get(parent.getObject()~'Query') %}

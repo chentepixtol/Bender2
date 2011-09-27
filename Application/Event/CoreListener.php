@@ -43,7 +43,7 @@ class CoreListener implements EventSubscriberInterface
 	 */
 	public function onLoadSettings(Event $event){
 		//TODO Cambiar esto al settings
-		BaseClass::addIncludes(true);
+		BaseClass::addIncludes(false);
 	}
 
 	/**
