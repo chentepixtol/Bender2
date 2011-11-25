@@ -10,7 +10,6 @@ require_once 'Symfony/Component/ClassLoader/UniversalClassLoader.php';
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
 	'Application' => '.',
-	'Query' => 'QueryBuilder',
 ));
 $loader->registerNamespaceFallbacks(explode(':', get_include_path()));
 $loader->register();
