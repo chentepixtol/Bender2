@@ -70,6 +70,7 @@ class Create extends Command
 			}
 		}
 		$generator->generate();
+		$output->writeln("Se han generado correctamente los modulos");
 	}
 
 }

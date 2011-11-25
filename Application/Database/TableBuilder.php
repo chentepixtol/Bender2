@@ -71,7 +71,7 @@ class TableBuilder
 		}
 
 		$uniques = array();
-		foreach ($doctrineTable->getIndexes() as $key => $index){
+		foreach ($doctrineTable->getIndexes() as $index){
 			if( $index->isUnique() ){
 				$columnsUnique = $index->getColumns();
 				$uniques[] = $columnsUnique[0];

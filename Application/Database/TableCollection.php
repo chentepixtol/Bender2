@@ -21,7 +21,7 @@ class TableCollection extends BaseCollection
 	 *
 	 * @var TableCollection
 	 */
-	protected $onlyInSchemaCollection;
+	protected $onlyInSchema;
 
 	/**
 	 * @var array
@@ -52,13 +52,13 @@ class TableCollection extends BaseCollection
 	 */
 	public function onlyInSchema()
 	{
-		if( null == $this->onlyInSchemaCollection ){
-			$this->onlyInSchemaCollection = $this->filter(function (Table $table){
+		if( null == $this->onlyInSchema ){
+			$this->onlyInSchema = $this->filter(function (Table $table){
 				return $table->inSchema();
 			});
 		}
-		$this->onlyInSchemaCollection->rewind();
-		return $this->onlyInSchemaCollection;
+		$this->onlyInSchema->rewind();
+		return $this->onlyInSchema;
 	}
 
 }

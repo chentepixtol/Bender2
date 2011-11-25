@@ -42,6 +42,7 @@ class Cache extends Command
 				@unlink($fileInfo->getPathname());
 			}
 		}
+		$output->writeln("Se ha borrado correctamente el cache");
 	}
 
 }

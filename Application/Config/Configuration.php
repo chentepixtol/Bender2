@@ -142,7 +142,7 @@ class Configuration
 	 */
 	public function countTotal(){
 		$count = 0;
-		foreach ($this->parameters as $index => $parameter){
+		foreach ($this->parameters as $parameter){
 			$inc = $parameter instanceof Configuration ? $parameter->countTotal() : 1;
 			$count += $inc;
 		}

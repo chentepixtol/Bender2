@@ -305,14 +305,11 @@ class String
     	$string = $toLower ? strtolower($this->string) : $this->string;
         $parts = explode($separator, $string);
         $newString = '';
-        $i = 0;
+        $count = 0;
         foreach ( $parts as $part )
         {
-            if ($i == 0 && ! $first)
-                $newString = $part;
-            else
-                $newString .= ucfirst($part);
-            $i ++;
+        	$newString .= ( $count == 0 && !$first ) ?  $part: ucfirst($part);
+            $count ++;
         }
 
         return $newString;

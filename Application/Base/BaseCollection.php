@@ -192,32 +192,32 @@ abstract class BaseCollection extends \ArrayIterator
 
     /**
      *
-     * @param \Closure $fn
+     * @param \Closure $closure
      */
-    public function each($fn)
+    public function each($closure)
     {
     	$this->rewind();
         while( $this->valid() )
         {
             $object = $this->read();
-            $fn($object);
+            $closure($object);
         }
         $this->rewind();
     }
 
     /**
      *
-     * @param \Closure $fn
+     * @param \Closure $closure
      * @return BaseCollection
      */
-    public function filter($fn)
+    public function filter($closure)
     {
     	$baseColletion = $this->makeColletion();
     	$this->rewind();
         while( $this->valid() )
         {
             $object = $this->read();
-            if( $fn($object) ){
+            if( $closure($object) ){
             	$baseColletion->append($object);
             }
         }

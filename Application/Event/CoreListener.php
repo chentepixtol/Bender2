@@ -52,8 +52,8 @@ class CoreListener implements EventSubscriberInterface
 	 * @param Event $event
 	 */
 	public function onSaveFile(Event $event){
-		static $i = 0; $i++;
-		$this->getOutput()->writeln(sprintf("<info>  {$i}. %s</info>" , $event->get('filename')));
+		static $countFiles = 0; $countFiles++;
+		$this->getOutput()->writeln(sprintf("<info>  {$countFiles}. %s</info>" , $event->get('filename')));
 	}
 
 	/**
