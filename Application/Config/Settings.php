@@ -26,13 +26,13 @@ class Settings
 	 *
 	 * construct
 	 * @param string $file
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct($file)
 	{
 		$this->filename = $file;
 		if( !file_exists($this->filename) ){
-			throw new \Exception("El archivo no existe ".$this->filename);
+			throw new \InvalidArgumentException("El archivo no existe ".$this->filename);
 		}
 		$this->load();
 	}

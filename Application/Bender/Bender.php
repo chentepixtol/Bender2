@@ -90,18 +90,20 @@ final class Bender extends Singleton
 	 */
 	public function registerAutoloader()
 	{
-		require_once APPLICATION_PATH.'/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+		require_once APPLICATION_PATH.'/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 		$loader = new UniversalClassLoader();
 		$loader->registerNamespaces(array(
-		    'Symfony'     => APPLICATION_PATH.'/vendor/',
-			'Doctrine'    => APPLICATION_PATH.'/vendor/',
-			'Application' => APPLICATION_PATH,
-			'Modules'     => APPLICATION_PATH,
+		    'Symfony'          => APPLICATION_PATH.'/vendor/symfony/symfony/src',
+			'Doctrine\\Common' => APPLICATION_PATH.'/vendor/doctrine/common/lib',
+			'Doctrine\\DBAL'   => APPLICATION_PATH.'/vendor/doctrine/dbal/lib',
+			'Application'      => APPLICATION_PATH,
+			'Tests'            => APPLICATION_PATH,
+			'Modules'          => APPLICATION_PATH,
 		));
 
 		$loader->registerPrefixes(array(
-		    'Twig_'  => APPLICATION_PATH.'/vendor/',
+		    'Twig_'  => APPLICATION_PATH.'/vendor/twig/twig/lib',
 			'Zend_'  => APPLICATION_PATH.'/vendor/',
 		));
 

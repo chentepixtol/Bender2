@@ -24,7 +24,7 @@ class Configuration
 	public function __construct($parameters = array())
 	{
 		if( !is_array($parameters) ){
-			throw new \Exception("Parametros no validos ");
+			throw new \InvalidArgumentException("Parametros no validos ");
 		}
 
 		foreach ($parameters as $parameter => $value) {

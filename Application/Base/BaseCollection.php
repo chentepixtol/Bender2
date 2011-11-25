@@ -27,7 +27,7 @@ abstract class BaseCollection extends \ArrayIterator
     protected function validate($object)
     {
 		if( !($object instanceof Collectable) ){
-			throw new \Exception("Debe de cumplir con la Interface Collectable");
+			throw new \InvalidArgumentException("Debe de cumplir con la Interface Collectable");
 		}
     }
 

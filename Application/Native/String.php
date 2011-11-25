@@ -78,7 +78,7 @@ class String
 	 * @param string $method
 	 * @param array $args
 	 * @return string
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 */
 	public function __call($method, $args)
 	{
@@ -89,7 +89,7 @@ class String
 
 		$internalMethod = lcfirst($this->mode).'To'.$method;
 		if( !method_exists($this, $internalMethod) ){
-			throw new \Exception("El metodo ". $internalMethod. " no existe");
+			throw new \InvalidArgumentException("El metodo ". $internalMethod. " no existe");
 		}
 
 		return $this->{$internalMethod}();
