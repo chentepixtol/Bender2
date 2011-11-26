@@ -4,6 +4,7 @@
 {% set Catalog = classes.get('Catalog') %}
 {% set Singleton = classes.get('Singleton') %}
 {% set DBAO = classes.get('DBAO') %}
+{% set BaseCollection = classes.get('Collection') %}
 
 {{ AbstractCatalog.printNamespace() }}
 
@@ -31,6 +32,36 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
      * The current transaction level
      */
     protected static $transLevel = 0;
+
+    /**
+     *
+     * Validate Query
+     * @param Query $query
+     * @throws Exception
+     */
+    abstract protected function validateQuery($query);
+
+    /**
+     *
+     * throwException
+     * @throws Exception
+     */
+    abstract protected function throwException($message, Exception $exception = null);
+
+    /**
+     *
+     * makeCollection
+     * @return BaseCollection
+     */
+    abstract protected function makeCollection();
+
+    /**
+     *
+     * makeBean
+     * @return Bean
+     */
+    abstract protected function makeBean($rs);
+
 
     /**
      *
@@ -103,6 +134,28 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
 
     /**
      *
+     * @param Query $query
+     * @return {{ BaseCollection }}
+     */
+    public function getByQuery($query)
+    {
+    	$this->validateQuery($query);
+        try
+        {
+            $collection = $this->makeCollection();
+            foreach ($this->db->fetchAll($query->createSql()) as $row){
+                $collection->append($this->makeBean($row));
+            }
+        }
+        catch(\Exception $e)
+        {
+            $this->throwException("Cant obtain Collection \n", $e);
+        }
+        return $collection;
+    }
+
+    /**
+     *
      * @param  Query ${{ query }}
      * @return {{ classes.get('Bean') }}
      */
@@ -147,14 +200,5 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
         $this->validateQuery($query);
     	return $this->getDb()->fetchPairs($query->createSql());
     }
-
-    /**
-     *
-     * Validate Query
-     * @param Query $query
-     * @throws Exception
-     */
-    abstract protected function validateQuery($query);
-
 
 }

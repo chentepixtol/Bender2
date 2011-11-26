@@ -21,6 +21,21 @@ interface {{ Catalog }}
     public static function getInstance();
 
     /**
+     * beginTransaction
+     */
+    public function beginTransaction();
+
+    /**
+     * commit
+     */
+    public function commit();
+
+    /**
+     * rollBack
+     */
+    public function rollBack();
+
+    /**
      * Guarda en la base de datos
      * @param {{ Bean }}  Un bean para guardar
      */

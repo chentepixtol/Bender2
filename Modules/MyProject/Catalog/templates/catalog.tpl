@@ -1,7 +1,6 @@
 {% include 'header.tpl' %}
 {% set AbstractCatalog = classes.get('AbstractCatalog') %}
 {% set primaryKey = table.getPrimaryKey().getName().toCamelCase() %}
-
 {{ Catalog.printNamespace() }}
 
 {{ AbstractCatalog.printRequire() }}
@@ -22,6 +21,7 @@
  * @author chente
  * @method PersonCatalog getInstance
  * @method {{ Bean }} getOneByQuery
+ * @method {{ Collection }} getByQuery
  */
 class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ 'Catalog') }}{% else %}{{ AbstractCatalog }} {% endif %}
 {
@@ -33,7 +33,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
     public function create(${{ bean }})
     {
         if( !(${{ bean }} instanceof {{ Bean }}) ){
-            throw new {{ Exception }}("passed parameter isn't a {{ Bean }} instance");
+            $this->throwException("passed parameter isn't a {{ Bean }} instance");
         }
 
         try
@@ -59,7 +59,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
         }
         catch(\Exception $e)
         {
-            throw new {{ Exception }}("The {{ Bean }} can't be saved \n" . $e->getMessage(), 500, $e);
+            $this->throwException("The {{ Bean }} can't be saved \n", $e);
         }
     }
 
@@ -70,7 +70,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
     public function update(${{ bean }})
     {
         if( !(${{ bean }} instanceof {{ Bean }}) ){
-            throw new {{ Exception }}("passed parameter isn't a {{ Bean }} instance");
+            $this->throwException("passed parameter isn't a {{ Bean }} instance");
         }
         try
         {
@@ -92,7 +92,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
         }
         catch(\Exception $e)
         {
-            throw new {{ Exception }}("The {{ Bean }} can't be saved \n" . $e->getMessage(), 500, $e);
+            $this->throwException("The {{ Bean }} can't be saved \n", $e);
         }
     }
 
@@ -109,44 +109,53 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
         }
         catch(\Exception $e)
         {
-            throw new {{ Exception }}("The {{ Bean }} can't be deleted\n" . $e->getMessage());
+            $this->throwException("The {{ Bean }} can't be deleted\n", $e);
         }
     }
 
     /**
      *
-     * @param {{ Query }} ${{ query }}
+     * makeCollection
      * @return {{ Collection }}
      */
-    public function getByQuery(${{ query }})
-    {
-    	$this->validateQuery($query);
-        try
-        {
-            ${{ collection }} = new {{ Collection }}();
-            foreach ($this->db->fetchAll(${{ query }}->createSql()) as $row){
-                ${{ collection }}->append({{ Factory }}::createFromArray($row));
-            }
-        }
-        catch(\Exception $e)
-        {
-            throw new {{ Exception }}("Cant obtain {{ Collection }}\n" . $e->getMessage());
-        }
-        return ${{ collection }};
+    protected function makeCollection(){
+        return new {{ Collection }}();
+    }
 
+    /**
+     *
+     * makeBean
+     * @return {{ Bean }}
+     */
+    protected function makeBean($rs){
+    	return {{ Factory }}::createFromArray($rs);
     }
 
     /**
      *
      * Validate Query
-     * @param Query $query
+     * @param {{ Query }} $query
      * @throws RoundException
      */
     protected function validateQuery($query)
     {
     	if( !($query instanceof {{ Query }}) ){
-    		throw new RoundException("No es un Query valido");
+    	    $this->throwException("No es un Query valido");
     	}
     }
+
+    /**
+     *
+     * throwException
+     * @throws Exception
+     */
+    protected function throwException($message, Exception $exception = null){
+    	if( null != $exception){
+    	    throw new {{ Exception }}("$message ". $exception->getMessage(), 500, $exception);
+    	}else{
+    	    throw new {{ Exception }}($message);
+    	}
+    }
+
 
  }
