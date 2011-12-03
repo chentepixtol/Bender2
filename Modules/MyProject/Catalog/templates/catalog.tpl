@@ -32,10 +32,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
      */
     public function create(${{ bean }})
     {
-        if( !(${{ bean }} instanceof {{ Bean }}) ){
-            $this->throwException("passed parameter isn't a {{ Bean }} instance");
-        }
-
+        $this->validateBean(${{ bean }});
         try
         {
 {% if parent %}
@@ -69,9 +66,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
      */
     public function update(${{ bean }})
     {
-        if( !(${{ bean }} instanceof {{ Bean }}) ){
-            $this->throwException("passed parameter isn't a {{ Bean }} instance");
-        }
+        $this->validateBean(${{ bean }});
         try
         {
             $data = array(
@@ -137,11 +132,23 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
      * @param {{ Query }} $query
      * @throws RoundException
      */
-    protected function validateQuery($query)
+    protected function validateQuery(Query $query)
     {
     	if( !($query instanceof {{ Query }}) ){
     	    $this->throwException("No es un Query valido");
     	}
+    }
+    
+    /**
+     *
+     * Validate {{ Bean }}
+     * @param {{ Bean }} ${{ bean }}
+     * @throws Exception
+     */
+    protected function validateBean({{ classes.get('Bean') }} ${{ bean }} = null){
+        if( !(${{ bean }} instanceof {{ Bean }}) ){
+            $this->throwException("passed parameter isn't a {{ Bean }} instance");
+        }
     }
 
     /**
@@ -156,6 +163,5 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
     	    throw new {{ Exception }}($message);
     	}
     }
-
 
  }

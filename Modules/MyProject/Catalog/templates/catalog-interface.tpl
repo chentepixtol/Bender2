@@ -2,8 +2,12 @@
 {% set Bean = classes.get('Bean') %}
 {% set Catalog = classes.get('Catalog') %}
 {% set Collection = classes.get('Collection') %}
+{% set Storage = classes.get('Storage') %}
+{% set storage = Storage.getName().toCamelCase() %}
 
 {{ Catalog.printNamespace() }}
+
+{{ Storage.printUse() }}
 
 /**
  *
@@ -54,39 +58,41 @@ interface {{ Catalog }}
     public function deleteById($idObject);
 
     /**
-     *
+     * getByQuery
+     * @param Query $query
+     * @param {{  Storage }} ${{  storage }}
      * @return {{ Collection }}
      */
-    public function getByQuery($query);
+    public function getByQuery(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
-     *
+     * @param Query $query
      * @return {{ Bean }}
      */
-    public function getOneByQuery($query);
+    public function getOneByQuery(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
      *
      * @return array
      */
-    public function fetchAll($query);
+    public function fetchAll(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
      *
      * @return array
      */
-    public function fetchCol($query);
+    public function fetchCol(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
      *
      * @return mixed
      */
-    public function fetchOne($query);
+    public function fetchOne(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
      *
      * @return mixed
      */
-    public function fetchPairs($query);
+    public function fetchPairs(Query $query, {{  Storage }} ${{  storage }} = null);
 
 }

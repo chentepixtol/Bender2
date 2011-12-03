@@ -26,6 +26,8 @@ class Catalog extends BaseModule
 		return 'Catalog';
 	}
 
+
+
 	/**
 	 * (non-PHPdoc)
 	 * @see Application\Generator\Module.AbstractModule::init()
@@ -33,10 +35,10 @@ class Catalog extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Catalog', new PhpClass('Application/Base/Catalog.php'))
-				->add('AbstractCatalog', new PhpClass('Application/Database/AbstractCatalog.php'))
-				->add('DBAO', new PhpClass('Application/Database/DBAO.php'))
-				->add('Singleton', new PhpClass('Application/Base/Singleton.php'));
+		foreach ($this->getLibraries() as $object => $data){
+			$classes->add($object, new PhpClass($data['route']));
+		}
+
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
 			$object = $table->getObject() .'Catalog';
 			$classes->add($object, new PhpClass("Application/Model/Catalog/{$object}.php"));
@@ -54,10 +56,9 @@ class Catalog extends BaseModule
 		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
 
 		$files = new FileCollection();
-		$files->append(new File($classes->get('Catalog')->getRoute(), $this->getView()->fetch('catalog-interface.tpl')));
-		$files->append(new File($classes->get('AbstractCatalog')->getRoute(), $this->getView()->fetch('abstract-catalog.tpl')));
-		$files->append(new File($classes->get('DBAO')->getRoute(), $this->getView()->fetch('dbao.tpl')));
-		$files->append(new File($classes->get('Singleton')->getRoute(), $this->getView()->fetch('singleton.tpl')));
+		foreach ($this->getLibraries() as $object => $data){
+			$files->append(new File($classes->get($object)->getRoute(), $this->getView()->fetch($data['template'])));
+		}
 
 		while ( $tables->valid() )
 		{
@@ -70,6 +71,37 @@ class Catalog extends BaseModule
 		}
 
 		return $files;
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	protected function getLibraries(){
+		return array(
+			'Catalog' => array(
+				'route' => 'Application/Base/Catalog.php',
+				'template' => 'catalog-interface.tpl',
+			),'Storage' => array(
+				'route' => 'Application/Cache/Storage.php',
+				'template' => 'storage-interface.tpl',
+			),'AbstractCatalog' => array(
+				'route' => 'Application/Database/AbstractCatalog.php',
+				'template' => 'abstract-catalog.tpl',
+			),'DBAO' => array(
+				'route' => 'Application/Database/DBAO.php',
+				'template' => 'dbao.tpl',
+			),'Singleton' => array(
+				'route' => 'Application/Base/Singleton.php',
+				'template' => 'singleton.tpl',
+			),'MemoryStorage' => array(
+				'route' => 'Application/Cache/Memory.php',
+				'template' => 'memory-storage.tpl',
+			),'NullStorage' => array(
+				'route' => 'Application/Cache/Null.php',
+				'template' => 'null-storage.tpl',
+			),
+		);
 	}
 
 }
