@@ -8,6 +8,7 @@
 {{ Catalog.printNamespace() }}
 
 {{ Storage.printUse() }}
+use Query\Query;
 
 /**
  *

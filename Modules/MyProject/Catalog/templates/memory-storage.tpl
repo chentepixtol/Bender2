@@ -1,8 +1,11 @@
 {% include 'header.tpl' %}
 {% set Storage = classes.get('Storage') %}
+{% set Singleton = classes.get('Singleton') %}
 {% set MemoryStorage = classes.get('MemoryStorage') %}
 
 {{ MemoryStorage.printNamespace() }}
+
+{{ Singleton.printUse() }}
 
 /**
  *
@@ -10,7 +13,7 @@
  * @author chente
  *
  */
-class {{ MemoryStorage }} implements {{ Storage }}
+class {{ MemoryStorage }} extends {{ Singleton }} implements {{ Storage }}
 {
 
     /**
@@ -24,7 +27,7 @@ class {{ MemoryStorage }} implements {{ Storage }}
      * @param string $key
      * @param mixed $object
      */
-    public function save(string $key, $object){
+    public function save($key, $object){
         self::$cache[$key] = $object;
     }
     
@@ -33,7 +36,7 @@ class {{ MemoryStorage }} implements {{ Storage }}
      * @param string $key
      * @return mixed
      */
-    public function load(string $key){
+    public function load($key){
         if( !$this->exists($key) ){
             return null;
         }
@@ -45,7 +48,7 @@ class {{ MemoryStorage }} implements {{ Storage }}
      * @param string
      * @return boolean
      */
-    public function exists(string $key){
+    public function exists($key){
         return array_key_exists($key, self::$cache);
     }
     

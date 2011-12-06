@@ -319,7 +319,7 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
 	/**
 	 *
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException InvalidArgumentException
 	 */
 	public function invalidCallbackForMap()
 	{
@@ -331,7 +331,7 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
 	/**
 	 *
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException InvalidArgumentException
 	 */
 	public function invalidCallbackForEach()
 	{
@@ -343,7 +343,7 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
 	/**
 	 *
 	 * @test
-	 * @expectedException Exception
+	 * @expectedException InvalidArgumentException
 	 */
 	public function validate()
 	{

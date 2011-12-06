@@ -40,6 +40,14 @@ class PhpClass extends BaseClass
 	 *
 	 * @return string
 	 */
+	public function printUseNamespace(){
+		return "use {$this->getNamespace()};";
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
 	public function printNamespace(){
 		return "namespace {$this->getNamespace()};";
 	}

@@ -36,7 +36,7 @@ abstract class {{ Collection }} extends \ArrayIterator
     protected function validate(${{ collectable }})
     {
 		if( !(${{ collectable }} instanceof {{ Collectable }}) ){
-			throw new \Exception("Debe de cumplir con la Interface {{ Collectable }}");
+			throw new \InvalidArgumentException("Debe de cumplir con la Interface {{ Collectable }}");
 		}
     }
 
@@ -197,7 +197,7 @@ abstract class {{ Collection }} extends \ArrayIterator
     public function each($fn)
     {
     	if( !is_callable($fn) ){
-    		throw new \Exception("Is not a callable function");
+    		throw new \InvalidArgumentException("Is not a callable function");
     	}
 
     	$this->rewind();
@@ -217,7 +217,7 @@ abstract class {{ Collection }} extends \ArrayIterator
     public function map($fn)
     {
     	if( !is_callable($fn) ){
-    		throw new \Exception("Is not a callable function");
+    		throw new \InvalidArgumentException("Is not a callable function");
     	}
 
 		$array = array();

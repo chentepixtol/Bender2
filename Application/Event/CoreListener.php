@@ -6,7 +6,6 @@ use Application\Generator\BaseClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Application\Bender\Bender;
 
-
 /**
  *
  * @author chente

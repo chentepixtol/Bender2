@@ -21,7 +21,9 @@
 
 {{ Singleton.printUse() }}
 {{ Catalog.printUse() }}
+{{ Bean.printUse() }}
 {{ Storage.printUse() }}
+use Query\Query;
 
 /**
  * Clase que representa un catalogo general
@@ -67,7 +69,7 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
      * throwException
      * @throws Exception
      */
-    abstract protected function throwException($message, Exception $exception = null);
+    abstract protected function throwException($message, \Exception $exception = null);
 
     /**
      *
@@ -278,7 +280,7 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
      */
     protected function getDefaultStorage(){
         if( null == self::$defaultStorage ){
-            self::$defaultStorage = new {{ NullStorage.getFullName() }}();   
+            self::$defaultStorage = new \{{ NullStorage.getFullName() }}();   
         }
         return self::$defaultStorage;
     }

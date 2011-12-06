@@ -92,6 +92,27 @@ class BaseClass
 	}
 
 	/**
+	 *
+	 * @return string
+	 */
+	public function getLastNamespace(){
+		$fullname = $this->getFullName();
+		$namespaces = explode($this->separatorNamespace, $fullname);
+		if( is_array($namespaces) && count($namespaces) >= 2 ){
+			$last = count($namespaces)-2;
+			return $namespaces[$last];
+		}
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getShortName(){
+		return $this->getLastNamespace() . $this->separatorNamespace . $this->getName();
+	}
+
+	/**
 	 * @return the $route
 	 */
 	public function getRoute() {

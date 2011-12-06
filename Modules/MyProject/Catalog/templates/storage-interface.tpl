@@ -17,20 +17,20 @@ interface {{ Storage }}
      * @param string $key
      * @param mixed $object
      */
-    public function save(string $key, $object);
+    public function save($key, $object);
     
     /**
      * Load
      * @param string $key
      * @return mixed
      */
-    public function load(string $key);
+    public function load($key);
     
     /**
      * Exists
      * @param string
      * @return boolean
      */
-    public function exists(string $key);
+    public function exists($key);
 
 }

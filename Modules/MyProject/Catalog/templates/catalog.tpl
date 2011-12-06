@@ -1,6 +1,7 @@
 {% include 'header.tpl' %}
 {% set AbstractCatalog = classes.get('AbstractCatalog') %}
 {% set primaryKey = table.getPrimaryKey().getName().toCamelCase() %}
+{% set BaseBean = classes.get('Bean') %}
 {{ Catalog.printNamespace() }}
 
 {{ AbstractCatalog.printRequire() }}
@@ -14,6 +15,9 @@
 {{ Factory.printUse() }}
 {{ Collection.printUse() }}
 {{ Exception.printUse() }}
+{{ BaseBean.printUse() }}
+{{ Query.printUse() }}
+use Query\Query;
 
 /**
  *
@@ -145,7 +149,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
      * @param {{ Bean }} ${{ bean }}
      * @throws Exception
      */
-    protected function validateBean({{ classes.get('Bean') }} ${{ bean }} = null){
+    protected function validateBean({{ BaseBean }} ${{ bean }} = null){
         if( !(${{ bean }} instanceof {{ Bean }}) ){
             $this->throwException("passed parameter isn't a {{ Bean }} instance");
         }
@@ -156,7 +160,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
      * throwException
      * @throws Exception
      */
-    protected function throwException($message, Exception $exception = null){
+    protected function throwException($message, \Exception $exception = null){
     	if( null != $exception){
     	    throw new {{ Exception }}("$message ". $exception->getMessage(), 500, $exception);
     	}else{
