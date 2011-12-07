@@ -57,6 +57,8 @@ class Unit extends BaseModule
 		$files = new FileCollection();
 		$files->append(new File($classes->get('BaseTest')->getRoute(), $this->getView()->fetch('base-test.tpl')));
 		$files->append(new File($classes->get('BaseCollectionTest')->getRoute(), $this->getView()->fetch('base-collection-test.tpl')));
+		$files->append(new File('Test/bootstrap.php', $this->getView()->fetch('bootstrap.tpl')));
+		$files->append(new File('phpunit.xml', $this->getView()->fetch('phpunit.tpl')));
 
 		while ( $tables->valid() )
 		{

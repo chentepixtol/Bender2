@@ -83,7 +83,7 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
      * makeBean
      * @return Bean
      */
-    abstract protected function makeBean($rs);
+    abstract protected function makeBean($resultset);
 
 
     /**
@@ -250,16 +250,16 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
         {
             $sql = $query->createSql();
             if( ${{ storage }}->exists($sql) ){
-                $rs = ${{ storage }}->load($sql);
+                $resultset = ${{ storage }}->load($sql);
             }else{   
-                $rs = call_user_func_array(array($this->getDb(), $method), array($sql));
-                ${{ storage }}->save($sql, $rs);
+                $resultset = call_user_func_array(array($this->getDb(), $method), array($sql));
+                ${{ storage }}->save($sql, $resultset);
             }
         }catch(\Exception $e){
             $this->throwException("Cant execute query \n", $e);
         }
         
-        return $rs;
+        return $resultset;
     }
     
     /**

@@ -21,7 +21,7 @@ class {{ Factory }} implements {{ classes.get('Factory') }}
     	${{ bean }} = new {{ Bean }}();
 
 {% for field in fields %}
-        ${{ bean }}->{{ field.setter }}( isset($fields['{{ field }}']) ? $fields['{{ field }}'] : null);
+        ${{ bean }}->{{ field.setter }}($fields['{{ field }}']);
 {% endfor %}
 
 		return ${{ bean }};

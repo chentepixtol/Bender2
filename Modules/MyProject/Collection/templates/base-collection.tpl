@@ -192,11 +192,11 @@ abstract class {{ Collection }} extends \ArrayIterator
 
     /**
      *
-     * @param \Closure $fn
+     * @param \Closure $closure
      */
-    public function each($fn)
+    public function each($closure)
     {
-    	if( !is_callable($fn) ){
+    	if( !is_callable($closure) ){
     		throw new \InvalidArgumentException("Is not a callable function");
     	}
 
@@ -204,19 +204,19 @@ abstract class {{ Collection }} extends \ArrayIterator
         while( $this->valid() )
         {
             ${{ collectable }} = $this->read();
-            $fn(${{ collectable }});
+            $closure(${{ collectable }});
         }
         $this->rewind();
     }
 
     /**
      *
-     * @param \Closure $fn
+     * @param \Closure $closure
      * @return array
      */
-    public function map($fn)
+    public function map($closure)
     {
-    	if( !is_callable($fn) ){
+    	if( !is_callable($closure) ){
     		throw new \InvalidArgumentException("Is not a callable function");
     	}
 
@@ -225,7 +225,7 @@ abstract class {{ Collection }} extends \ArrayIterator
         while( $this->valid() )
         {
             ${{ collectable }} = $this->read();
-            $mapResult = $fn(${{ collectable }});
+            $mapResult = $closure(${{ collectable }});
             if( is_array($mapResult) ){
             	foreach($mapResult as $key => $value){
             		$array[$key] = $value;
@@ -241,17 +241,17 @@ abstract class {{ Collection }} extends \ArrayIterator
 
     /**
      *
-     * @param \Closure $fn
+     * @param \Closure $closure
      * @return {{ Collection }}
      */
-    public function filter($fn)
+    public function filter($closure)
     {
     	${{ collection }} = $this->makeCollection();
     	$this->rewind();
         while( $this->valid() )
         {
             ${{ collectable }} = $this->read();
-            if( $fn(${{ collectable }}) ){
+            if( $closure(${{ collectable }}) ){
             	${{ collection }}->append(${{ collectable }});
             }
         }

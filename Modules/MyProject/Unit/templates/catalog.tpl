@@ -15,8 +15,6 @@ class {{ Catalog }}Test extends {{ BaseTest }}
 	public function singleton()
 	{
 		$this->assertTrue({{ Catalog }}::getInstance() instanceOf {{ Catalog }});
-		{{ Catalog.printUseNamespace() }}
-		{{ Catalog.getShortName() }}
 	}
 
 }

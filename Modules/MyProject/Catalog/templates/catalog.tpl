@@ -124,10 +124,11 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
     /**
      *
      * makeBean
+     * @param array $resultset
      * @return {{ Bean }}
      */
-    protected function makeBean($rs){
-    	return {{ Factory }}::createFromArray($rs);
+    protected function makeBean($resultset){
+    	return {{ Factory }}::createFromArray($resultset);
     }
 
     /**
