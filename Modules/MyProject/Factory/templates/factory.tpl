@@ -1,11 +1,10 @@
 {% include 'header.tpl' %}
-
-{{ classes.get(Factory).printNamespace() }}
+{{ Factory.printNamespace() }}
 
 {{ classes.get(Bean).printRequire() }}
 {{ classes.get('Factory').printRequire() }}
 {{ classes.get(Bean).printUse() }}
-{{ classes.get('Factory').printUse() }}
+{% if classes.get('Factory').getNamespace() != Factory.getNamespace() %}{{ classes.get('Factory').printUse() }}{% endif %}
 
 class {{ Factory }} implements {{ classes.get('Factory') }}
 {
@@ -18,13 +17,13 @@ class {{ Factory }} implements {{ classes.get('Factory') }}
      */
     public static function createFromArray($fields)
     {
-    	${{ bean }} = new {{ Bean }}();
+        ${{ bean }} = new {{ Bean }}();
 
 {% for field in fields %}
         ${{ bean }}->{{ field.setter }}($fields['{{ field }}']);
 {% endfor %}
 
-		return ${{ bean }};
+        return ${{ bean }};
     }
 
 }

@@ -32,7 +32,7 @@ class Collection extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Collection', new PhpClass("Application/Base/Collection.php"));
+		$classes->add('Collection', new PhpClass("Application/Model/Collection/Collection.php"));
 
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
 			$object = $table->getObject() .'Collection';

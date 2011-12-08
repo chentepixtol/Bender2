@@ -35,7 +35,7 @@ class Factory extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Factory', new PhpClass("Application/Base/Factory.php"));
+		$classes->add('Factory', new PhpClass("Application/Model/Factory/Factory.php"));
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
 			$object = $table->getObject().'Factory';
 			$classes->add($object, new PhpClass("Application/Model/Factory/{$object}.php"));

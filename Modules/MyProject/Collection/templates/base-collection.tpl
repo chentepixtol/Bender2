@@ -8,6 +8,7 @@
 {{ Collection.printNamespace() }}
 
 {{ Collectable.printRequire() }}
+{{ Collectable.printUse() }}
 
 
 /**

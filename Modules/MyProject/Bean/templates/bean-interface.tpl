@@ -1,18 +1,19 @@
 {% include 'header.tpl' %}
-
-{{ classes.get('Bean').printNamespace() }}
-
-{{ classes.get('Collectable').printUse() }}
-
-{{ classes.get('Collectable').printRequire() }}
+{% set Bean = classes.get('Bean') %}
+{% set Collectable = classes.get('Collectable') %}
+{{ Bean.printNamespace() }}
+{% if Bean.getNamespace() != Collectable.getNamespace() %}
+{{ Collectable.printUse() }}
+{% endif %}
+{{ Collectable.printRequire() }}
 
 /**
  *
- * {{ classes.get('Bean') }}
+ * {{ Bean }}
  * @author chente
  *
  */
-interface {{ classes.get('Bean') }} extends {{ classes.get('Collectable') }}
+interface {{ Bean }} extends {{ Collectable }}
 {
 
 }

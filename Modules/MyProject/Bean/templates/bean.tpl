@@ -1,16 +1,12 @@
 {% include 'header.tpl' %}
+{% set BaseBean = classes.get('Bean') %}
+namespace {{ Bean.getNamespace() }};
 
-namespace {{ classes.get(Bean).getNamespace() }};
-
-{% if parent %}
-{{ classes.get(parent.getObject()).printRequire() }}
-{% else %}
-{{ classes.get('Bean').printRequire() }}
-
-{{ classes.get('Bean').printUse() }}
+{% if parent %}{{ classes.get(parent.getObject()).printRequire() }}{% else %}
+{{ BaseBean.printRequire() }}
+{% if BaseBean.getNamespace() != Bean.getNamespace() %}{{ BaseBean.printUse() }}{% endif %}
 {% endif %}
-
-class {{ Bean }}{% if parent %} extends {{ parent.getObject() }}{% else %} implements {{ classes.get('Bean') }}{% endif %}
+class {{ Bean }}{% if parent %} extends {{ parent.getObject() }}{% else %} implements {{ BaseBean }}{% endif %}
 {
 
     /**
@@ -32,49 +28,49 @@ class {{ Bean }}{% if parent %} extends {{ parent.getObject() }}{% else %} imple
     private ${{ field.getName().toCamelCase() }};
 {% endfor %}
 
-	/**
-	 *
-	 * @return int
-	 */
-	public function getIndex(){
-		return $this->{{ table.getPrimaryKey().getter }}();
-	}
+    /**
+     *
+     * @return int
+     */
+    public function getIndex(){
+        return $this->{{ table.getPrimaryKey().getter }}();
+    }
 
 {% for field in fields %}
 
     /**
      * @return {{ field.cast('php') }}
      */
-	public function {{ field.getter }}(){
-		return $this->{{ field.getName().toCamelCase() }};
-	}
+    public function {{ field.getter }}(){
+        return $this->{{ field.getName().toCamelCase() }};
+    }
 
     /**
      * @param {{ field.cast('php') }} ${{ field.getName().toCamelCase()}}
      * @return {{ Bean }}
      */
-	public function {{ field.setter }}(${{ field.getName().toCamelCase()}}){
-		$this->{{ field.getName().toCamelCase() }} = ${{ field.getName().toCamelCase()}};
-		return $this;
-	}
+    public function {{ field.setter }}(${{ field.getName().toCamelCase()}}){
+        $this->{{ field.getName().toCamelCase() }} = ${{ field.getName().toCamelCase()}};
+        return $this;
+    }
 {% endfor %}
 
-	/**
-	 * Convert to array
-	 * @return array
-	 */
-	public function toArray()
-	{
-		$array = array(
+    /**
+     * Convert to array
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = array(
 {% for field in fields %}
-			'{{ field.getName()}}' => $this->{{ field.getter }}(),
+            '{{ field.getName()}}' => $this->{{ field.getter }}(),
 {% endfor %}
-		);
+        );
 {%if parent %}
-		return array_merge(parent::toArray(), $array);
+        return array_merge(parent::toArray(), $array);
 {% else %}
-		return $array;
+        return $array;
 {% endif %}
-	}
+    }
 
 }

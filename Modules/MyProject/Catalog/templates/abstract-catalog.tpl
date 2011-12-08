@@ -1,5 +1,4 @@
 {% include 'header.tpl' %}
-
 {% set AbstractCatalog = classes.get('AbstractCatalog') %}
 {% set Catalog = classes.get('Catalog') %}
 {% set Singleton = classes.get('Singleton') %}
@@ -20,7 +19,7 @@
 {{ NullStorage.printRequire() }}
 
 {{ Singleton.printUse() }}
-{{ Catalog.printUse() }}
+{% if AbstractCatalog.getNamespace() != Catalog.getNamespace() %}{{ Catalog.printUse() }}{% endif %}
 {{ Bean.printUse() }}
 {{ Storage.printUse() }}
 use Query\Query;

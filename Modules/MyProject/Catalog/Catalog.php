@@ -80,13 +80,13 @@ class Catalog extends BaseModule
 	protected function getLibraries(){
 		return array(
 			'Catalog' => array(
-				'route' => 'Application/Base/Catalog.php',
+				'route' => 'Application/Model/Catalog/Catalog.php',
 				'template' => 'catalog-interface.tpl',
 			),'Storage' => array(
 				'route' => 'Application/Cache/Storage.php',
 				'template' => 'storage-interface.tpl',
 			),'AbstractCatalog' => array(
-				'route' => 'Application/Database/AbstractCatalog.php',
+				'route' => 'Application/Model/Catalog/AbstractCatalog.php',
 				'template' => 'abstract-catalog.tpl',
 			),'DBAO' => array(
 				'route' => 'Application/Database/DBAO.php',
