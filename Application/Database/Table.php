@@ -222,6 +222,21 @@ class Table implements Collectable
 	}
 
 	/**
+	 * All columns include parents
+	 * @return Application\Database\ColumnCollection
+	 */
+	public function getFullColumns()
+	{
+		$columns = new ColumnCollection();
+		$columns->merge($this->getColumns());
+		if( $this->hasParent() ){
+			$columns->merge($this->getParent()->getFullColumns());
+		}
+		$columns->rewind();
+		return $columns;
+	}
+
+	/**
 	 * @return Application\Database\ForeignKeyCollection
 	 */
 	public function getForeignKeys() {

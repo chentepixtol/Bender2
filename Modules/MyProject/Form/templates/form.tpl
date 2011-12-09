@@ -56,7 +56,14 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
     public function {{ field.getter }}Element()
     {
         if( null == $this->{{ field.getName().toCamelCase() }} ){
+{% if field.isPrimaryKey %}
+            $this->{{ field.getName().toCamelCase() }} = new \Zend_Form_Element_Hidden('{{ field.getName().toUnderscore() }}');
+{% elseif field.isBoolean %}
+            $this->{{ field.getName().toCamelCase() }} = new \Zend_Form_Element_Checkbox('{{ field.getName().toUnderscore() }}');
+{% else %}
             $this->{{ field.getName().toCamelCase() }} = new \Zend_Form_Element_Text('{{ field.getName().toUnderscore() }}');
+{% endif %}
+            $this->{{ field.getName().toCamelCase() }}->setLabel('{{ field.getName().toUpperCamelCase() }}');
             $this->{{ field.getName().toCamelCase() }}->addValidator(
                 $this->validator->{{ field.getter }}Validator()
             );

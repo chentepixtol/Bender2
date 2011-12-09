@@ -1,10 +1,7 @@
 <?php
 namespace Modules\MyProject\Factory;
 
-use Application\Database\ColumnCollection;
-
 use Application\Generator\PhpClass;
-
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
@@ -55,22 +52,14 @@ class Factory extends BaseModule
 		$files->append(new File($classes->get('Factory')->getRoute(), $this->getView()->fetch('factory-interface.tpl')));
 		while ( $tables->valid() )
 		{
-			$fields = new ColumnCollection();
-
 			$table = $tables->read();
 			$route = $classes->get($table->getObject().'Factory')->getRoute();
+
 			$this->shortcuts($table);
+		  	$this->getView()->fields = $table->getFullColumns();
 
-			$fields->merge($table->getColumns());
-		  	while ( $table->hasParent() ){
-		  		$table = $table->getParent();
-		  		$fields->merge($table->getColumns());
-		  	}
-
-		  	$this->getView()->fields = $fields;
-			$content = $this->getView()->fetch('factory.tpl');
 			$files->append(
-				new File($route, $content)
+				new File($route, $this->getView()->fetch('factory.tpl'))
 			);
 		}
 
