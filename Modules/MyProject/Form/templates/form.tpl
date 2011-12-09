@@ -3,6 +3,7 @@
 {{ Form.printNamespace() }}
 
 {{ Validator.printUse() }}
+{{ Filter.printUse() }}
 
 /**
  *
@@ -17,6 +18,11 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
      * @var {{ Validator }} $validator
      */
     protected $validator;
+    
+    /**
+     * @var {{ Filter }} $filter
+     */
+    protected $filter;
 {% for field in fields %}
 
     /**
@@ -34,9 +40,10 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
     {
         parent::init();
         $this->validator = new {{ Validator }}();
+        $this->filter = new {{ Filter }}();
         
 {% for field in fields %}
-        $this->addElement({{ field.getter }}Element());
+        $this->addElement($this->{{ field.getter }}Element());
 {% endfor %}
     }
         
@@ -52,6 +59,9 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
             $this->{{ field.getName().toCamelCase() }} = new \Zend_Form_Element_Text('{{ field.getName().toUnderscore() }}');
             $this->{{ field.getName().toCamelCase() }}->addValidator(
                 $this->validator->{{ field.getter }}Validator()
+            );
+            $this->{{ field.getName().toCamelCase() }}->addFilter(
+                $this->filter->{{ field.getter }}Filter()
             );
         }
     

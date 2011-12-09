@@ -10,6 +10,46 @@
  */
 class {{ Filter }} extends {% if parent %}{{ classes.get(parent.getObject()~'Filter') }}{% else %}{{ BaseFilter }}{% endif %}  
 {
+{% for field in fields %}
 
+    /**
+     *
+     * @var Zend_Filter
+     */
+    private ${{ field.getName().toCamelCase() }};
+{% endfor %}       
+{% for field in fields %}
+
+    /**
+     *
+     * @return Zend_Filter
+     */
+    public function {{ field.getter }}Filter()
+    {
+        if( null == $this->{{ field.getName().toCamelCase() }} ){
+            $this->{{ field.getName().toCamelCase() }} = new \Zend_Filter();
+        }
+    
+        return $this->{{ field.getName().toCamelCase() }};
+    }
+{% endfor %}
+
+    /**
+     * Convert to array
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = array(
+{% for field in fields %}
+            '{{ field.getName()}}' => $this->{{ field.getter }}Filter(),
+{% endfor %}
+        );
+{%if parent %}
+        return array_merge(parent::toArray(), $array);
+{% else %}
+        return $array;
+{% endif %}
+    }
     
 }

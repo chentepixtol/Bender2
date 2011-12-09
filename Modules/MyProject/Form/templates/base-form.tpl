@@ -15,6 +15,7 @@ class {{ BaseForm }} extends \Zend_Form
      * init
      */
     public function init(){
+        $this->setView(new \Zend_View());
     }
     
 }
