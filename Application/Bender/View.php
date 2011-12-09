@@ -64,6 +64,15 @@ class View
 	 * @param mixed $value
 	 */
 	public function __set($param, $value){
+		$this->assign($param, $value);
+	}
+
+	/**
+	 *
+	 * @param string $param
+	 * @param mixed $value
+	 */
+	public function assign($param, $value){
 		$this->locals[$param] = $value;
 	}
 
