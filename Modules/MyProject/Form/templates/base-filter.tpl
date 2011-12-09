@@ -8,7 +8,7 @@
  * @author chente
  *
  */
-class {{ BaseFilter }} extends \Zend_Filter
+class {{ BaseFilter }}
 {
    
 }
