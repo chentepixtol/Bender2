@@ -1,7 +1,4 @@
 <?php
-
-
-
 namespace Application\Bender;
 
 use Symfony\Component\Config\FileLocator;
@@ -9,7 +6,6 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Application\Bender\View;
 use Application\Base\Singleton;
 use Application\Config\Configuration;
@@ -26,10 +22,7 @@ use Application\Event\Event;
 use Application\Event\CoreListener;
 use Application\Event\Dispatcher;
 
-
 require_once 'Application/Base/Singleton.php';
-
-defined('APPLICATION_PATH') or die("No se ha definido la constante APPLICATION_PATH");
 
 /**
  *
@@ -78,36 +71,8 @@ final class Bender extends Singleton
 	public function loadContainer($services)
 	{
 		$this->container = new ContainerBuilder();
-		$loader = new XmlFileLoader($this->container, new FileLocator(APPLICATION_PATH));
+		$loader = new XmlFileLoader($this->container, new FileLocator(realpath('.')));
 		$loader->load($services);
-
-		return $this;
-	}
-
-	/**
-	 *
-	 * @return Application\Bender\Bender
-	 */
-	public function registerAutoloader()
-	{
-		require_once APPLICATION_PATH.'/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-
-		$loader = new UniversalClassLoader();
-		$loader->registerNamespaces(array(
-		    'Symfony'          => APPLICATION_PATH.'/vendor/symfony/symfony/src',
-			'Doctrine\\Common' => APPLICATION_PATH.'/vendor/doctrine/common/lib',
-			'Doctrine\\DBAL'   => APPLICATION_PATH.'/vendor/doctrine/dbal/lib',
-			'Application'      => APPLICATION_PATH,
-			'Tests'            => APPLICATION_PATH,
-			'Modules'          => APPLICATION_PATH,
-		));
-
-		$loader->registerPrefixes(array(
-		    'Twig_'  => APPLICATION_PATH.'/vendor/twig/twig/lib',
-			'Zend_'  => APPLICATION_PATH.'/vendor/',
-		));
-
-		$loader->register();
 
 		return $this;
 	}

@@ -73,7 +73,7 @@ class Generator
 				$file = $files->read();
 
 				$filename = $this->getBender()->getConfiguration()->get('project', 'default') .'/'. $file->getFullpath();
-				$fullpath = APPLICATION_PATH .'/'. $this->getBender()->getSettings()->getOutputDir() .'/' . $filename;
+				$fullpath =  $this->getBender()->getSettings()->getOutputDir() .'/' . $filename;
 
 				$this->writer->save($fullpath, $file->getContent());
 				$this->getBender()->getEventDispatcher()->dispatch(Event::SAVE_FILE, new Event(array(
