@@ -5,6 +5,8 @@
 {{ Validator.printUse() }}
 {{ Filter.printUse() }}
 
+use Zend\Form\Element;
+
 /**
  *
  * {{ Form }}
@@ -27,7 +29,7 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
 
     /**
      *
-     * @var Zend_Form_Element
+     * @var Zend\Form\Element
      */
     private ${{ field.getName().toCamelCase() }};
 {% endfor %}
@@ -51,17 +53,17 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
 
     /**
      *
-     * @return Zend_Form_Element
+     * @return Zend\Form\Element
      */
     public function {{ field.getter }}Element()
     {
         if( null == $this->{{ field.getName().toCamelCase() }} ){
 {% if field.isPrimaryKey %}
-            $this->{{ field.getName().toCamelCase() }} = new \Zend_Form_Element_Hidden('{{ field.getName().toUnderscore() }}');
+            $this->{{ field.getName().toCamelCase() }} = new Element\Hidden('{{ field.getName().toUnderscore() }}');
 {% elseif field.isBoolean %}
-            $this->{{ field.getName().toCamelCase() }} = new \Zend_Form_Element_Checkbox('{{ field.getName().toUnderscore() }}');
+            $this->{{ field.getName().toCamelCase() }} = new Element\Checkbox('{{ field.getName().toUnderscore() }}');
 {% else %}
-            $this->{{ field.getName().toCamelCase() }} = new \Zend_Form_Element_Text('{{ field.getName().toUnderscore() }}');
+            $this->{{ field.getName().toCamelCase() }} = new Element\Text('{{ field.getName().toUnderscore() }}');
 {% endif %}
             $this->{{ field.getName().toCamelCase() }}->setLabel('{{ field.getName().toUpperCamelCase() }}');
             $this->{{ field.getName().toCamelCase() }}->addValidator(

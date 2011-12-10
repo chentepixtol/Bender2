@@ -2,6 +2,8 @@
 {% set BaseValidator = classes.get('BaseValidator') %}
 {{ Validator.printNamespace() }}
 
+use Zend\Validator\ValidatorChain;
+
 /**
  *
  * {{ Validator }}
@@ -14,7 +16,7 @@ class {{ Validator }} extends {% if parent %}{{ classes.get(parent.getObject()~'
 
     /**
      *
-     * @var Zend_Validate
+     * @var Zend\Validator\ValidatorChain
      */
     private ${{ field.getName().toCamelCase() }};
 {% endfor %}       
@@ -22,12 +24,12 @@ class {{ Validator }} extends {% if parent %}{{ classes.get(parent.getObject()~'
 
     /**
      *
-     * @return Zend_Validate
+     * @return Zend\Validator\ValidatorChain
      */
     public function {{ field.getter }}Validator()
     {
         if( null == $this->{{ field.getName().toCamelCase() }} ){
-            $this->{{ field.getName().toCamelCase() }} = new \Zend_Validate();
+            $this->{{ field.getName().toCamelCase() }} = new ValidatorChain();
         }
     
         return $this->{{ field.getName().toCamelCase() }};

@@ -2,6 +2,8 @@
 {% set BaseFilter = classes.get('BaseFilter') %}
 {{ Filter.printNamespace() }}
 
+use Zend\Filter\FilterChain;
+
 /**
  *
  * {{ Filter }}
@@ -14,7 +16,7 @@ class {{ Filter }} extends {% if parent %}{{ classes.get(parent.getObject()~'Fil
 
     /**
      *
-     * @var Zend_Filter
+     * @var Zend\Filter\FilterChain
      */
     private ${{ field.getName().toCamelCase() }};
 {% endfor %}       
@@ -22,12 +24,12 @@ class {{ Filter }} extends {% if parent %}{{ classes.get(parent.getObject()~'Fil
 
     /**
      *
-     * @return Zend_Filter
+     * @return Zend\Filter\FilterChain
      */
     public function {{ field.getter }}Filter()
     {
         if( null == $this->{{ field.getName().toCamelCase() }} ){
-            $this->{{ field.getName().toCamelCase() }} = new \Zend_Filter();
+            $this->{{ field.getName().toCamelCase() }} = new FilterChain();
         }
     
         return $this->{{ field.getName().toCamelCase() }};

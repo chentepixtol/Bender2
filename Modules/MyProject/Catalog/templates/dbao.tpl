@@ -1,9 +1,8 @@
 {% include 'header.tpl' %}
-
 {% set DBAO = classes.get('DBAO') %}
-
 {{ DBAO.printNamespace() }}
 
+use Zend\Db;
 
 /**
  * Clase que representa la abstraccion de nuestro objeto Zend_Db
@@ -33,9 +32,10 @@ abstract class DBAO
         }
 
         if ( !isset(self::$instance) ){
-            self::$instance = \Zend_Db::factory(DBAO::$config);
+            self::$instance = Db::factory(DBAO::$config);
         }
 
         return self::$instance;
     }
+    
 }
