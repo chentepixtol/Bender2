@@ -34,14 +34,14 @@ class Unit extends BaseModule
 	{
 		$classes = $this->getBender()->getClasses();
 		$classes->add('BaseTest', new PhpClass("Test/Unit/BaseTest.php"));
-		$classes->add('BaseCollectionTest', new PhpClass("Test/Unit/BaseCollectionTest.php"));
+		$classes->add('BaseCollectionTest', new PhpClass("Test/Unit/Collection/BaseCollectionTest.php"));
 
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
 			$object = $table->getObject();
-			$classes->add($object.'Test', new PhpClass("Test/Unit/{$object}Test.php"));
-			$classes->add($object.'FactoryTest', new PhpClass("Test/Unit/{$object}FactoryTest.php"));
-			$classes->add($object.'CatalogTest', new PhpClass("Test/Unit/{$object}CatalogTest.php"));
-			$classes->add($object.'QueryTest', new PhpClass("Test/Unit/{$object}QueryTest.php"));
+			$classes->add($object.'Test', new PhpClass("Test/Unit/Bean/{$object}Test.php"));
+			$classes->add($object.'FactoryTest', new PhpClass("Test/Unit/Factory/{$object}FactoryTest.php"));
+			$classes->add($object.'CatalogTest', new PhpClass("Test/Unit/Catalog/{$object}CatalogTest.php"));
+			$classes->add($object.'QueryTest', new PhpClass("Test/Unit/Query/{$object}QueryTest.php"));
 		});
 	}
 
