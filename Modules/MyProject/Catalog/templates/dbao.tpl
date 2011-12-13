@@ -2,7 +2,7 @@
 {% set DBAO = classes.get('DBAO') %}
 {{ DBAO.printNamespace() }}
 
-use Zend\Db;
+use Zend\Db\Db;
 
 /**
  * Clase que representa la abstraccion de nuestro objeto Zend_Db

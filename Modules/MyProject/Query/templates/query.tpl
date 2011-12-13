@@ -36,15 +36,17 @@ class {{ Query }} extends{% if parentQuery %} {{ parentQuery}}{% else %} {{ Base
 	 * initialization
 	 */
 	protected function init(){
-		$this->setDefaultColumn("{{ Bean }}.*");
+		$defaultColumn = array("{{ Bean }}.*");
 		$this->from({{ Bean }}::TABLENAME, "{{ Bean }}");
 {% set auxTable = table %}
 {% for i in 1..5 %}
 {% if auxTable.hasParent() %}
 {% set auxTable = auxTable.getParent() %}
 		$this->innerJoin{{ auxTable.getObject().toUpperCamelCase() }}('{{ auxTable.getObject().toUpperCamelCase() }}');
+		$defaultColumn[] = "{{ auxTable.getObject().toUpperCamelCase() }}.*";
 {% endif%}
 {% endfor %}
+        $this->setDefaultColumn($defaultColumn);
 	}
 
 	/**

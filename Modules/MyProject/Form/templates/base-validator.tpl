@@ -8,20 +8,25 @@
  * @author chente
  *
  */
-abstract class {{ BaseValidator }}
+class {{ BaseValidator }}
 {
 
     /**
      * 
-     * @return array 
+     * @var array 
      */
     private $messages = array();
-
+    
     /**
-     * get Validators
-     * @return array
+     * 
+     * @var array 
      */
-    abstract public function toArray();
+    protected $elements = array();
+    
+    /**
+     *
+     */
+    public function __construct(){}
     
     /**
      * isValid
@@ -43,6 +48,17 @@ abstract class {{ BaseValidator }}
     }
     
     /**
+     * @param string $fieldName
+     * @return Zend\Validator\ValidatorChain
+     */
+    public function getFor($fieldName){
+         if( !isset($this->elements[$fieldName]) ){
+             throw new \InvalidArgumentException("No existe el validator ". $fieldName);
+         }
+         return $this->elements[$fieldName];
+    }
+    
+    /**
      *
      * @param string $field
      * @param array $messages
@@ -56,6 +72,13 @@ abstract class {{ BaseValidator }}
      */
     public function getMessages(){
         return $this->messages;
+    }
+    
+    /**
+     * @return array
+     */
+    public function toArray(){
+        return $this->elements;
     }
     
 }

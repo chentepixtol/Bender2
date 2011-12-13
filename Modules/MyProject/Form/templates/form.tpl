@@ -17,25 +17,6 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
 {
 
     /**
-     * @var {{ Validator }} $validator
-     */
-    protected $validator;
-    
-    /**
-     * @var {{ Filter }} $filter
-     */
-    protected $filter;
-{% for field in fields %}
-
-    /**
-     *
-     * @var Zend\Form\Element
-     */
-    private ${{ field.getName().toCamelCase() }};
-{% endfor %}
-
-
-    /**
      * init
      */
     public function init()
@@ -45,7 +26,7 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
         $this->filter = new {{ Filter }}();
         
 {% for field in fields %}
-        $this->addElement($this->{{ field.getter }}Element());
+        $this->init{{ field.getName().toUpperCamelCase() }}Element();
 {% endfor %}
     }
         
@@ -53,28 +34,18 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
 
     /**
      *
-     * @return Zend\Form\Element
      */
-    public function {{ field.getter }}Element()
+    protected function init{{ field.getName().toUpperCamelCase() }}Element()
     {
-        if( null == $this->{{ field.getName().toCamelCase() }} ){
-{% if field.isPrimaryKey %}
-            $this->{{ field.getName().toCamelCase() }} = new Element\Hidden('{{ field.getName().toUnderscore() }}');
-{% elseif field.isBoolean %}
-            $this->{{ field.getName().toCamelCase() }} = new Element\Checkbox('{{ field.getName().toUnderscore() }}');
-{% else %}
-            $this->{{ field.getName().toCamelCase() }} = new Element\Text('{{ field.getName().toUnderscore() }}');
-{% endif %}
-            $this->{{ field.getName().toCamelCase() }}->setLabel('{{ field.getName().toUpperCamelCase() }}');
-            $this->{{ field.getName().toCamelCase() }}->addValidator(
-                $this->validator->{{ field.getter }}Validator()
-            );
-            $this->{{ field.getName().toCamelCase() }}->addFilter(
-                $this->filter->{{ field.getter }}Filter()
-            );
-        }
-    
-        return $this->{{ field.getName().toCamelCase() }};
+        $element = new Element\Text('{{ field.getName().toUnderscore() }}');
+        $element->setLabel('{{ field.getName().toUpperCamelCase() }}');
+        $element->addValidator($this->validator->getFor('{{ field.getName() }}'));
+        $element->addFilter($this->filter->getFor('{{ field }}'));
+{% if field.isRequired %}
+        $element->setRequired(true);
+{% endif %}            
+        $this->addElement($element);
+        $this->elements['{{ field.getName().toUnderscore() }}'] = $element;
     }
 {% endfor %}
 

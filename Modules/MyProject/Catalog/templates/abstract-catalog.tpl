@@ -91,7 +91,7 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
      */
     public function getDb()
     {
-    	return DBAO::getDbAdapter();
+    	return \{{ DBAO.getFullName() }}::getDbAdapter();
     }
 
     /**
@@ -100,8 +100,9 @@ abstract class {{ AbstractCatalog }} extends {{ Singleton }} implements {{ Catal
      */
     protected function isNestable()
     {
-        return in_array($this->getDb()->getConnection()->getAttribute(PDO::ATTR_DRIVER_NAME),
-                        self::$savepointTransactions);
+        return in_array(
+            $this->getDb()->getConnection()->getAttribute(\PDO::ATTR_DRIVER_NAME),
+            self::$savepointTransactions);
     }
 
     /**

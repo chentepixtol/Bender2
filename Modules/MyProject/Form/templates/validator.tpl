@@ -12,45 +12,27 @@ use Zend\Validator\ValidatorChain;
  */
 class {{ Validator }} extends {% if parent %}{{ classes.get(parent.getObject()~'Validator') }}{% else %}{{ BaseValidator }}{% endif %}  
 {
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        parent::__construct();
+{% for field in fields %}
+        $this->init{{ field.getName().toUpperCamelCase }}Validator(); 
+{% endfor %}
+    }    
 {% for field in fields %}
 
     /**
      *
-     * @var Zend\Validator\ValidatorChain
      */
-    private ${{ field.getName().toCamelCase() }};
-{% endfor %}       
-{% for field in fields %}
-
-    /**
-     *
-     * @return Zend\Validator\ValidatorChain
-     */
-    public function {{ field.getter }}Validator()
+    protected function init{{ field.getName().toUpperCamelCase }}Validator()
     {
-        if( null == $this->{{ field.getName().toCamelCase() }} ){
-            $this->{{ field.getName().toCamelCase() }} = new ValidatorChain();
-        }
-    
-        return $this->{{ field.getName().toCamelCase() }};
+        $validator = new ValidatorChain();
+        $this->elements['{{ field.getName() }}'] = $validator;
     }
 {% endfor %}
 
-    /**
-     * Convert to array
-     * @return array
-     */
-    public function toArray()
-    {
-        $array = array(
-{% for field in fields %}
-            '{{ field.getName()}}' => $this->{{ field.getter }}Validator(),
-{% endfor %}
-        );
-{%if parent %}
-        return array_merge(parent::toArray(), $array);
-{% else %}
-        return $array;
-{% endif %}
-    }
-}
+ }

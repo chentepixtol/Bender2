@@ -311,6 +311,15 @@ class Column implements Collectable
     }
 
     /**
+     * alias for not null
+     * @return boolen
+     */
+    public function isRequired(){
+    	return $this->getNotnull();
+    }
+
+
+    /**
 	 *
 	 * @return mixed
 	 */

@@ -8,14 +8,19 @@
  * @author chente
  *
  */
-abstract class {{ BaseFilter }}
+class {{ BaseFilter }}
 {
 
-   /**
-     * get Filters
-     * @return array
+    /**
+     * 
+     * @var array 
      */
-    abstract public function toArray();
+    protected $elements = array();
+    
+    /**
+     *
+     */
+    public function __construct(){}
     
     /**
      * isValid
@@ -29,6 +34,24 @@ abstract class {{ BaseFilter }}
             $newArray[$field] = $filter->filter($array[$field]);
         }
         return $newArray;
+    }
+    
+     /**
+     * @param string $fieldName
+     * @return Zend\Validator\ValidatorChain
+     */
+    public function getFor($fieldName){
+         if( !isset($this->elements[$fieldName]) ){
+             throw new \InvalidArgumentException("No existe el validator ". $fieldName);
+         }
+         return $this->elements[$fieldName];
+    }
+    
+    /**
+     * @return array
+     */
+    public function toArray(){
+        return $this->elements;
     }
     
 }

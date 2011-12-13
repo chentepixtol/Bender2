@@ -12,46 +12,26 @@ use Zend\Filter\FilterChain;
  */
 class {{ Filter }} extends {% if parent %}{{ classes.get(parent.getObject()~'Filter') }}{% else %}{{ BaseFilter }}{% endif %}  
 {
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        parent::__construct();
+{% for field in fields %}
+        $this->init{{ field.getName().toUpperCamelCase }}Filter(); 
+{% endfor %}
+    }    
 {% for field in fields %}
 
     /**
      *
-     * @var Zend\Filter\FilterChain
      */
-    private ${{ field.getName().toCamelCase() }};
-{% endfor %}       
-{% for field in fields %}
-
-    /**
-     *
-     * @return Zend\Filter\FilterChain
-     */
-    public function {{ field.getter }}Filter()
+    protected function init{{ field.getName().toUpperCamelCase }}Filter()
     {
-        if( null == $this->{{ field.getName().toCamelCase() }} ){
-            $this->{{ field.getName().toCamelCase() }} = new FilterChain();
-        }
-    
-        return $this->{{ field.getName().toCamelCase() }};
+        $filter = new FilterChain();
+        $this->elements['{{ field.getName() }}'] = $filter;
     }
 {% endfor %}
-
-    /**
-     * Convert to array
-     * @return array
-     */
-    public function toArray()
-    {
-        $array = array(
-{% for field in fields %}
-            '{{ field.getName()}}' => $this->{{ field.getter }}Filter(),
-{% endfor %}
-        );
-{%if parent %}
-        return array_merge(parent::toArray(), $array);
-{% else %}
-        return $array;
-{% endif %}
-    }
-    
 }

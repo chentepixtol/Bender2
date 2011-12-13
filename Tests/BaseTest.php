@@ -3,6 +3,8 @@ namespace Tests;
 
 use Application\Bender\Bender;
 
+require_once 'autoload.php';
+
 /**
  *
  * @author chente
@@ -10,18 +12,6 @@ use Application\Bender\Bender;
  */
 abstract class BaseTest extends \PHPUnit_Framework_TestCase
 {
-
-	/**
-	 *
-	 * Enter description here ...
-	 * @param unknown_type $name
-	 * @param array $data
-	 * @param unknown_type $dataName
-	 */
-	public function __construct($name = NULL, array $data = array(), $dataName = ''){
-		parent::__construct($name,$data,$dataName);
-		require_once 'autoload.php';
-	}
 
 	/**
 	 *
