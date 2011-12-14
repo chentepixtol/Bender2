@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\MyProject;
+namespace Modules\ZF2;
 
 use Application\Native\String;
 

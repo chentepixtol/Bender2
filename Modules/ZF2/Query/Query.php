@@ -1,5 +1,5 @@
 <?php
-namespace Modules\MyProject\Bean;
+namespace Modules\ZF2\Query;
 
 use Application\Generator\PhpClass;
 
@@ -8,14 +8,14 @@ use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
 use Application\Database\Table;
-use Modules\MyProject\BaseModule;
+use Modules\ZF2\BaseModule;
 
 /**
  *
  * @author chente
  *
  */
-class Bean extends BaseModule
+class Query extends BaseModule
 {
 
 	/**
@@ -23,7 +23,7 @@ class Bean extends BaseModule
 	 * @see Application\Generator\Module.Module::getName()
 	 */
 	public function getName(){
-		return 'Bean';
+		return 'Query';
 	}
 
 	/**
@@ -33,12 +33,12 @@ class Bean extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Collectable', new PhpClass('Application/Model/Bean/Collectable.php'))
-				->add('Bean', new PhpClass("Application/Model/Bean/Bean.php"));
-
+		$classes->add('BaseQuery', new PhpClass("Application/Query/BaseQuery.php"));
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
-			$object = $table->getObject();
-			$classes->add($object, new PhpClass("Application/Model/Bean/{$object}.php"));
+			$object = $table->getObject().'Query';
+			$criteria = $table->getObject().'Criteria';
+			$classes->add($object, new PhpClass("Application/Query/{$object}.php"));
+			$classes->add($criteria, new PhpClass("Application/Query/{$criteria}.php"));
 		});
 	}
 
@@ -52,16 +52,25 @@ class Bean extends BaseModule
 		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
 
 		$files = new FileCollection();
-		$files->append(new File($classes->get('Bean')->getRoute(), $this->getView()->fetch('bean-interface.tpl')));
-		$files->append(new File($classes->get('Collectable')->getRoute(), $this->getView()->fetch('collectable.tpl')));
-
+		$files->append(new File($classes->get('BaseQuery')->getRoute(), $this->getView()->fetch('base-query.tpl')));
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
 			$this->shortcuts($table);
-			$content = $this->getView()->fetch('bean.tpl');
+			$content = $this->getView()->fetch('query.tpl');
 			$files->append(
-				new File($classes->get($table->getObject())->getRoute(), $content)
+				new File($classes->get($table->getObject().'Query')->getRoute(), $content)
+			);
+		}
+
+		$tables->rewind();
+		while ( $tables->valid() )
+		{
+			$table = $tables->read();
+			$this->shortcuts($table);
+			$content = $this->getView()->fetch('criteria.tpl');
+			$files->append(
+				new File($classes->get($table->getObject().'Criteria')->getRoute(), $content)
 			);
 		}
 

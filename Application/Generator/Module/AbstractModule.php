@@ -60,7 +60,7 @@ abstract class AbstractModule implements Module
 	 */
 	public function getModulePath()
 	{
-		$path = preg_match('$\/([a-z\/]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
+		$path = preg_match('$\/([0-9a-z\/]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
 		return $this->getBender()->getConfiguration()->get('modulesPath').$path;
 	}
 
@@ -70,7 +70,7 @@ abstract class AbstractModule implements Module
 	 */
 	public function getModulesPath()
 	{
-		$path = preg_match('$\/([a-z]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
+		$path = preg_match('$\/([0-9a-z]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
 		return $this->getBender()->getConfiguration()->get('modulesPath'). $path;
 	}
 

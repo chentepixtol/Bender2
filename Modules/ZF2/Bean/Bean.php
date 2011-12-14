@@ -1,20 +1,21 @@
 <?php
-namespace Modules\MyProject\Factory;
+namespace Modules\ZF2\Bean;
 
 use Application\Generator\PhpClass;
+
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
 use Application\Database\Table;
-use Modules\MyProject\BaseModule;
+use Modules\ZF2\BaseModule;
 
 /**
  *
  * @author chente
  *
  */
-class Factory extends BaseModule
+class Bean extends BaseModule
 {
 
 	/**
@@ -22,7 +23,7 @@ class Factory extends BaseModule
 	 * @see Application\Generator\Module.Module::getName()
 	 */
 	public function getName(){
-		return 'Factory';
+		return 'Bean';
 	}
 
 	/**
@@ -32,10 +33,12 @@ class Factory extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Factory', new PhpClass("Application/Model/Factory/Factory.php"));
+		$classes->add('Collectable', new PhpClass('Application/Model/Bean/Collectable.php'))
+				->add('Bean', new PhpClass("Application/Model/Bean/Bean.php"));
+
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
-			$object = $table->getObject().'Factory';
-			$classes->add($object, new PhpClass("Application/Model/Factory/{$object}.php"));
+			$object = $table->getObject();
+			$classes->add($object, new PhpClass("Application/Model/Bean/{$object}.php"));
 		});
 	}
 
@@ -49,17 +52,16 @@ class Factory extends BaseModule
 		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
 
 		$files = new FileCollection();
-		$files->append(new File($classes->get('Factory')->getRoute(), $this->getView()->fetch('factory-interface.tpl')));
+		$files->append(new File($classes->get('Bean')->getRoute(), $this->getView()->fetch('bean-interface.tpl')));
+		$files->append(new File($classes->get('Collectable')->getRoute(), $this->getView()->fetch('collectable.tpl')));
+
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
-			$route = $classes->get($table->getObject().'Factory')->getRoute();
-
 			$this->shortcuts($table);
-		  	$this->getView()->fields = $table->getFullColumns();
-
+			$content = $this->getView()->fetch('bean.tpl');
 			$files->append(
-				new File($route, $this->getView()->fetch('factory.tpl'))
+				new File($classes->get($table->getObject())->getRoute(), $content)
 			);
 		}
 

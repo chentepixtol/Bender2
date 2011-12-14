@@ -1,20 +1,21 @@
 <?php
-namespace Modules\MyProject\Collection;
+namespace Modules\ZF2\Exception;
 
 use Application\Generator\PhpClass;
+
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
 use Application\Database\Table;
-use Modules\MyProject\BaseModule;
+use Modules\ZF2\BaseModule;
 
 /**
  *
  * @author chente
  *
  */
-class Collection extends BaseModule
+class Exception extends BaseModule
 {
 
 	/**
@@ -22,7 +23,7 @@ class Collection extends BaseModule
 	 * @see Application\Generator\Module.Module::getName()
 	 */
 	public function getName(){
-		return 'Collection';
+		return 'Exception';
 	}
 
 	/**
@@ -32,11 +33,10 @@ class Collection extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Collection', new PhpClass("Application/Model/Collection/Collection.php"));
 
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
-			$object = $table->getObject() .'Collection';
-			$classes->add($object, new PhpClass("Application/Model/Collection/{$object}.php"));
+			$object = $table->getObject().'Exception';
+			$classes->add($object, new PhpClass("Application/Model/Exception/{$object}.php"));
 		});
 	}
 
@@ -50,17 +50,13 @@ class Collection extends BaseModule
 		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
 
 		$files = new FileCollection();
-		$files->append(
-			new File($classes->get('Collection')->getRoute(), $this->getView()->fetch('base-collection.tpl'))
-		);
-
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
 			$this->shortcuts($table);
-			$content = $this->getView()->fetch('collection.tpl');
+			$content = $this->getView()->fetch('exception.tpl');
 			$files->append(
-				new File($classes->get($table->getObject().'Collection')->getRoute(), $content)
+				new File($classes->get($table->getObject().'Exception')->getRoute(), $content)
 			);
 		}
 

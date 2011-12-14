@@ -30,6 +30,6 @@ y editamos los siguientes parametros
     
 Si ejecutamos el siguiente comando nos va a generar el modelo necesario para una aplicacion
 
-    php bender.php create all
+    php bender.php create zf2
     
 Lo que sigue seria aprender a generar tus propios modulos, para que genere el codigo como tu lo utilizas ...

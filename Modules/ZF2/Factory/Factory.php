@@ -1,21 +1,20 @@
 <?php
-namespace Modules\MyProject\Query;
+namespace Modules\ZF2\Factory;
 
 use Application\Generator\PhpClass;
-
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
 use Application\Database\Table;
-use Modules\MyProject\BaseModule;
+use Modules\ZF2\BaseModule;
 
 /**
  *
  * @author chente
  *
  */
-class Query extends BaseModule
+class Factory extends BaseModule
 {
 
 	/**
@@ -23,7 +22,7 @@ class Query extends BaseModule
 	 * @see Application\Generator\Module.Module::getName()
 	 */
 	public function getName(){
-		return 'Query';
+		return 'Factory';
 	}
 
 	/**
@@ -33,12 +32,10 @@ class Query extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('BaseQuery', new PhpClass("Application/Query/BaseQuery.php"));
+		$classes->add('Factory', new PhpClass("Application/Model/Factory/Factory.php"));
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
-			$object = $table->getObject().'Query';
-			$criteria = $table->getObject().'Criteria';
-			$classes->add($object, new PhpClass("Application/Query/{$object}.php"));
-			$classes->add($criteria, new PhpClass("Application/Query/{$criteria}.php"));
+			$object = $table->getObject().'Factory';
+			$classes->add($object, new PhpClass("Application/Model/Factory/{$object}.php"));
 		});
 	}
 
@@ -52,25 +49,17 @@ class Query extends BaseModule
 		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
 
 		$files = new FileCollection();
-		$files->append(new File($classes->get('BaseQuery')->getRoute(), $this->getView()->fetch('base-query.tpl')));
+		$files->append(new File($classes->get('Factory')->getRoute(), $this->getView()->fetch('factory-interface.tpl')));
 		while ( $tables->valid() )
 		{
 			$table = $tables->read();
-			$this->shortcuts($table);
-			$content = $this->getView()->fetch('query.tpl');
-			$files->append(
-				new File($classes->get($table->getObject().'Query')->getRoute(), $content)
-			);
-		}
+			$route = $classes->get($table->getObject().'Factory')->getRoute();
 
-		$tables->rewind();
-		while ( $tables->valid() )
-		{
-			$table = $tables->read();
 			$this->shortcuts($table);
-			$content = $this->getView()->fetch('criteria.tpl');
+		  	$this->getView()->fields = $table->getFullColumns();
+
 			$files->append(
-				new File($classes->get($table->getObject().'Criteria')->getRoute(), $content)
+				new File($route, $this->getView()->fetch('factory.tpl'))
 			);
 		}
 

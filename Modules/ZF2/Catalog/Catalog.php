@@ -1,5 +1,5 @@
 <?php
-namespace Modules\MyProject\Catalog;
+namespace Modules\ZF2\Catalog;
 
 use Application\Generator\PhpClass;
 
@@ -8,7 +8,7 @@ use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
 use Application\Database\Table;
-use Modules\MyProject\BaseModule;
+use Modules\ZF2\BaseModule;
 
 /**
  *

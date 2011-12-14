@@ -10,8 +10,8 @@ settings:
   options:
     author:   chente
   alias:
-    all:
-      project: MyProject
+    zf2:
+      project: ZF2
       modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Unit, Form ]
     schema:
       project: Core
