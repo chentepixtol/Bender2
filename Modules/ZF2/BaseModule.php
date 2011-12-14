@@ -3,7 +3,6 @@
 namespace Modules\ZF2;
 
 use Application\Native\String;
-
 use Application\Database\Table;
 use Application\Generator\Module\AbstractModule;
 
@@ -46,5 +45,13 @@ abstract class BaseModule extends AbstractModule
 		$varname = new String($suffix, String::UPPERCAMELCASE);
 		$this->getView()->assign($suffix, $classes->get($className.$suffix));
 		$this->getView()->assign($varname->toCamelCase(), $variableName.$suffix);
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Generator\Module.Module::getSubscriber()
+	 */
+	public function getSubscriber(){
+		return new Subscriber();
 	}
 }

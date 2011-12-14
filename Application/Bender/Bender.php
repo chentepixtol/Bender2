@@ -186,7 +186,11 @@ final class Bender extends Singleton
 			$directories = $this->getConfiguration()->get('modulesPath').$project;
 			$finder = new Finder($directories);
 			$this->modules = $finder->findModules();
-			$this->getEventDispatcher()->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
+			$eventDispatcher = $this->getEventDispatcher();
+			$this->modules->each(function (Module $module) use($eventDispatcher){
+				$eventDispatcher->addSubscriber($module->getSubscriber());
+			});
+			$eventDispatcher->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
 		}
 		$this->modules->rewind();
 		return $this->modules;
