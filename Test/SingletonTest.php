@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests;
+namespace Test;
 
-use Tests\Mock\BSingleton;
-use Tests\Mock\ASingleton;
+use Test\Mock\BSingleton;
+use Test\Mock\ASingleton;
 
-require_once 'Tests/BaseTest.php';
+require_once 'Test/BaseTest.php';
 
 class SingletonTest extends BaseTest
 {

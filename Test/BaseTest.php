@@ -1,5 +1,5 @@
 <?php
-namespace Tests;
+namespace Test;
 
 use Application\Bender\Bender;
 
@@ -19,7 +19,6 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function getBender()
 	{
-		require_once 'Application/Bender/Bender.php';
 		return Bender::getInstance();
 	}
 

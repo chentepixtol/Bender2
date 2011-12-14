@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests;
+namespace Test;
 
-require_once 'Tests/BaseTest.php';
+require_once 'Test/BaseTest.php';
 require_once 'vfsStream/vfsStream.php';
 
 use Application\Generator\File\Writer;

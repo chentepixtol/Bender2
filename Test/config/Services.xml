@@ -13,10 +13,10 @@
         <parameter key="databaseBuilder.class">Application\Database\DatabaseBuilder</parameter>
 		
         <parameter key="settings.class">Application\Config\Settings</parameter>
-		<parameter key="settings.file">Tests/config/settings.yml</parameter>
+		<parameter key="settings.file">Test/config/settings.yml</parameter>
 		
         <parameter key="schema.class">Application\Config\Schema</parameter>
-		<parameter key="schema.file">Tests/config/schema.yml</parameter>
+		<parameter key="schema.file">Test/config/schema.yml</parameter>
 		
   </parameters>
 	

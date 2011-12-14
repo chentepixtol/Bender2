@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Test;
 
 use Application\Database\Cast\AbstractCast;
 
@@ -16,7 +16,7 @@ use Application\Database\Table;
 
 use Application\Database\Database;
 
-require_once 'Tests/BaseTest.php';
+require_once 'Test/BaseTest.php';
 
 use Application\Native\String;
 
@@ -24,7 +24,7 @@ class DatabaseTest extends BaseTest
 {
 
 	public function setUp(){
-		$this->getBender()->loadContainer('Tests/config/Services.xml');
+		$this->getBender()->loadContainer('Test/config/Services.xml');
 	}
 
 	/**

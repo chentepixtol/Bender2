@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests;
+namespace Test;
 
-require_once 'Tests/BaseTest.php';
+require_once 'Test/BaseTest.php';
 
 use Application\Native\String;
 

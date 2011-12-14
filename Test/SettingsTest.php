@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests;
+namespace Test;
 
 use Symfony\Component\Yaml\Yaml;
 
-require_once 'Tests/BaseTest.php';
+require_once 'Test/BaseTest.php';
 require_once 'vfsStream/vfsStream.php';
 
 use Application\Config\Settings;
@@ -95,7 +95,7 @@ class SettingsTest extends BaseTest
 
 	/**
 	 * (non-PHPdoc)
-	 * @see Tests.BaseTest::setUp()
+	 * @see Test.BaseTest::setUp()
 	 */
 	public function setUp()
     {

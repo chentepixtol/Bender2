@@ -10,7 +10,7 @@ $loader->registerNamespaces(array(
 		'Doctrine\\Common' => 'vendor/doctrine/common/lib',
 		'Doctrine\\DBAL'   => 'vendor/doctrine/dbal/lib',
 		'Application'      => '.',
-		'Tests'            => '.',
+		'Test'            => '.',
 		'Modules'          => '.',
 ));
 

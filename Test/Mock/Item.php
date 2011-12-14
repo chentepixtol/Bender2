@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Mock;
+namespace Test\Mock;
 
 use Application\Base\Collectable;
 

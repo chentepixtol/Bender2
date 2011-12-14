@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests;
+namespace Test;
 
 use vfsStream, vfsStreamWrapper, vfsStreamDirectory;
 use Symfony\Component\Yaml\Yaml;
 use Application\Config\Schema;
 use Application\Generator\File\Writer;
 
-require_once 'Tests/BaseTest.php';
+require_once 'Test/BaseTest.php';
 require_once 'vfsStream/vfsStream.php';
 
 
@@ -78,7 +78,7 @@ class SchemaTest extends BaseTest
 
 	/**
 	 * (non-PHPdoc)
-	 * @see Tests.BaseTest::setUp()
+	 * @see Test.BaseTest::setUp()
 	 */
 	public function setUp()
     {

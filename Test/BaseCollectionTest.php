@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests;
+namespace Test;
 
 use Application\Base\BaseCollection;
 
-use Tests\Mock\Item;
-use Tests\Mock\MyCollection;
+use Test\Mock\Item;
+use Test\Mock\MyCollection;
 
-require_once 'Tests/BaseTest.php';
+require_once 'Test/BaseTest.php';
 
 
 class BaseCollectionTest extends BaseTest
