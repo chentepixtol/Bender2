@@ -1,7 +1,7 @@
 <?php
 namespace Modules\ZF2\Collection;
 
-use Application\Generator\PhpClass;
+use Modules\ZF2\PhpClass;
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;

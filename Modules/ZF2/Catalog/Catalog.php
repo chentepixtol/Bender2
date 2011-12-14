@@ -1,7 +1,7 @@
 <?php
 namespace Modules\ZF2\Catalog;
 
-use Application\Generator\PhpClass;
+use Modules\ZF2\PhpClass;
 
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;

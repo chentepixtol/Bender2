@@ -1,5 +1,7 @@
 <?php
-namespace Application\Generator;
+namespace Modules\ZF2;
+
+use Application\Generator\BaseClass;
 
 /**
  *
