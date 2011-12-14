@@ -121,15 +121,8 @@ class Column implements Collectable
 	 */
 	public function cast($lang)
 	{
-		$class = new String($lang, String::SLUG);
-		$className = 'Application\\Database\\Cast\\'.$class->toUpperCamelCase();
-
-		if( !class_exists($className)){
-			throw new \Exception("El cast del languaje especificado no existe");
-		}
-
 		if( ( null != $this->cast && $lang != $this->cast->getLang() ) || null == $this->cast ){
-			$this->cast = new $className($this, $lang);
+			$this->cast = AbstractCast::factory($lang, $this);
 		}
 
 		return $this->cast;

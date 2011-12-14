@@ -2,6 +2,8 @@
 
 namespace Modules\ZF2;
 
+use Application\Database\Cast\AbstractCast;
+
 use Application\Generator\BaseClass;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +38,7 @@ class Subscriber implements EventSubscriberInterface
 	 *
 	 */
 	public function onReady(Event $event){
+		AbstractCast::register('php', "Modules\\ZF2\\PHPCast");
 	}
 
 }

@@ -2,6 +2,8 @@
 
 namespace Application\Database\Cast;
 
+use Application\Native\String;
+
 use Application\Database\Column;
 
 /**
@@ -22,9 +24,21 @@ abstract class AbstractCast
 	/**
 	 *
 	 *
-	 * @var unknown_type
+	 * @var string
 	 */
 	protected $lang;
+
+	/**
+	 *
+	 * @var array
+	 */
+	protected static $casts = array();
+
+	/**
+	 *
+	 * @return string
+	 */
+	abstract public function getType();
 
 	/**
 	 *
@@ -39,9 +53,33 @@ abstract class AbstractCast
 
 	/**
 	 *
-	 * @return string
+	 * @param unknown_type $lang
+	 * @param unknown_type $column
+	 * @return Application\Database\Cast\AbstractCast
+	 * @throws \Exception
 	 */
-	abstract public function getType();
+	public static function factory($lang, $column)
+	{
+		if( !isset(self::$casts[$lang]) ){
+			throw new \Exception("El cast del languaje especificado no existe: ".$lang);
+		}
+
+		$className =  self::$casts[$lang];
+		if( !class_exists($className)){
+			throw new \Exception("La clase del languaje especificado no existe: ". $className);
+		}
+
+		return new $className($column, $lang);
+	}
+
+	/**
+	 *
+	 * @param string $lang
+	 * @param string $className
+	 */
+	public static function register($lang, $className){
+		self::$casts[$lang] = $className;
+	}
 
 	/**
 	 * @return Application\Database\Column

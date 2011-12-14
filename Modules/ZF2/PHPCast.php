@@ -1,13 +1,14 @@
 <?php
+namespace Modules\ZF2;
 
-namespace Application\Database\Cast;
+use Application\Database\Cast\AbstractCast;
 
 /**
  *
  * @author chente
  *
  */
-class Php extends AbstractCast
+class PHPCast extends AbstractCast
 {
 
 	/**
