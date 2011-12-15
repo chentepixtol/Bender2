@@ -33,12 +33,13 @@ class Bean extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Collectable', new PhpClass('Application/Model/Bean/Collectable.php'))
-				->add('Bean', new PhpClass("Application/Model/Bean/Bean.php"));
+		$classes->add('Collectable', new PhpClass($this->getApplicationNamespace().'Model/Bean/Collectable.php'))
+				->add('Bean', new PhpClass($this->getApplicationNamespace()."Model/Bean/Bean.php"));
 
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$self = $this;
+		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject();
-			$classes->add($object, new PhpClass("Application/Model/Bean/{$object}.php"));
+			$classes->add($object, new PhpClass($self->getApplicationNamespace()."Model/Bean/{$object}.php"));
 		});
 	}
 

@@ -39,9 +39,10 @@ class Catalog extends BaseModule
 			$classes->add($object, new PhpClass($data['route']));
 		}
 
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$self = $this;
+		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject() .'Catalog';
-			$classes->add($object, new PhpClass("Application/Model/Catalog/{$object}.php"));
+			$classes->add($object, new PhpClass($self->getApplicationNamespace()."Model/Catalog/{$object}.php"));
 		});
 	}
 
@@ -78,27 +79,28 @@ class Catalog extends BaseModule
 	 * @return array
 	 */
 	protected function getLibraries(){
+		$ns = $this->getApplicationNamespace();
 		return array(
 			'Catalog' => array(
-				'route' => 'Application/Model/Catalog/Catalog.php',
+				'route' => $ns.'Model/Catalog/Catalog.php',
 				'template' => 'catalog-interface.tpl',
 			),'Storage' => array(
-				'route' => 'Application/Cache/Storage.php',
+				'route' => $ns.'Cache/Storage.php',
 				'template' => 'storage-interface.tpl',
 			),'AbstractCatalog' => array(
-				'route' => 'Application/Model/Catalog/AbstractCatalog.php',
+				'route' => $ns.'Model/Catalog/AbstractCatalog.php',
 				'template' => 'abstract-catalog.tpl',
 			),'DBAO' => array(
-				'route' => 'Application/Database/DBAO.php',
+				'route' => $ns.'Database/DBAO.php',
 				'template' => 'dbao.tpl',
 			),'Singleton' => array(
-				'route' => 'Application/Base/Singleton.php',
+				'route' => $ns.'Base/Singleton.php',
 				'template' => 'singleton.tpl',
 			),'MemoryStorage' => array(
-				'route' => 'Application/Cache/Memory.php',
+				'route' => $ns.'Cache/Memory.php',
 				'template' => 'memory-storage.tpl',
 			),'NullStorage' => array(
-				'route' => 'Application/Cache/Null.php',
+				'route' => $ns.'Cache/Null.php',
 				'template' => 'null-storage.tpl',
 			),
 		);

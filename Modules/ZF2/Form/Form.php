@@ -33,15 +33,16 @@ class Form extends BaseModule
 	public function init()
 	{
 		$classes = $this->getBender()->getClasses();
-		$classes->add('BaseForm', new PhpClass("Application/Form/BaseForm.php"));
-		$classes->add('BaseValidator', new PhpClass("Application/Validator/BaseValidator.php"));
-		$classes->add('BaseFilter', new PhpClass("Application/Filter/BaseFilter.php"));
+		$classes->add('BaseForm', new PhpClass($this->getApplicationNamespace()."Form/BaseForm.php"));
+		$classes->add('BaseValidator', new PhpClass($this->getApplicationNamespace()."Validator/BaseValidator.php"));
+		$classes->add('BaseFilter', new PhpClass($this->getApplicationNamespace()."Filter/BaseFilter.php"));
 
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$self = $this;
+		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject();
-			$classes->add($object.'Form', new PhpClass("Application/Form/{$object}Form.php"));
-			$classes->add($object.'Validator', new PhpClass("Application/Validator/{$object}Validator.php"));
-			$classes->add($object.'Filter', new PhpClass("Application/Filter/{$object}Filter.php"));
+			$classes->add($object.'Form', new PhpClass($self->getApplicationNamespace()."Form/{$object}Form.php"));
+			$classes->add($object.'Validator', new PhpClass($self->getApplicationNamespace()."Validator/{$object}Validator.php"));
+			$classes->add($object.'Filter', new PhpClass($self->getApplicationNamespace()."Filter/{$object}Filter.php"));
 		});
 	}
 

@@ -9,6 +9,7 @@ settings:
     driver:   pdo_mysql 
   options:
     author:   chente
+    applicationNamespace: Application
   alias:
     zf2:
       project: ZF2

@@ -32,13 +32,14 @@ class Query extends BaseModule
 	 */
 	public function init()
 	{
+		$ns = $this->getApplicationNamespace();
 		$classes = $this->getBender()->getClasses();
-		$classes->add('BaseQuery', new PhpClass("Application/Query/BaseQuery.php"));
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$classes->add('BaseQuery', new PhpClass($ns."Query/BaseQuery.php"));
+		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $ns){
 			$object = $table->getObject().'Query';
 			$criteria = $table->getObject().'Criteria';
-			$classes->add($object, new PhpClass("Application/Query/{$object}.php"));
-			$classes->add($criteria, new PhpClass("Application/Query/{$criteria}.php"));
+			$classes->add($object, new PhpClass($ns."Query/{$object}.php"));
+			$classes->add($criteria, new PhpClass($ns."Query/{$criteria}.php"));
 		});
 	}
 

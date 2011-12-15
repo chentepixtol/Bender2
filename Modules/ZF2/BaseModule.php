@@ -33,6 +33,20 @@ abstract class BaseModule extends AbstractModule
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getApplicationNamespace()
+	{
+		static $applicationNamespace = null;
+		if( null == $applicationNamespace ){
+			$ns = $this->getBender()->getSettings()->get('options')->get('applicationNamespace', 'Application');
+			$ns = preg_replace("/\\\\$/", '', $ns) . '\\';
+			$applicationNamespace = str_replace('\\', '/', $ns);
+		}
+		return $applicationNamespace;
+	}
+
+	/**
 	 *
 	 * @param Table $table
 	 * @param string $suffix

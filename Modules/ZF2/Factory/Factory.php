@@ -31,11 +31,12 @@ class Factory extends BaseModule
 	 */
 	public function init()
 	{
+		$ns = $this->getApplicationNamespace();
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Factory', new PhpClass("Application/Model/Factory/Factory.php"));
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$classes->add('Factory', new PhpClass($ns."Model/Factory/Factory.php"));
+		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $ns){
 			$object = $table->getObject().'Factory';
-			$classes->add($object, new PhpClass("Application/Model/Factory/{$object}.php"));
+			$classes->add($object, new PhpClass($ns."Model/Factory/{$object}.php"));
 		});
 	}
 

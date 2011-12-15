@@ -31,12 +31,13 @@ class Collection extends BaseModule
 	 */
 	public function init()
 	{
+		$ns = $this->getApplicationNamespace();
 		$classes = $this->getBender()->getClasses();
-		$classes->add('Collection', new PhpClass("Application/Model/Collection/Collection.php"));
+		$classes->add('Collection', new PhpClass($ns."Model/Collection/Collection.php"));
 
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $ns){
 			$object = $table->getObject() .'Collection';
-			$classes->add($object, new PhpClass("Application/Model/Collection/{$object}.php"));
+			$classes->add($object, new PhpClass($ns."Model/Collection/{$object}.php"));
 		});
 	}
 

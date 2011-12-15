@@ -34,9 +34,10 @@ class Exception extends BaseModule
 	{
 		$classes = $this->getBender()->getClasses();
 
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$self = $this;
+		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject().'Exception';
-			$classes->add($object, new PhpClass("Application/Model/Exception/{$object}.php"));
+			$classes->add($object, new PhpClass($self->getApplicationNamespace()."Model/Exception/{$object}.php"));
 		});
 	}
 
