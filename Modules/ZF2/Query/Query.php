@@ -39,7 +39,7 @@ class Query extends BaseModule
 			$object = $table->getObject().'Query';
 			$criteria = $table->getObject().'Criteria';
 			$classes->add($object, new PhpClass($ns."Query/{$object}.php"));
-			$classes->add($criteria, new PhpClass($ns."Query/{$criteria}.php"));
+			$classes->add($criteria, new PhpClass($ns."Query/Criteria/{$criteria}.php"));
 		});
 	}
 

@@ -54,7 +54,7 @@ class {{ Query }} extends{% if parentQuery %} {{ parentQuery}}{% else %} {{ Base
 	 * @see Query.Query::createCriteria()
 	 */
 	protected function createCriteria(){
-		return new {{ Criteria }}($this);
+		return new \{{ Criteria.getFullName() }}($this);
 	}
 
 	/**
