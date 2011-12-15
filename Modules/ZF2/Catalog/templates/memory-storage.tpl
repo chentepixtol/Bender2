@@ -1,11 +1,8 @@
 {% include 'header.tpl' %}
 {% set Storage = classes.get('Storage') %}
-{% set Singleton = classes.get('Singleton') %}
 {% set MemoryStorage = classes.get('MemoryStorage') %}
 
 {{ MemoryStorage.printNamespace() }}
-
-{{ Singleton.printUse() }}
 
 /**
  *
@@ -13,7 +10,7 @@
  * @author chente
  *
  */
-class {{ MemoryStorage }} extends {{ Singleton }} implements {{ Storage }}
+class {{ MemoryStorage }} implements {{ Storage }}
 {
 
     /**

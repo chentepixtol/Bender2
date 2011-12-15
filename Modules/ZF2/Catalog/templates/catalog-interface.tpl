@@ -70,7 +70,7 @@ interface {{ Catalog }}
      * @param Query $query
      * @return {{ Bean }}
      */
-    public function getOneByQuery(Query $query, {{  Storage }} ${{  storage }} = null);
+    public function getOneByQuery(Query $query, {{  Storage }} ${{  storage }} = null, $throwIfNotExists = false);
 
     /**
      *

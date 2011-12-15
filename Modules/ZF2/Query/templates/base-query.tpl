@@ -1,8 +1,7 @@
 {% include 'header.tpl' %}
 
 {% set BaseQuery = classes.get('BaseQuery') %}
-{% set MemoryStorage = classes.get('MemoryStorage') %}
-{% set Storage = classes.get('Storage') %}
+{% set FactoryStorage = classes.get('FactoryStorage') %}
 
 {{ BaseQuery.printNamespace() }}
 
@@ -40,7 +39,7 @@ abstract class {{ BaseQuery }} extends Query
      * @return {{ BaseQuery }}
      */
     public function useMemoryCache(){
-       $this->storage = \{{ MemoryStorage.getFullName() }}::getInstance();
+       $this->storage = \{{ FactoryStorage.getFullName() }}::create('memory');
        return $this;
     }
 

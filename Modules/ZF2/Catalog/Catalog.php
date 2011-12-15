@@ -84,9 +84,15 @@ class Catalog extends BaseModule
 			'Catalog' => array(
 				'route' => $ns.'Model/Catalog/Catalog.php',
 				'template' => 'catalog-interface.tpl',
+			),'TransactionalCatalog' => array(
+				'route' => $ns.'Model/Catalog/TransactionalCatalog.php',
+				'template' => 'transactional-catalog.tpl',
 			),'Storage' => array(
-				'route' => $ns.'Cache/Storage.php',
+				'route' => $ns.'Storage/Storage.php',
 				'template' => 'storage-interface.tpl',
+			),'FactoryStorage' => array(
+				'route' => $ns.'Storage/StorageFactory.php',
+				'template' => 'storage-factory.tpl',
 			),'AbstractCatalog' => array(
 				'route' => $ns.'Model/Catalog/AbstractCatalog.php',
 				'template' => 'abstract-catalog.tpl',
@@ -97,10 +103,10 @@ class Catalog extends BaseModule
 				'route' => $ns.'Base/Singleton.php',
 				'template' => 'singleton.tpl',
 			),'MemoryStorage' => array(
-				'route' => $ns.'Cache/Memory.php',
+				'route' => $ns.'Storage/Memory.php',
 				'template' => 'memory-storage.tpl',
 			),'NullStorage' => array(
-				'route' => $ns.'Cache/Null.php',
+				'route' => $ns.'Storage/Null.php',
 				'template' => 'null-storage.tpl',
 			),
 		);
