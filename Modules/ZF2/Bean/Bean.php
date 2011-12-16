@@ -34,7 +34,8 @@ class Bean extends BaseModule
 	{
 		$classes = $this->getBender()->getClasses();
 		$classes->add('Collectable', new PhpClass($this->getApplicationNamespace().'Model/Bean/Collectable.php'))
-				->add('Bean', new PhpClass($this->getApplicationNamespace()."Model/Bean/Bean.php"));
+				->add('Bean', new PhpClass($this->getApplicationNamespace()."Model/Bean/Bean.php"))
+				->add('AbstractBean', new PhpClass($this->getApplicationNamespace()."Model/Bean/AbstractBean.php"));
 
 		$self = $this;
 		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
@@ -55,6 +56,7 @@ class Bean extends BaseModule
 		$files = new FileCollection();
 		$files->append(new File($classes->get('Bean')->getRoute(), $this->getView()->fetch('bean-interface.tpl')));
 		$files->append(new File($classes->get('Collectable')->getRoute(), $this->getView()->fetch('collectable.tpl')));
+		$files->append(new File($classes->get('AbstractBean')->getRoute(), $this->getView()->fetch('abstract-bean.tpl')));
 
 		while ( $tables->valid() )
 		{

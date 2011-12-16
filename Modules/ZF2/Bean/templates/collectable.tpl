@@ -13,16 +13,23 @@
 interface {{ Collectable }}
 {
 
-	/**
-	 *
-	 * @return int
-	 */
-	public function getIndex();
+    /**
+     *
+     * @return int
+     */
+    public function getIndex();
 
-	/**
-	 * Convert to array
-	 * @return array
-	 */
-	public function toArray();
+    /**
+     * Convert to array
+     * @return array
+     */
+    public function toArray();
+    
+    /**
+     * Convert to array
+     * @return array
+     */
+    public function toArrayFor($fields);
+    
 
 }

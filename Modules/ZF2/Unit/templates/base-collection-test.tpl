@@ -42,6 +42,10 @@ class MyBean implements \{{ Collectable.getFullname() }}
 	public function toArray(){
 		return array('id' => $this->id, 'value' => $this->value);
 	}
+	
+	public function toArrayFor($fields){
+        return array('id' => $this->id, 'value' => $this->value);
+    }
 }
 
 

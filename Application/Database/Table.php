@@ -273,8 +273,4 @@ class Table implements Collectable
 		$this->primaryKey = $primaryKey;
 	}
 
-
-
-
-
 }

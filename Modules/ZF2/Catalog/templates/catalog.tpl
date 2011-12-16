@@ -45,12 +45,8 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
             }
 
 {% endif %}
-            $data = array(
-{% for field in fields %}
-{% if field.isPrimaryKey() == false %}
-                '{{ field.getName() }}' => ${{ bean }}->{{ field.getter() }}(),
-{% endif %}
-{% endfor %}
+            $data = ${{ bean}}->toArrayFor(
+                array({% for field in fields.nonPrimaryKeys %}'{{ field.getName() }}',{% endfor %})
             );
             $data = array_filter($data, array($this, 'isNotNull'));
             $this->getDb()->insert({{ Bean }}::TABLENAME, $data);
@@ -73,12 +69,8 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
         $this->validateBean(${{ bean }});
         try
         {
-            $data = array(
-{% for field in fields %}
-{% if field.isPrimaryKey() == false %}
-                '{{ field.getName() }}' => ${{ bean }}->{{ field.getter() }}(),
-{% endif %}
-{% endfor %}
+            $data = ${{ bean}}->toArrayFor(
+                array({% for field in fields.nonPrimaryKeys %}'{{ field.getName() }}',{% endfor %})
             );
             $data = array_filter($data, array($this, 'isNotNull'));
             $this->getDb()->update({{ Bean }}::TABLENAME, $data, "{{ table.getPrimaryKey() }} = '{${{ bean }}->{{ table.getPrimaryKey().getter() }}()}'");

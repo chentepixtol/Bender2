@@ -1,12 +1,12 @@
 {% include 'header.tpl' %}
-{% set BaseBean = classes.get('Bean') %}
+{% set AbstractBean = classes.get('AbstractBean') %}
 namespace {{ Bean.getNamespace() }};
 
 {% if parent %}{{ classes.get(parent.getObject()).printRequire() }}{% else %}
-{{ BaseBean.printRequire() }}
-{% if BaseBean.getNamespace() != Bean.getNamespace() %}{{ BaseBean.printUse() }}{% endif %}
+{{ AbstractBean.printRequire() }}
+{% if AbstractBean.getNamespace() != Bean.getNamespace() %}{{ AbstractBean.printUse() }}{% endif %}
 {% endif %}
-class {{ Bean }}{% if parent %} extends {{ parent.getObject() }}{% else %} implements {{ BaseBean }}{% endif %}
+class {{ Bean }} extends {% if parent %}{{ parent.getObject() }}{% else %}{{ AbstractBean }}{% endif %}
 {
 
     /**
