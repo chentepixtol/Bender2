@@ -36,7 +36,7 @@ class Unit extends BaseModule
 		$classes->add('BaseTest', new PhpClass("Test/Unit/BaseTest.php"));
 		$classes->add('BaseCollectionTest', new PhpClass("Test/Unit/Collection/BaseCollectionTest.php"));
 
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes){
+		$this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes){
 			$object = $table->getObject();
 			$classes->add($object.'Test', new PhpClass("Test/Unit/Bean/{$object}Test.php"));
 			$classes->add($object.'FactoryTest', new PhpClass("Test/Unit/Factory/{$object}FactoryTest.php"));
@@ -52,7 +52,7 @@ class Unit extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
 		$files = new FileCollection();
 		$files->append(new File($classes->get('BaseTest')->getRoute(), $this->getView()->fetch('base-test.tpl')));

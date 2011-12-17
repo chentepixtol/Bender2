@@ -35,7 +35,7 @@ class Exception extends BaseModule
 		$classes = $this->getBender()->getClasses();
 
 		$self = $this;
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
+		$this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject().'Exception';
 			$classes->add($object, new PhpClass($self->getApplicationNamespace()."Model/Exception/{$object}.php"));
 		});
@@ -48,7 +48,7 @@ class Exception extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
 		$files = new FileCollection();
 		while ( $tables->valid() )

@@ -2,7 +2,6 @@
 namespace Modules\ZF2\Form;
 
 use Modules\ZF2\PhpClass;
-
 use Application\Generator\BaseClass;
 use Application\Generator\Classes;
 use Application\Generator\File\FileCollection;
@@ -38,7 +37,8 @@ class Form extends BaseModule
 		$classes->add('BaseFilter', new PhpClass($this->getApplicationNamespace()."Filter/BaseFilter.php"));
 
 		$self = $this;
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
+		$this->getBender()->getDatabase()->getTables()->filterUseForm()
+		->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject();
 			$classes->add($object.'Form', new PhpClass($self->getApplicationNamespace()."Form/{$object}Form.php"));
 			$classes->add($object.'Validator', new PhpClass($self->getApplicationNamespace()."Validator/{$object}Validator.php"));
@@ -53,7 +53,7 @@ class Form extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->filterUseForm();
 
 		$files = new FileCollection();
 		$files->append(new File($classes->get('BaseForm')->getRoute(), $this->getView()->fetch('base-form.tpl')));

@@ -10,6 +10,12 @@ namespace Application\Base;
 abstract class BaseCollection extends \ArrayIterator
 {
 
+	/**
+	 *
+	 * @var array
+	 */
+	protected $properties = array();
+
     /**
      *
      *
@@ -224,6 +230,20 @@ abstract class BaseCollection extends \ArrayIterator
         $this->rewind();
         $baseColletion->rewind();
         return $baseColletion;
+    }
+
+    /**
+     *
+     * @param string $property
+     * @param Closure $function
+     * @return mixed
+     */
+    protected function lazyLoad($property, $function)
+    {
+    	if( !array_key_exists($property, $this->properties) ){
+    		$this->properties[$property] = $function();
+    	}
+    	return $this->properties[$property];
     }
 
 }

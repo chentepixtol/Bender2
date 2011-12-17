@@ -34,7 +34,7 @@ class Factory extends BaseModule
 		$ns = $this->getApplicationNamespace();
 		$classes = $this->getBender()->getClasses();
 		$classes->add('Factory', new PhpClass($ns."Model/Factory/Factory.php"));
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $ns){
+		$this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes, $ns){
 			$object = $table->getObject().'Factory';
 			$classes->add($object, new PhpClass($ns."Model/Factory/{$object}.php"));
 		});
@@ -47,7 +47,7 @@ class Factory extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
 		$files = new FileCollection();
 		$files->append(new File($classes->get('Factory')->getRoute(), $this->getView()->fetch('factory-interface.tpl')));

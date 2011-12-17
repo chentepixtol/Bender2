@@ -35,7 +35,7 @@ class Collection extends BaseModule
 		$classes = $this->getBender()->getClasses();
 		$classes->add('Collection', new PhpClass($ns."Model/Collection/Collection.php"));
 
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $ns){
+		$this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes, $ns){
 			$object = $table->getObject() .'Collection';
 			$classes->add($object, new PhpClass($ns."Model/Collection/{$object}.php"));
 		});
@@ -48,7 +48,7 @@ class Collection extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
 		$files = new FileCollection();
 		$files->append(

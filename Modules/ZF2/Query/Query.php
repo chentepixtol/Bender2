@@ -35,7 +35,7 @@ class Query extends BaseModule
 		$ns = $this->getApplicationNamespace();
 		$classes = $this->getBender()->getClasses();
 		$classes->add('BaseQuery', new PhpClass($ns."Query/BaseQuery.php"));
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $ns){
+		$this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes, $ns){
 			$object = $table->getObject().'Query';
 			$criteria = $table->getObject().'Criteria';
 			$classes->add($object, new PhpClass($ns."Query/{$object}.php"));
@@ -50,7 +50,7 @@ class Query extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
 		$files = new FileCollection();
 		$files->append(new File($classes->get('BaseQuery')->getRoute(), $this->getView()->fetch('base-query.tpl')));

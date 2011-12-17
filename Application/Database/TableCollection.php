@@ -2,6 +2,7 @@
 namespace Application\Database;
 
 use Application\Base\BaseCollection;
+use Application\Config\Configuration;
 
 /**
  *
@@ -18,16 +19,9 @@ class TableCollection extends BaseCollection
 {
 
 	/**
-	 *
-	 * @var TableCollection
-	 */
-	protected $onlyInSchema;
-
-	/**
 	 * @var array
 	 */
 	protected $tablenames = array();
-
 
 	/**
 	 *
@@ -50,15 +44,36 @@ class TableCollection extends BaseCollection
 	 *
 	 * @return Application\Database\TableCollection
 	 */
-	public function onlyInSchema()
+	public function inSchema()
 	{
-		if( null == $this->onlyInSchema ){
-			$this->onlyInSchema = $this->filter(function (Table $table){
+		$collection = $this;
+		return $this->lazyLoad('inSchema', function () use($collection){
+			return $collection->filter(function (Table $table){
 				return $table->inSchema();
 			});
-		}
-		$this->onlyInSchema->rewind();
-		return $this->onlyInSchema;
+		});
 	}
+
+	/**
+	 * @return Application\Database\TableCollection
+	 */
+	public function filterUseForm(){
+		return $this->whereOption(function(Configuration $options){
+			return $options->has('crud') || $options->has('form');
+		});
+	}
+
+	/**
+	 *
+	 * @param Closure $function
+	 * @return Application\Database\TableCollection
+	 */
+	public function whereOption($function){
+		return $this->inSchema()->filter(function(Table $table) use($function){
+			return $function($table->getOptions());
+		});
+	}
+
+
 
 }

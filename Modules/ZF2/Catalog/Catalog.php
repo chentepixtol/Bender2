@@ -40,7 +40,7 @@ class Catalog extends BaseModule
 		}
 
 		$self = $this;
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
+		$this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject() .'Catalog';
 			$classes->add($object, new PhpClass($self->getApplicationNamespace()."Model/Catalog/{$object}.php"));
 		});
@@ -54,7 +54,7 @@ class Catalog extends BaseModule
 	{
 		$classes = $this->getBender()->getClasses();
 
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
 		$files = new FileCollection();
 		foreach ($this->getLibraries() as $object => $data){

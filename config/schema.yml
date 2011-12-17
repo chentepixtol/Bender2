@@ -1,6 +1,8 @@
 schema:
   Person:
     tablename: bender_persons
+    options:
+      form: true
   Post:
     tablename: bender_posts
     options: 
@@ -8,6 +10,10 @@ schema:
   User:
     tablename: bender_users
     extends: Person
+    options:
+      crud: true
   Worker:
     tablename: bender_workers
     extends: Person
+    options:
+      crud: true

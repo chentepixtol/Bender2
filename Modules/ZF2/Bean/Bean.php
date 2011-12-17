@@ -38,7 +38,7 @@ class Bean extends BaseModule
 				->add('AbstractBean', new PhpClass($this->getApplicationNamespace()."Model/Bean/AbstractBean.php"));
 
 		$self = $this;
-		$this->getBender()->getDatabase()->getTables()->onlyInSchema()->each(function (Table $table) use($classes, $self){
+		$this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes, $self){
 			$object = $table->getObject();
 			$classes->add($object, new PhpClass($self->getApplicationNamespace()."Model/Bean/{$object}.php"));
 		});
@@ -51,7 +51,7 @@ class Bean extends BaseModule
 	public function getFiles()
 	{
 		$classes = $this->getBender()->getClasses();
-		$tables = $this->getBender()->getDatabase()->getTables()->onlyInSchema();
+		$tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
 		$files = new FileCollection();
 		$files->append(new File($classes->get('Bean')->getRoute(), $this->getView()->fetch('bean-interface.tpl')));
