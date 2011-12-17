@@ -73,6 +73,39 @@ class BaseCollectionTest extends BaseTest
 	 *
 	 * @test
 	 */
+	public function appendFromArray()
+	{
+		$myCollection = new MyCollection();
+
+		$item1 = new Item(1, 'apple');
+		$item2 = new Item(2, 'orange');
+		$item3 = new Item(3, 'banana');
+		$item4 = new Item(4, 'apple');
+
+		$myCollection->appendFromArray(array($item1, $item2, $item3, $item4));
+
+		$this->assertEquals(4, $myCollection->count());
+		$this->assertEquals(array(1,2,3,4), $myCollection->getPrimaryKeys());
+	}
+
+	/**
+	 *
+	 * @test
+	 */
+	public function lazyLoad()
+	{
+		$myCollection = new MyCollection();
+		$item1 = new Item(1, 'apple');
+		$myCollection->append($item1);
+
+		$this->assertEquals(array('APPLE'), $myCollection->upperCaseNames());
+		$this->assertTrue($myCollection->upperCaseNames() === $myCollection->upperCaseNames());
+	}
+
+	/**
+	 *
+	 * @test
+	 */
 	public function remove()
 	{
 		$myCollection = new MyCollection();

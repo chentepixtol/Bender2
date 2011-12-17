@@ -185,13 +185,6 @@ class DatabaseTest extends BaseTest
 		$this->assertEquals('id_person', "$columnIdPerson");
 		$this->assertEquals('getIdPerson', $columnIdPerson->getter());
 		$this->assertEquals('setIdPerson', $columnIdPerson->setter());
-
-		$cast = $columnIdPerson->cast('php');
-		$this->assertTrue($cast instanceof AbstractCast);
-		$this->assertEquals('php', $cast->getLang());
-		$this->assertEquals('int', $cast->getType());
-		$this->assertEquals('int', "$cast");
-
 	}
 
 	/**
