@@ -1,11 +1,13 @@
 {% include 'header.tpl' %}
 
 {% set BaseQuery = classes.get('BaseQuery') %}
+{% set Storage = classes.get('Storage') %}
 {% set FactoryStorage = classes.get('FactoryStorage') %}
 
 {{ BaseQuery.printNamespace() }}
 
 use Query\Query;
+{{ Storage.printUse() }}
 
 /**
  *
@@ -39,7 +41,15 @@ abstract class {{ BaseQuery }} extends Query
      * @return {{ BaseQuery }}
      */
     public function useMemoryCache(){
-       $this->storage = \{{ FactoryStorage.getFullName() }}::create('memory');
+       $this->setStorage(\{{ FactoryStorage.getFullName() }}::create('memory'));
+       return $this;
+    }
+    
+    /**
+     * @return {{ BaseQuery }}
+     */
+    public function useFileCache(){
+       $this->setStorage(\{{ FactoryStorage.getFullName() }}::create('file'));
        return $this;
     }
 
@@ -96,6 +106,22 @@ abstract class {{ BaseQuery }} extends Query
      */
     public function fetchPairs(){
         return $this->getCatalog()->fetchPairs($this, $this->storage);
+    }
+    
+    /**
+     * @param Storage $storage
+     * @return {{ BaseQuery }}
+     */
+    public function setStorage(Storage $storage){
+        $this->storage = $storage;
+        return $this;
+    }
+    
+    /**
+     * @return Storage
+     */
+    public function getStorage(){
+        return $this->storage;
     }
     
 }

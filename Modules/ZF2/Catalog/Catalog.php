@@ -108,6 +108,12 @@ class Catalog extends BaseModule
 			),'NullStorage' => array(
 				'route' => $ns.'Storage/Null.php',
 				'template' => 'null-storage.tpl',
+			),'FileStorage' => array(
+				'route' => $ns.'Storage/File.php',
+				'template' => 'file-storage.tpl',
+			),'ChainStorage' => array(
+				'route' => $ns.'Storage/Chain.php',
+				'template' => 'chain-storage.tpl',
 			),
 		);
 	}

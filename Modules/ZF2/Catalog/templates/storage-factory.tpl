@@ -3,6 +3,7 @@
 {% set FactoryStorage = classes.get('FactoryStorage') %}
 {% set NullStorage = classes.get('NullStorage') %}
 {% set MemoryStorage = classes.get('MemoryStorage') %}
+{% set FileStorage = classes.get('FileStorage') %}
 
 {{ FactoryStorage.printNamespace() }}
 
@@ -39,6 +40,12 @@ class {{ FactoryStorage }}
         if( is_string($name) && 'memory' == $name ){
             return self::lazyLoad('memory', function(){
                 return new {{ MemoryStorage }}();
+            });
+        }
+        
+        if( is_string($name) && 'file' == $name ){
+            return self::lazyLoad('file', function(){
+                return new {{ FileStorage }}();
             });
         }
         
