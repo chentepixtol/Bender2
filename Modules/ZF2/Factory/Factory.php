@@ -57,7 +57,7 @@ class Factory extends BaseModule
 			$route = $classes->get($table->getObject().'Factory')->getRoute();
 
 			$this->shortcuts($table);
-		  	$this->getView()->fields = $table->getFullColumns();
+		  	//$this->getView()->fields = $table->getFullColumns();
 
 			$files->append(
 				new File($route, $this->getView()->fetch('factory.tpl'))

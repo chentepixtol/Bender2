@@ -1,5 +1,11 @@
 {% include 'header.tpl' %}
-{% set BaseForm = classes.get('BaseForm') %}
+{% set BaseForm = classes.get('BaseForm') %}{% if parent %}{% set parentPrimaryKey = parent.getPrimaryKey() %}{% endif %}
+{% set t2 = '3' %}
+{% set t2 = '3' %}
+{% set t2 = '3' %}
+{% set t2 = '3' %}
+{% set t2 = '3' %}
+{% set t2 = '3' %}
 {{ Form.printNamespace() }}
 
 {{ Validator.printUse() }}
@@ -24,13 +30,15 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
         parent::init();
         $this->validator = new {{ Validator }}();
         $this->filter = new {{ Filter }}();
-        
-{% for field in fields %}
+                
+{% for field in fields.nonPrimaryKeys() %}
+{% if field.getName().toString() != parentPrimaryKey.getName().toString() %}
         $this->init{{ field.getName().toUpperCamelCase() }}Element();
+{% endif %}
 {% endfor %}
     }
         
-{% for field in fields %}
+{% for field in fields.nonPrimaryKeys() %}{% if field.getName().toString() != parentPrimaryKey.getName().toString() %}
 
     /**
      *
@@ -47,6 +55,6 @@ class {{ Form }} extends {% if parent %}{{ classes.get(parent.getObject()~'Form'
         $this->addElement($element);
         $this->elements['{{ field.getName().toUnderscore() }}'] = $element;
     }
-{% endfor %}
+{% endif %}{% endfor %}
 
 }

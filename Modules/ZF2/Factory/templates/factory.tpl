@@ -6,7 +6,7 @@
 {{ classes.get(Bean).printUse() }}
 {% if classes.get('Factory').getNamespace() != Factory.getNamespace() %}{{ classes.get('Factory').printUse() }}{% endif %}
 
-class {{ Factory }} implements {{ classes.get('Factory') }}
+class {{ Factory }}{% if parent %} extends {{ classes.get(parent.getObject()~'Factory') }}{% endif %} implements {{ classes.get('Factory') }}
 {
 
     /**
@@ -18,12 +18,28 @@ class {{ Factory }} implements {{ classes.get('Factory') }}
     public static function createFromArray($fields)
     {
         ${{ bean }} = new {{ Bean }}();
-
-{% for field in fields %}
-        ${{ bean }}->{{ field.setter }}($fields['{{ field }}']);
-{% endfor %}
-
+        self::populate(${{ bean }}, $fields);
+        
         return ${{ bean }};
+    }
+    
+    /**
+     *
+     * @static
+     * @param {{ Bean }} {{ bean }}
+     * @param array $fields
+     */
+    public static function populate({{ Bean }} ${{ bean }}, $fields)
+    {
+{% if parent %}
+        parent::populate(${{ bean }}, $fields);
+{% endif %}
+{% for field in fields %}
+
+        if( isset($fields['{{ field }}']) ){  
+            ${{ bean }}->{{ field.setter }}($fields['{{ field }}']);
+        }        
+{% endfor %}    
     }
 
 }

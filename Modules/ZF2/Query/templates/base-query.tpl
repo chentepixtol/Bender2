@@ -28,6 +28,12 @@ abstract class {{ BaseQuery }} extends Query
      * @return {{ classes.get('Catalog') }}
      */
     abstract protected function getCatalog();
+    
+    /**
+     * @abstract
+     * @return {{ BaseQuery }}
+     */
+    abstract public function primaryKey($value, $comparison = \Query\Criterion::AUTO, $mutatorColumn = null, $mutatorValue = null);
 
     /**
      *
@@ -59,10 +65,7 @@ abstract class {{ BaseQuery }} extends Query
      */
     public function executeOne()
     {
-        $limit = $this->getLimit();
-        $this->setLimit(1);
         ${{ classes.get('Bean').getName().toCamelCase() }} = $this->getCatalog()->getOneByQuery($this, $this->storage);
-        $this->setLimit($limit);
         return ${{ classes.get('Bean').getName().toCamelCase() }};
     }
 
