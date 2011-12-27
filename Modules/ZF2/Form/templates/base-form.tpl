@@ -2,7 +2,7 @@
 {% set BaseForm = classes.get('BaseForm') %}
 {{ BaseForm.printNamespace() }}
 
-use Zend\Form\Form;
+use ZFriendly\Form\Twitter as TwitterForm;
 use Zend\View\PhpRenderer;
 
 /**
@@ -11,7 +11,7 @@ use Zend\View\PhpRenderer;
  * @author chente
  *
  */
-class {{ BaseForm }} extends Form
+class {{ BaseForm }} extends TwitterForm
 {
 
     /**
@@ -33,6 +33,7 @@ class {{ BaseForm }} extends Form
      * init
      */
     public function init(){
+        parent::init();
         $this->setView(new PhpRenderer());
     }
     
