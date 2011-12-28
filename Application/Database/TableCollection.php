@@ -64,6 +64,15 @@ class TableCollection extends BaseCollection
 	}
 
 	/**
+	 * @return Application\Database\TableCollection
+	 */
+	public function filterUseCRUD(){
+	    return $this->whereOption(function(Configuration $options){
+	        return $options->has('crud');
+	    });
+	}
+
+	/**
 	 *
 	 * @param Closure $function
 	 * @return Application\Database\TableCollection

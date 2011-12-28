@@ -13,7 +13,7 @@ settings:
   alias:
     zf2:
       project: ZF2
-      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Unit, Form ]
+      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Unit, Form, CRUD]
     schema:
       project: Core
       modules: [ Schema ]

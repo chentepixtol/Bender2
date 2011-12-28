@@ -20,13 +20,14 @@ abstract class BaseModule extends AbstractModule
 		$this->getView()->table = $table;
 		$this->getView()->parent = $table->getParent();
 		$this->getView()->fields = $table->getColumns();
+		$this->getView()->fullFields = $table->getFullColumns();
 		$this->getView()->foreignKeys = $table->getForeignKeys();
 		$this->getView()->primaryKey = $table->getPrimaryKey();
 		$this->getView()->Bean = $bean = $classes->get($table->getObject()->toString());
 		$this->getView()->bean = $bean->getName()->toCamelCase();
 
 		$sufixes = array('Collection', 'Factory', 'Catalog', 'Exception',
-				         'Query', 'Criteria', 'Form', 'Validator', 'Filter');
+				         'Query', 'Criteria', 'Form', 'Validator', 'Filter', 'Controller');
 		foreach( $sufixes as $suffix ){
 			$this->addShorcutBySuffix($table, $suffix);
 		}

@@ -92,7 +92,12 @@ class String
 			throw new \InvalidArgumentException("El metodo ". $internalMethod. " no existe");
 		}
 
-		return $this->{$internalMethod}();
+		$string = $this->{$internalMethod}();
+		if( is_array($args) && in_array('newString', $args) ){
+		    $string = new String($string, $method);
+		}
+
+		return $string;
 	}
 
     /**
@@ -292,6 +297,15 @@ class String
     protected function slugToUnderScore()
     {
       return str_replace('-','_',$this->string);
+    }
+
+    /**
+     *
+     * @param string $search
+     * @param string $replace
+     */
+    public function replace($search, $replace){
+        return str_replace($search, $replace, $this->toString());
     }
 
     /**
