@@ -65,18 +65,8 @@ abstract class {{ BaseQuery }} extends Query
      */
     public function executeOne()
     {
-        ${{ classes.get('Bean').getName().toCamelCase() }} = $this->getCatalog()->getOneByQuery($this, $this->storage);
+        ${{ classes.get('Bean').getName().toCamelCase() }} = $this->getCatalog()->getOneByQuery($this, $this->getStorage());
         return ${{ classes.get('Bean').getName().toCamelCase() }};
-    }
-
-    /**
-     *
-     * Filter the request
-     * @return {{ BaseQuery }}
-     */
-    public function filter($params){
-        $this->whereCriteria->filter($params);
-        return $this;
     }
 
     /**
@@ -84,7 +74,7 @@ abstract class {{ BaseQuery }} extends Query
      * @return array
      */
     public function fetchCol(){
-        return $this->getCatalog()->fetchCol($this, $this->storage);
+        return $this->getCatalog()->fetchCol($this, $this->getStorage());
     }
 
     /**
@@ -92,7 +82,7 @@ abstract class {{ BaseQuery }} extends Query
      * @return array
      */
     public function fetchAll(){
-        return $this->getCatalog()->fetchAll($this, $this->storage);
+        return $this->getCatalog()->fetchAll($this, $this->getStorage());
     }
 
     /**
@@ -100,7 +90,7 @@ abstract class {{ BaseQuery }} extends Query
      * @return mixed
      */
     public function fetchOne(){
-        return $this->getCatalog()->fetchOne($this, $this->storage);
+        return $this->getCatalog()->fetchOne($this, $this->getStorage());
     }
 
     /**
@@ -108,7 +98,7 @@ abstract class {{ BaseQuery }} extends Query
      * @return array
      */
     public function fetchPairs(){
-        return $this->getCatalog()->fetchPairs($this, $this->storage);
+        return $this->getCatalog()->fetchPairs($this, $this->getStorage());
     }
     
     /**

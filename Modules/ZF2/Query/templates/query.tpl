@@ -58,14 +58,6 @@ class {{ Query }} extends{% if parentQuery %} {{ parentQuery}}{% else %} {{ Base
 
     /**
      * (non-PHPdoc)
-     * @see Query.Query::createCriteria()
-     */
-    protected function createCriteria(){
-        return new \{{ Criteria.getFullName() }}($this);
-    }
-
-    /**
-     * (non-PHPdoc)
      * @see {{ classes.get('BaseQuery') }}::getCatalog()
      */
     protected function getCatalog(){

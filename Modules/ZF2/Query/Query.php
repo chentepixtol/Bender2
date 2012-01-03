@@ -37,9 +37,9 @@ class Query extends BaseModule
         $classes->add('BaseQuery', new PhpClass($ns."Query/BaseQuery.php"));
         $this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes, $ns){
             $object = $table->getObject().'Query';
-            $criteria = $table->getObject().'Criteria';
+            $builder = $table->getObject().'QueryBuilder';
             $classes->add($object, new PhpClass($ns."Query/{$object}.php"));
-            $classes->add($criteria, new PhpClass($ns."Query/Criteria/{$criteria}.php"));
+            $classes->add($builder, new PhpClass($ns."Query/Builder/{$builder}.php"));
         });
     }
 
@@ -50,29 +50,19 @@ class Query extends BaseModule
     public function getFiles()
     {
         $classes = $this->getBender()->getClasses();
-        $tables = $this->getBender()->getDatabase()->getTables()->inSchema();
 
         $files = new FileCollection();
         $files->append(new File($classes->get('BaseQuery')->getRoute(), $this->getView()->fetch('base-query.tpl')));
-        while ( $tables->valid() )
-        {
-            $table = $tables->read();
-            $this->shortcuts($table);
-            $content = $this->getView()->fetch('query.tpl');
-            $files->append(
-                new File($classes->get($table->getObject().'Query')->getRoute(), $content)
-            );
-        }
 
-        $tables->rewind();
+        $tables = $this->getBender()->getDatabase()->getTables()->inSchema();
         while ( $tables->valid() )
         {
             $table = $tables->read();
             $this->shortcuts($table);
-            $content = $this->getView()->fetch('criteria.tpl');
-            $files->append(
-                new File($classes->get($table->getObject().'Criteria')->getRoute(), $content)
-            );
+            $files->appendFromArray(array(
+                new File($classes->get($table->getObject().'QueryBuilder')->getRoute(), $this->getView()->fetch('builder.tpl')),
+                new File($classes->get($table->getObject().'Query')->getRoute(), $this->getView()->fetch('query.tpl')),
+            ));
         }
 
         return $files;
