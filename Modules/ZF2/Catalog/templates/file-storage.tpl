@@ -4,7 +4,7 @@
 
 {{ FileStorage.printNamespace() }}
 
-use Zend\Cache\Cache;
+use Zend\Cache\StorageFactory as ZendStorageFactory;
 
 /**
  *
@@ -24,27 +24,25 @@ class {{ FileStorage }} implements {{ Storage }}
     /**
      * @var array
      */
-    private $defaultFrontendOptions = array(
-        'lifetime' => 86400,
-        'automatic_serialization' => true,
-    );
-    
-    /**
-     * @var array
-     */
-    private $defaultBackendOptions = array(
+    private $options = array(
+        'ttl' => 86400,
         'cache_dir' => '../cache/',
     );
     
     /**
-     * @param array $frontendOptions
-     * @param array $backendOptions
+     * @param array $options
      */
-    public function __construct($frontendOptions = array(), $backendOptions = array())
+    public function __construct($options = array())
     {
-        $frontendOptions = array_merge($this->defaultFrontendOptions, $frontendOptions); 
-        $backendOptions = array_merge($this->defaultBackendOptions, $backendOptions);
-        $this->zendCache = Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+        $this->options = array_merge($this->options, $options); 
+        
+        $this->zendCache = ZendStorageFactory::factory(array(
+            'adapter' => array(
+                'name' => 'filesystem',
+                'options' => $this->options,
+            ),
+            'plugins' => array('serializer'),
+        ));
     }
 
     /**
