@@ -27,8 +27,7 @@ abstract class BaseModule extends AbstractModule
         $this->getView()->bean = $bean->getName()->toCamelCase();
 
         $sufixes = array('Collection', 'Factory', 'Catalog', 'Exception',
-                         'Query', 'Criteria', 'Form', 'Validator', 'Filter',
-                         'Controller', 'QueryBuilder');
+                         'Query', 'Form', 'Validator', 'Filter', 'Controller');
         foreach( $sufixes as $suffix ){
             $this->addShorcutBySuffix($table, $suffix);
         }

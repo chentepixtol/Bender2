@@ -39,7 +39,6 @@ class Query extends BaseModule
             $object = $table->getObject().'Query';
             $builder = $table->getObject().'QueryBuilder';
             $classes->add($object, new PhpClass($ns."Query/{$object}.php"));
-            $classes->add($builder, new PhpClass($ns."Query/Builder/{$builder}.php"));
         });
     }
 
@@ -60,7 +59,6 @@ class Query extends BaseModule
             $table = $tables->read();
             $this->shortcuts($table);
             $files->appendFromArray(array(
-                new File($classes->get($table->getObject().'QueryBuilder')->getRoute(), $this->getView()->fetch('builder.tpl')),
                 new File($classes->get($table->getObject().'Query')->getRoute(), $this->getView()->fetch('query.tpl')),
             ));
         }
