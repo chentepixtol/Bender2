@@ -1,14 +1,14 @@
 {
     "require": {
-        "symfony/class-loader": "2.0.7",
-        "symfony/dependency-injection": "2.0.7",
-        "symfony/config":  "2.0.7",
-        "symfony/console": "2.0.7",
-        "symfony/event-dispatcher": "2.0.7",
-        "symfony/finder":  "2.0.7",
-        "symfony/yaml":    "2.0.7",
-        "doctrine/dbal":   "2.1.5",
-        "doctrine/common": "2.1.4",
-        "twig/twig":       "1.5.0"
+        "symfony/class-loader": "2.0.9",
+        "symfony/dependency-injection": "2.0.9",
+        "symfony/config":  "2.0.9",
+        "symfony/console": "2.0.9",
+        "symfony/event-dispatcher": "2.0.9",
+        "symfony/finder":  "2.0.9",
+        "symfony/yaml":    "2.0.9",
+        "doctrine/dbal":   "2.2.0-BETA2",
+        "doctrine/common": "2.2.0-RC4",
+        "twig/twig":       "1.5.1"
     }
 }
