@@ -25,6 +25,7 @@ abstract class BaseModule extends AbstractModule
         $this->getView()->primaryKey = $table->getPrimaryKey();
         $this->getView()->Bean = $bean = $classes->get($table->getObject()->toString());
         $this->getView()->bean = $bean->getName()->toCamelCase();
+        $this->getView()->isZF2 = $this->isZF2();
 
         $sufixes = array('Collection', 'Factory', 'Catalog', 'Exception',
                          'Query', 'Form', 'Validator', 'Filter', 'Controller');
@@ -73,7 +74,22 @@ abstract class BaseModule extends AbstractModule
     /**
      * @return \Application\Config\Configuration
      */
-    public function getProjectOptions(){
+    protected function getProjectOptions(){
         return $this->getBender()->getSettings()->get('ZF');
     }
+
+    /**
+     * @return int
+     */
+    protected function getZFVersion(){
+        return $this->getProjectOptions()->get('zf_version', 1);
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function isZF2(){
+        return $this->getZFVersion() == 2;
+    }
+
 }

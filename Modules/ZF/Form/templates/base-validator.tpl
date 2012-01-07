@@ -49,7 +49,11 @@ class {{ BaseValidator }}
     
     /**
      * @param string $fieldName
-     * @return Zend\Validator\ValidatorChain
+{%if isZF2 %}
+     * @return \Zend\Validator\ValidatorChain
+{% else %}
+     * @return \Zend_Validate
+{% endif %}
      */
     public function getFor($fieldName){
          if( !isset($this->elements[$fieldName]) ){

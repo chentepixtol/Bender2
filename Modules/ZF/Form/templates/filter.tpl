@@ -2,7 +2,11 @@
 {% set BaseFilter = classes.get('BaseFilter') %}
 {{ Filter.printNamespace() }}
 
-use Zend\Filter\FilterChain;
+{%if isZF2 %}
+use Zend\Filter\FilterChain as ZendFilter;
+{% else %}
+use Zend_Filter as ZendFilter;
+{% endif %}
 
 /**
  *
@@ -30,7 +34,7 @@ class {{ Filter }} extends {% if parent %}{{ classes.get(parent.getObject()~'Fil
      */
     protected function init{{ field.getName().toUpperCamelCase }}Filter()
     {
-        $filter = new FilterChain();
+        $filter = new ZendFilter();
         $this->elements['{{ field.getName() }}'] = $filter;
     }
 {% endfor %}

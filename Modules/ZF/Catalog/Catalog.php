@@ -110,7 +110,7 @@ class Catalog extends BaseModule
                 'template' => 'null-storage.tpl',
             ),'FileStorage' => array(
                 'route' => $ns.'Storage/File.php',
-                'template' => 'file-storage.tpl',
+                'template' => $this->isZF2() ? 'file-storage.zf2.tpl' : 'file-storage.tpl',
             ),'ChainStorage' => array(
                 'route' => $ns.'Storage/Chain.php',
                 'template' => 'chain-storage.tpl',

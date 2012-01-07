@@ -2,7 +2,12 @@
 {% set DBAO = classes.get('DBAO') %}
 {{ DBAO.printNamespace() }}
 
-use Zend\Db\Db;
+{%if isZF2 %}
+use Zend\Db\Db as ZendDb;
+{% else %}
+use Zend_Db as ZendDb;
+{% endif %}
+
 
 /**
  * Clase que representa la abstraccion de nuestro objeto Zend_Db
@@ -17,7 +22,11 @@ class DBAO
     public static $config = null;
 
     /**
-     * @var Zend\Db\Adapter\AbstractAdapter
+{%if isZF2 %}
+     * @var \Zend\Db\Adapter\AbstractAdapter
+{% else %}
+     * @var \Zend_Db_Adapter_Abstract
+{% endif %}
      */
     protected static $dbAdapter  = null;
     
@@ -30,7 +39,11 @@ class DBAO
 
     /**
      * Metodo para obtener la Connection
-     * @return Zend\Db\Adapter\AbstractAdapter
+{%if isZF2 %}
+     * @return \Zend\Db\Adapter\AbstractAdapter
+{% else %}
+     * @return \Zend_Db_Adapter_Abstract
+{% endif %}
      */
     public static function getDbAdapter()
     {
@@ -39,7 +52,7 @@ class DBAO
         }
 
         if ( !isset(self::$dbAdapter) ){
-            self::$dbAdapter = Db::factory(self::$config);
+            self::$dbAdapter = ZendDb::factory(self::$config);
         }
 
         return self::$dbAdapter;

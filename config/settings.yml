@@ -11,7 +11,7 @@ settings:
     author:   chente
   ZF: 
     application_namespace: Application 
-    zf_version: 1 
+    zf_version: 1
   alias:
     zf:
       project: ZF

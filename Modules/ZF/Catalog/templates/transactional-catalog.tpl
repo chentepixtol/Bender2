@@ -30,7 +30,11 @@ class {{ TransactionalCatalog }} extends {{ Singleton }}
 
     /**
      *
-     * @return Zend_Db_Adapter_Abstract
+{%if isZF2 %}
+     * @return \Zend\Db\Adapter\AbstractAdapter
+{% else %}
+     * @return \Zend_Db_Adapter_Abstract
+{% endif %}
      */
     public function getDb()
     {

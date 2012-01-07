@@ -2,7 +2,12 @@
 {% set BaseValidator = classes.get('BaseValidator') %}
 {{ Validator.printNamespace() }}
 
-use Zend\Validator\ValidatorChain;
+
+{%if isZF2 %}
+use Zend\Validator\ValidatorChain as ZendValidator;
+{% else %}
+use Zend_Validate as ZendValidator;
+{% endif %}
 
 /**
  *
@@ -30,7 +35,7 @@ class {{ Validator }} extends {% if parent %}{{ classes.get(parent.getObject()~'
      */
     protected function init{{ field.getName().toUpperCamelCase }}Validator()
     {
-        $validator = new ValidatorChain();
+        $validator = new ZendValidator();
         $this->elements['{{ field.getName() }}'] = $validator;
     }
 {% endfor %}

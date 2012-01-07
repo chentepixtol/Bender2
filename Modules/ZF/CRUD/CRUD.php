@@ -57,9 +57,9 @@ class CRUD extends BaseModule
             $controllerClass = $classes->get($table->getObject().'Controller');
             $tplDirectory = 'views/'.str_replace('-controller', '', $controllerClass->getName()->toSlug());
             $files->appendFromArray(array(
-                new File($controllerClass->getRoute(), $this->getView()->fetch('controller.tpl')),
-                new File($tplDirectory.'/list.tpl', $this->getView()->fetch('list.tpl')),
-                new File($tplDirectory.'/new.tpl', $this->getView()->fetch('new.tpl')),
+                new File($controllerClass->getRoute(), $this->getView()->fetch('controller.zf2.tpl')),
+                new File($tplDirectory.'/list.tpl', $this->getView()->fetch('list.zf2.tpl')),
+                new File($tplDirectory.'/new.tpl', $this->getView()->fetch('new.zf2.tpl')),
             ));
         }
 

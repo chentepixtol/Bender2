@@ -38,7 +38,11 @@ class {{ BaseFilter }}
     
      /**
      * @param string $fieldName
-     * @return Zend\Validator\ValidatorChain
+{%if isZF2 %}
+     * @return \Zend\Filter\FilterChain
+{% else %}
+     * @return \Zend_Filter
+{% endif %}
      */
     public function getFor($fieldName){
          if( !isset($this->elements[$fieldName]) ){

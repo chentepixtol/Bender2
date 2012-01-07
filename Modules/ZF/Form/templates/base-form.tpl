@@ -3,7 +3,12 @@
 {{ BaseForm.printNamespace() }}
 
 use ZFriendly\Form\Twitter as TwitterForm;
-use Zend\View\PhpRenderer;
+{% if isZF2 %}
+use Zend\View\PhpRenderer as ZendView;
+{% else %}
+use Zend_View as ZendView;
+{% endif %}
+
 
 /**
  *
@@ -34,12 +39,16 @@ class {{ BaseForm }} extends TwitterForm
      */
     public function init(){
         parent::init();
-        $this->setView(new PhpRenderer());
+        $this->setView(new ZendView());
     }
     
     /**
      * @param string $fieldName
-     * @return Zend\Form\Element
+{% if isZF2 %}
+     * @return \Zend\Form\Element
+{% else %}
+     * @return \Zend_Form_Element
+{% endif %}
      */
     public function getFor($fieldName){
          if( !isset($this->elements[$fieldName]) ){
