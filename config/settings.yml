@@ -10,7 +10,7 @@ settings:
   options:
     author:   chente
   ZF: 
-    application_namespace: App 
+    application_namespace: Application 
     zf_version: 1 
   alias:
     zf:
