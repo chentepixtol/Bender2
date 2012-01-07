@@ -15,19 +15,19 @@ use Application\Base\BaseCollection;
  */
 class MyCollection extends BaseCollection
 {
-	/**
-	 *
-	 */
-	public function upperCaseNames(){
-		$collection = $this;
-		return $this->lazyLoad('upperCaseNames', function() use($collection){
-			$array = array();
-			while ($collection->valid()) {
-				$item = $collection->read();
-				$array[] = strtoupper($item->getValue());
-			}
-			return $array;
-		});
-	}
+    /**
+     *
+     */
+    public function upperCaseNames(){
+        $collection = $this;
+        return $this->lazyLoad('upperCaseNames', function() use($collection){
+            $array = array();
+            while ($collection->valid()) {
+                $item = $collection->read();
+                $array[] = strtoupper($item->getValue());
+            }
+            return $array;
+        });
+    }
 
 }

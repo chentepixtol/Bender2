@@ -16,11 +16,11 @@ use Application\Event\Event;
 class CLI extends Application
 {
 
-	/**
-	 *
-	 * @var Symfony\Component\EventDispatcher\EventDispatcher
-	 */
-	protected $eventDispatcher;
+    /**
+     *
+     * @var Symfony\Component\EventDispatcher\EventDispatcher
+     */
+    protected $eventDispatcher;
 
     /**
      *
@@ -41,8 +41,8 @@ class CLI extends Application
     private function loadCommands()
     {
         $this->addCommands(array(
-        	new Create(),
-        	new Cache(),
+            new Create(),
+            new Cache(),
         ));
     }
 }

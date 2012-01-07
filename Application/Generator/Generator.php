@@ -18,121 +18,121 @@ use Application\Generator\File\Writer;
 class Generator
 {
 
-	/**
-	 *
-	 * @var Application\Generator\Module\ModuleCollection
-	 */
-	protected $modules;
+    /**
+     *
+     * @var Application\Generator\Module\ModuleCollection
+     */
+    protected $modules;
 
-	/**
-	 *
-	 *
-	 * @var Application\Generator\File\Writer
-	 */
-	protected $writer;
+    /**
+     *
+     *
+     * @var Application\Generator\File\Writer
+     */
+    protected $writer;
 
-	/**
-	 *
-	 *
-	 */
-	public function __construct(){
-		$this->modules = new ModuleCollection();
-		$encoding = $this->getBender()->getSettings()->getEnconding();
-		$this->writer = new Writer($encoding);
-	}
+    /**
+     *
+     *
+     */
+    public function __construct(){
+        $this->modules = new ModuleCollection();
+        $encoding = $this->getBender()->getSettings()->getEnconding();
+        $this->writer = new Writer($encoding);
+    }
 
-	/**
-	 *
-	 *
-	 * @param Module $module
-	 */
-	public function generate()
-	{
-		$this->initModules();
-		$this->generateFiles();
-	}
+    /**
+     *
+     *
+     * @param Module $module
+     */
+    public function generate()
+    {
+        $this->initModules();
+        $this->generateFiles();
+    }
 
-	/**
-	 *
-	 * generate Files
-	 */
-	protected function generateFiles()
-	{
-		$this->modules->rewind();
-		while ( $this->modules->valid() )
-		{
-			$module = $this->modules->read();
+    /**
+     *
+     * generate Files
+     */
+    protected function generateFiles()
+    {
+        $this->modules->rewind();
+        while ( $this->modules->valid() )
+        {
+            $module = $this->modules->read();
 
-			$files = $module->getFiles();
-			$this->getBender()->getEventDispatcher()->dispatch(Event::SAVE_FILES, new Event(array(
-				'module' => $module,
-			)));
+            $files = $module->getFiles();
+            $this->getBender()->getEventDispatcher()->dispatch(Event::SAVE_FILES, new Event(array(
+                'module' => $module,
+            )));
 
-			while ( $files->valid() )
-			{
-				$file = $files->read();
+            while ( $files->valid() )
+            {
+                $file = $files->read();
 
-				$filename = $this->getBender()->getConfiguration()->get('project', 'default') .'/'. $file->getFullpath();
-				$fullpath =  $this->getBender()->getSettings()->getOutputDir() .'/' . $filename;
+                $filename = $this->getBender()->getConfiguration()->get('project', 'default') .'/'. $file->getFullpath();
+                $fullpath =  $this->getBender()->getSettings()->getOutputDir() .'/' . $filename;
 
-				$this->writer->save($fullpath, $file->getContent());
-				$this->getBender()->getEventDispatcher()->dispatch(Event::SAVE_FILE, new Event(array(
-					'module' => $module,
-					'fullpath' => $fullpath,
-					'filename' => $filename,
-				)));
-			}
-		}
-		$this->modules->rewind();
-	}
+                $this->writer->save($fullpath, $file->getContent());
+                $this->getBender()->getEventDispatcher()->dispatch(Event::SAVE_FILE, new Event(array(
+                    'module' => $module,
+                    'fullpath' => $fullpath,
+                    'filename' => $filename,
+                )));
+            }
+        }
+        $this->modules->rewind();
+    }
 
-	/**
-	 *
-	 * init
-	 */
-	protected function initModules()
-	{
-		$this->modules->rewind();
-		while ( $this->modules->valid() )
-		{
-			$module = $this->modules->read();
-			$module->init();
-		}
-		$this->modules->rewind();
-	}
+    /**
+     *
+     * init
+     */
+    protected function initModules()
+    {
+        $this->modules->rewind();
+        while ( $this->modules->valid() )
+        {
+            $module = $this->modules->read();
+            $module->init();
+        }
+        $this->modules->rewind();
+    }
 
-	/**
-	 *
-	 *
-	 * @param Module $module
-	 */
-	public function addModule(Module $module){
-		$this->modules->append($module);
-	}
+    /**
+     *
+     *
+     * @param Module $module
+     */
+    public function addModule(Module $module){
+        $this->modules->append($module);
+    }
 
-	/**
-	 *
-	 * @return Application\Generator\Module\ModuleCollection
-	 */
-	public function getModules(){
-		$this->modules->rewind();
-		return $this->modules;
-	}
+    /**
+     *
+     * @return Application\Generator\Module\ModuleCollection
+     */
+    public function getModules(){
+        $this->modules->rewind();
+        return $this->modules;
+    }
 
-	/**
-	 *
-	 * @param Application\Generator\Module\ModuleCollection $modules
-	 */
-	public function setModules(ModuleCollection $modules){
-		$this->modules = $modules;
-	}
+    /**
+     *
+     * @param Application\Generator\Module\ModuleCollection $modules
+     */
+    public function setModules(ModuleCollection $modules){
+        $this->modules = $modules;
+    }
 
-	/**
-	 *
-	 * @return Application\Bender\Bender
-	 */
-	public function getBender(){
-		return Bender::getInstance();
-	}
+    /**
+     *
+     * @return Application\Bender\Bender
+     */
+    public function getBender(){
+        return Bender::getInstance();
+    }
 }
 

@@ -12,12 +12,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class EmptySubscriber implements EventSubscriberInterface
 {
 
-	/**
-	 *
-	 * @return array
-	 */
-	public static function getSubscribedEvents(){
-		return array();
-	}
+    /**
+     *
+     * @return array
+     */
+    public static function getSubscribedEvents(){
+        return array();
+    }
 
 }

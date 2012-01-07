@@ -11,10 +11,10 @@ namespace Application\Base;
 interface Collectable
 {
 
-	/**
-	 *
-	 * @return int
-	 */
-	public function getIndex();
+    /**
+     *
+     * @return int
+     */
+    public function getIndex();
 
 }

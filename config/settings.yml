@@ -9,11 +9,13 @@ settings:
     driver:   pdo_mysql 
   options:
     author:   chente
-    applicationNamespace: Application
+  ZF: 
+    application_namespace: App 
+    zf_version: 1 
   alias:
-    zf2:
-      project: ZF2
-      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Unit, Form, CRUD]
+    zf:
+      project: ZF
+      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Unit, Form, CRUD]       
     schema:
       project: Core
       modules: [ Schema ]

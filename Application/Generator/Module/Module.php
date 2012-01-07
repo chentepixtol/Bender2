@@ -12,35 +12,35 @@ use Application\Base\Collectable;
 interface Module extends Collectable
 {
 
-	/**
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     *
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 *
-	 * @return Application\Generator\File\FileCollection
-	 */
-	public function getFiles();
+    /**
+     *
+     * @return Application\Generator\File\FileCollection
+     */
+    public function getFiles();
 
-	/**
-	 *
-	 * @return array
-	 */
-	public function getTemplateDirs();
+    /**
+     *
+     * @return array
+     */
+    public function getTemplateDirs();
 
-	/**
-	 *
-	 * @return Symfony\Component\EventDispatcher\EventSubscriberInterface
-	 */
-	public function getSubscriber();
+    /**
+     *
+     * @return Symfony\Component\EventDispatcher\EventSubscriberInterface
+     */
+    public function getSubscriber();
 
-	/**
-	 *
-	 * Initialization
-	 */
-	public function init();
+    /**
+     *
+     * Initialization
+     */
+    public function init();
 
 }
 

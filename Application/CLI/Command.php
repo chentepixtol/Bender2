@@ -12,12 +12,12 @@ use Application\Bender\Bender;
 abstract class Command extends \Symfony\Component\Console\Command\Command
 {
 
-	/**
-	 *
-	 * @return Application\Bender\Bender
-	 */
-	public function getBender(){
-		return Bender::getInstance();
-	}
+    /**
+     *
+     * @return Application\Bender\Bender
+     */
+    public function getBender(){
+        return Bender::getInstance();
+    }
 
 }

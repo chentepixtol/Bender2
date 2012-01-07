@@ -11,11 +11,11 @@ namespace Application\Base;
 abstract class Singleton
 {
 
-	/**
-	 *
-	 *
-	 * @var unknown_type
-	 */
+    /**
+     *
+     *
+     * @var unknown_type
+     */
     private static $instances = array();
 
     /**

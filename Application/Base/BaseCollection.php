@@ -10,11 +10,11 @@ namespace Application\Base;
 abstract class BaseCollection extends \ArrayIterator
 {
 
-	/**
-	 *
-	 * @var array
-	 */
-	protected $properties = array();
+    /**
+     *
+     * @var array
+     */
+    protected $properties = array();
 
     /**
      *
@@ -22,7 +22,7 @@ abstract class BaseCollection extends \ArrayIterator
      * @return BaseCollection
      */
     protected function makeColletion(){
-    	return new static();
+        return new static();
     }
 
     /**
@@ -32,9 +32,9 @@ abstract class BaseCollection extends \ArrayIterator
      */
     protected function validate($object)
     {
-		if( !($object instanceof Collectable) ){
-			throw new \InvalidArgumentException("Debe de cumplir con la Interface Collectable");
-		}
+        if( !($object instanceof Collectable) ){
+            throw new \InvalidArgumentException("Debe de cumplir con la Interface Collectable");
+        }
     }
 
     /**
@@ -43,7 +43,7 @@ abstract class BaseCollection extends \ArrayIterator
      */
     public function append($object)
     {
-    	$this->validate($object);
+        $this->validate($object);
         parent::offsetSet($object->getIndex(), $object);
         $this->rewind();
     }
@@ -54,9 +54,9 @@ abstract class BaseCollection extends \ArrayIterator
      * @param array $objects
      */
     public function appendFromArray($objects){
-    	foreach ($objects as $object){
-    		$this->append($object);
-    	}
+        foreach ($objects as $object){
+            $this->append($object);
+        }
     }
 
     /**
@@ -202,7 +202,7 @@ abstract class BaseCollection extends \ArrayIterator
      */
     public function each($closure)
     {
-    	$this->rewind();
+        $this->rewind();
         while( $this->valid() )
         {
             $object = $this->read();
@@ -218,13 +218,13 @@ abstract class BaseCollection extends \ArrayIterator
      */
     public function filter($closure)
     {
-    	$baseColletion = $this->makeColletion();
-    	$this->rewind();
+        $baseColletion = $this->makeColletion();
+        $this->rewind();
         while( $this->valid() )
         {
             $object = $this->read();
             if( $closure($object) ){
-            	$baseColletion->append($object);
+                $baseColletion->append($object);
             }
         }
         $this->rewind();
@@ -240,10 +240,10 @@ abstract class BaseCollection extends \ArrayIterator
      */
     protected function lazyLoad($property, $function)
     {
-    	if( !array_key_exists($property, $this->properties) ){
-    		$this->properties[$property] = $function();
-    	}
-    	return $this->properties[$property];
+        if( !array_key_exists($property, $this->properties) ){
+            $this->properties[$property] = $function();
+        }
+        return $this->properties[$property];
     }
 
 }

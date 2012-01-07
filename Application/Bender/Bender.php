@@ -32,168 +32,171 @@ require_once 'Application/Base/Singleton.php';
 final class Bender extends Singleton
 {
 
-	/**
-	 *
-	 * @var Application\Bender\View
-	 */
-	protected $view;
+    /**
+     *
+     * @var Application\Bender\View
+     */
+    protected $view;
 
-	/**
-	 *
-	 * @var Application\Config\Schema
-	 */
-	protected $schema;
+    /**
+     *
+     * @var Application\Config\Schema
+     */
+    protected $schema;
 
-	/**
-	 *
-	 * @var Application\Generator\Module\ModuleCollection
-	 */
-	protected $modules;
+    /**
+     *
+     * @var Application\Generator\Module\ModuleCollection
+     */
+    protected $modules;
 
-	/**
-	 *
-	 * @var Application\Config\Settings
-	 */
-	protected $settings;
+    /**
+     *
+     * @var Application\Config\Settings
+     */
+    protected $settings;
 
-	/**
-	 *
-	 * Container Dependency Injection
-	 * @var Symfony\Component\DependencyInjection\Container
-	 */
-	protected $container;
+    /**
+     *
+     * Container Dependency Injection
+     * @var Symfony\Component\DependencyInjection\Container
+     */
+    protected $container;
 
-	/**
-	 *
-	 * Load Dependecy Injection Container
-	 * @return Application\Bender\Bender
-	 */
-	public function loadContainer($services)
-	{
-		$this->container = new ContainerBuilder();
-		$loader = new XmlFileLoader($this->container, new FileLocator(realpath('.')));
-		$loader->load($services);
+    /**
+     *
+     * Load Dependecy Injection Container
+     * @return Application\Bender\Bender
+     */
+    public function loadContainer($services)
+    {
+        $this->container = new ContainerBuilder();
+        $loader = new XmlFileLoader($this->container, new FileLocator(realpath('.')));
+        $loader->load($services);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 *
-	 * @return Doctrine\DBAL\Connection
-	 */
-	public function getConnection()
-	{
-		return $this->getContainer()->get('connectionHolder')->getConnection();
-	}
+    /**
+     *
+     * @return Doctrine\DBAL\Connection
+     */
+    public function getConnection()
+    {
+        return $this->getContainer()->get('connectionHolder')->getConnection();
+    }
 
-	/**
-	 *
-	 * @return Application\Database\Database
-	 */
-	public function getDatabase()
-	{
-		return $this->getContainer()->get('databaseBuilder')->build();
-	}
+    /**
+     *
+     * @return Application\Database\Database
+     */
+    public function getDatabase()
+    {
+        return $this->getContainer()->get('databaseBuilder')->build();
+    }
 
-	/**
-	 * @return Application\Config\Configuration
-	 */
-	public function getConfiguration()
-	{
-		return $this->getContainer()->get('configuration');
-	}
+    /**
+     * @return Application\Config\Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->getContainer()->get('configuration');
+    }
 
-	/**
-	 *
-	 * @return Application\Config\Settings
-	 */
-	public function getSettings()
-	{
-		if( null == $this->settings ){
-			$this->settings = $this->getContainer()->get('settings');
-			$this->getEventDispatcher()->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
-		}
-		return $this->settings;
-	}
+    /**
+     *
+     * @return Application\Config\Settings
+     */
+    public function getSettings()
+    {
+        if( null == $this->settings ){
+            $this->settings = $this->getContainer()->get('settings');
+            $this->getEventDispatcher()->dispatch(Event::LOAD_SETTINGS, new Event(array('settings' => $this->settings)));
+        }
+        return $this->settings;
+    }
 
-	/**
-	 *
-	 * @return Application\Config\Schema
-	 */
-	public function getSchema()
-	{
-		if( null == $this->schema ){
-			$this->schema = $this->getContainer()->get('schema');
-			$this->getEventDispatcher()->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
-		}
-		return $this->schema;
-	}
+    /**
+     *
+     * @return Application\Config\Schema
+     */
+    public function getSchema()
+    {
+        if( null == $this->schema ){
+            $this->schema = $this->getContainer()->get('schema');
+            $this->getEventDispatcher()->dispatch(Event::LOAD_SCHEMA, new Event(array('schema' => $this->schema)));
+        }
+        return $this->schema;
+    }
 
-	/**
-	 *
-	 * @return Application\CLI\CLI
-	 */
-	public function getCLI()
-	{
-		return $this->getContainer()->get('cli');
-	}
+    /**
+     *
+     * @return Application\CLI\CLI
+     */
+    public function getCLI()
+    {
+        return $this->getContainer()->get('cli');
+    }
 
-	/**
-	 *
-	 * @return Symfony\Component\EventDispatcher\EventDispatcher
-	 */
-	public function getEventDispatcher()
-	{
-		return $this->getContainer()->get('eventDispatcher');
-	}
+    /**
+     *
+     * @return Symfony\Component\EventDispatcher\EventDispatcher
+     */
+    public function getEventDispatcher()
+    {
+        return $this->getContainer()->get('eventDispatcher');
+    }
 
-	/**
-	 *
-	 * Symfony\Component\DependencyInjection\Container;
-	 */
-	public function getContainer(){
-		return $this->container;
-	}
+    /**
+     *
+     * Symfony\Component\DependencyInjection\Container;
+     */
+    public function getContainer(){
+        return $this->container;
+    }
 
-	/**
-	 *
-	 * @return Application\Generator\Classes
-	 */
-	public function getClasses(){
-		return $this->getContainer()->get('classes');
-	}
+    /**
+     *
+     * @return Application\Generator\Classes
+     */
+    public function getClasses(){
+        return $this->getContainer()->get('classes');
+    }
 
-	/**
-	 *
-	 * @param Module $module
-	 * @return Application\Bender\View
-	 */
-	public function getView(Module $module)
-	{
-		$view = $this->getContainer()->get('view');
-		$view->toggleToModule($module);
+    /**
+     *
+     * @param Module $module
+     * @return Application\Bender\View
+     */
+    public function getView(Module $module)
+    {
+        $view = $this->getContainer()->get('view');
+        $view->toggleToModule($module);
 
-		return $view;
-	}
+        return $view;
+    }
 
-	/**
-	 *
-	 * @return Application\Generator\Module\ModuleCollection
-	 */
-	public function getModules($project = '')
-	{
-		if( null == $this->modules ){
-			$directories = $this->getConfiguration()->get('modulesPath').$project;
-			$finder = new Finder($directories);
-			$this->modules = $finder->findModules();
-			$eventDispatcher = $this->getEventDispatcher();
-			$this->modules->each(function (Module $module) use($eventDispatcher){
-				$eventDispatcher->addSubscriber($module->getSubscriber());
-			});
-			$eventDispatcher->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
-		}
-		$this->modules->rewind();
-		return $this->modules;
-	}
+    /**
+     *
+     * @return Application\Generator\Module\ModuleCollection
+     */
+    public function getModules($project = '')
+    {
+        if( null == $this->modules )
+        {
+            $directories = $this->getConfiguration()->get('modulesPath') . $project;
+            $finder = new Finder($directories);
+            $this->modules = $finder->findModules();
+
+            $eventDispatcher = $this->getEventDispatcher();
+            $this->modules->each(function (Module $module) use ($eventDispatcher){
+                $eventDispatcher->addSubscriber($module->getSubscriber());
+            });
+            $eventDispatcher->dispatch(Event::LOAD_MODULES, new Event(array('modules' => $this->modules)));
+        }
+
+        $this->modules->rewind();
+        return $this->modules;
+    }
 
 }

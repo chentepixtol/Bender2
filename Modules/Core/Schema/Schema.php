@@ -16,47 +16,47 @@ use Application\Database\Table;
 class Schema extends AbstractModule
 {
 
-	/**
-	 * (non-PHPdoc)
-	 * @see Application\Generator\Module.Module::getName()
-	 */
-	public function getName(){
-		return 'Schema';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see Application\Generator\Module.Module::getName()
+     */
+    public function getName(){
+        return 'Schema';
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see Application\Generator\Module.Module::getFiles()
-	 */
-	public function getFiles()
-	{
-		$files = new FileCollection();
+    /**
+     * (non-PHPdoc)
+     * @see Application\Generator\Module.Module::getFiles()
+     */
+    public function getFiles()
+    {
+        $files = new FileCollection();
 
-		$files->append(
-			new File('config/schema.yml',  Yaml::dump($this->createSchemaArray(), 3) )
-		);
+        $files->append(
+            new File('config/schema.yml',  Yaml::dump($this->createSchemaArray(), 3) )
+        );
 
-		return $files;
-	}
+        return $files;
+    }
 
-	/**
-	 *
-	 * @return array
-	 */
-	protected function createSchemaArray()
-	{
-		$tables = $this->getBender()->getDatabase()->getTables();
+    /**
+     *
+     * @return array
+     */
+    protected function createSchemaArray()
+    {
+        $tables = $this->getBender()->getDatabase()->getTables();
 
-		$schema = array( 'schema' => array());
-		while ($tables->valid()) {
-			$table = $tables->read();
-			$tablename = $table->getName()->toString();
-			$schema['schema'][$tablename] = array(
-				'tablename' => $tablename,
-			);
-		}
-		return $schema;
-	}
+        $schema = array( 'schema' => array());
+        while ($tables->valid()) {
+            $table = $tables->read();
+            $tablename = $table->getName()->toString();
+            $schema['schema'][$tablename] = array(
+                'tablename' => $tablename,
+            );
+        }
+        return $schema;
+    }
 
 
 }

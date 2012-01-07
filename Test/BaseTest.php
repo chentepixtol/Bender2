@@ -13,14 +13,14 @@ require_once 'autoload.php';
 abstract class BaseTest extends \PHPUnit_Framework_TestCase
 {
 
-	/**
-	 *
-	 * @return Application\Bender\Bender
-	 */
-	public function getBender()
-	{
-		return Bender::getInstance();
-	}
+    /**
+     *
+     * @return Application\Bender\Bender
+     */
+    public function getBender()
+    {
+        return Bender::getInstance();
+    }
 
 }
 

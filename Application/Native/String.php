@@ -15,90 +15,90 @@ namespace Application\Native;
 class String
 {
 
-	/**
-	 *
-	 * @var string
-	 */
-	const UNDERSCORE = 'Underscore';
-	const UPPERCAMELCASE = 'UpperCamelCase';
-	const CAMELCASE = 'CamelCase';
+    /**
+     *
+     * @var string
+     */
+    const UNDERSCORE = 'Underscore';
+    const UPPERCAMELCASE = 'UpperCamelCase';
+    const CAMELCASE = 'CamelCase';
     const UPPERCASE = 'UpperCase';
     const SLUG = 'Slug';
 
-	/**
-	 *
-	 *
-	 * @var string
-	 */
-	private $string;
+    /**
+     *
+     *
+     * @var string
+     */
+    private $string;
 
-	/**
-	 *
-	 * @var string
-	 */
-	private $mode;
+    /**
+     *
+     * @var string
+     */
+    private $mode;
 
-	/**
-	 *
-	 *
-	 * @param string $string
-	 */
-	public function __construct($string, $mode = self::UNDERSCORE){
-		$this->string = $string;
-		$this->mode = $mode;
-	}
+    /**
+     *
+     *
+     * @param string $string
+     */
+    public function __construct($string, $mode = self::UNDERSCORE){
+        $this->string = $string;
+        $this->mode = $mode;
+    }
 
-	/**
-	 *
-	 *
-	 */
-	public function __toString(){
-		return $this->toString();
-	}
+    /**
+     *
+     *
+     */
+    public function __toString(){
+        return $this->toString();
+    }
 
-	/**
-	 *
-	 *
-	 */
-	public function toString(){
-		return $this->string;
-	}
+    /**
+     *
+     *
+     */
+    public function toString(){
+        return $this->string;
+    }
 
-	/**
-	 *
-	 * @param string $string
-	 * @return boolean
-	 */
-	public function equal($string){
-		return $this->string == $string;
-	}
+    /**
+     *
+     * @param string $string
+     * @return boolean
+     */
+    public function equal($string){
+        return $this->string == $string;
+    }
 
-	/**
-	 *
-	 * @param string $method
-	 * @param array $args
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
-	public function __call($method, $args)
-	{
-		$method = str_replace('to', '', $method);
-		if( $this->mode == $method ){
-			return $this->string;
-		}
+    /**
+     *
+     * @param string $method
+     * @param array $args
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function __call($method, $args)
+    {
+        $method = str_replace('to', '', $method);
+        if( $this->mode == $method ){
+            return $this->string;
+        }
 
-		$internalMethod = lcfirst($this->mode).'To'.$method;
-		if( !method_exists($this, $internalMethod) ){
-			throw new \InvalidArgumentException("El metodo ". $internalMethod. " no existe");
-		}
+        $internalMethod = lcfirst($this->mode).'To'.$method;
+        if( !method_exists($this, $internalMethod) ){
+            throw new \InvalidArgumentException("El metodo ". $internalMethod. " no existe");
+        }
 
-		$string = $this->{$internalMethod}();
-		if( is_array($args) && in_array('newString', $args) ){
-		    $string = new String($string, $method);
-		}
+        $string = $this->{$internalMethod}();
+        if( is_array($args) && in_array('newString', $args) ){
+            $string = new String($string, $method);
+        }
 
-		return $string;
-	}
+        return $string;
+    }
 
     /**
      * MY_PUBLIC_VAR >>  myPubliVar
@@ -236,7 +236,7 @@ class String
      */
     protected function underscoreToUpperCamelCase()
     {
-      	return $this->_toCamelCase('_',true);
+          return $this->_toCamelCase('_',true);
     }
 
     /**
@@ -316,13 +316,13 @@ class String
      */
     private function _toCamelCase($separator = '-', $first = false, $toLower = false)
     {
-    	$string = $toLower ? strtolower($this->string) : $this->string;
+        $string = $toLower ? strtolower($this->string) : $this->string;
         $parts = explode($separator, $string);
         $newString = '';
         $count = 0;
         foreach ( $parts as $part )
         {
-        	$newString .= ( $count == 0 && !$first ) ?  $part: ucfirst($part);
+            $newString .= ( $count == 0 && !$first ) ?  $part: ucfirst($part);
             $count ++;
         }
 
@@ -335,9 +335,9 @@ class String
      */
     private function toSeparatedString($separator = '-')
     {
-    	$newString = lcfirst($this->string);
-      	$func = create_function('$c', 'return "'.$separator.'" . strtolower($c[1]);');
-      	return preg_replace_callback('/([A-Z])/', $func, $newString);
+        $newString = lcfirst($this->string);
+          $func = create_function('$c', 'return "'.$separator.'" . strtolower($c[1]);');
+          return preg_replace_callback('/([A-Z])/', $func, $newString);
     }
 
 

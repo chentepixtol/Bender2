@@ -16,15 +16,15 @@ use Application\Base\BaseCollection;
 class ColumnCollection extends BaseCollection
 {
 
-	/**
-	 *
-	 * @return \Application\Database\ColumnCollection
-	 */
-	public function nonPrimaryKeys()
-	{
-		return $this->filter(function(Column $column){
-			return !$column->isPrimaryKey();
-		});
-	}
+    /**
+     *
+     * @return \Application\Database\ColumnCollection
+     */
+    public function nonPrimaryKeys()
+    {
+        return $this->filter(function(Column $column){
+            return !$column->isPrimaryKey();
+        });
+    }
 
 }
