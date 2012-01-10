@@ -121,21 +121,24 @@ abstract class {{ Collection }} extends \ArrayIterator
 
     /**
      * Merge two Collections
-     * @param {{ Collection }} ${{ collection }}
-     * @return {{ Collection }}
+     * @param Collection $collection
+     * @return Collection
      */
-    public function merge({{ Collection }} ${{ collection }})
+    public function merge(Collection $collection)
+    {
+        $newCollection = $this->copy();
+        $collection->each($this->appendFunction($newCollection));
+        return $newCollection;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function copy()
     {
         $newCollection = $this->newInstance();
-        $appendFunction = function(Collectable $collectable) use($newCollection){
-            if( !$newCollection->containsIndex( $collectable->getIndex() ) ){
-                $newCollection->append($collectable);
-            }
-        };
-        $this->each($appendFunction);
-        $collection->each($appendFunction);
-        
-        return $new{{ Collection }};
+        $this->each($this->appendFunction($newCollection));
+        return $newCollection;
     }
 
     /**
@@ -273,6 +276,20 @@ abstract class {{ Collection }} extends \ArrayIterator
     }
     
     /**
+     * @param callable $callable
+     */
+    public function reduceLeft($callable)
+    {
+        $this->validateCallback($callable);
+        /*$result = $start;
+        $this->each(function(Collectable $collectable) use(&$result, $callable){
+            $result = $callable($result, $collectable);
+        });
+        */
+        return $result;
+    }
+    
+    /**
      *
      * @param callable $callable
      * @return boolean
@@ -328,6 +345,20 @@ abstract class {{ Collection }} extends \ArrayIterator
             return $collections[$index];
         };
         return $getCollection;
+    }
+    
+    /**
+     *
+     * @param Collection $newCollenction
+     * @return \Closure
+     */
+    private function appendFunction($newCollection){
+        $appendFunction = function(Collectable $collectable) use($newCollection){
+            if( !$newCollection->containsIndex( $collectable->getIndex() ) ){
+                $newCollection->append($collectable);
+            }
+        };
+        return $appendFunction;
     }
 
 }
