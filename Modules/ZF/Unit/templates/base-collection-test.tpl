@@ -339,25 +339,7 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
         });
         $this->assertEquals(15, $sumIds);
     }
-    
-    /**
-     *
-     * @test
-     */
-    public function reduceLeft()
-    {
-        /*$myCollection = new MyCollection();
-        $myCollection->append(new MyBean(1, 'apple'));
-        $myCollection->append(new MyBean(2, 'banana'));
-        $myCollection->append(new MyBean(3, 'pear'));
 
-        $csv = $myCollection->reduceLeft(function($acc, MyBean $myBean){
-            return $acc . ", " . $myBean->getValue();
-        });
-        $this->assertEquals("apple, banana, pear", $csv);
-        */
-    }
-    
     /**
      *
      * @test

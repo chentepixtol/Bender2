@@ -276,20 +276,6 @@ abstract class {{ Collection }} extends \ArrayIterator
     }
     
     /**
-     * @param callable $callable
-     */
-    public function reduceLeft($callable)
-    {
-        $this->validateCallback($callable);
-        /*$result = $start;
-        $this->each(function(Collectable $collectable) use(&$result, $callable){
-            $result = $callable($result, $collectable);
-        });
-        */
-        return $result;
-    }
-    
-    /**
      *
      * @param callable $callable
      * @return boolean
