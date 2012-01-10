@@ -360,6 +360,28 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
         $myCollection->append(new MyBean(5, 'banana'));
         $this->assertFalse($myCollection->forall($onlyApples));
     }
+    
+    /**
+     *
+     * @test
+     */
+    public function partition()
+    {
+        $myCollection = new MyCollection();
+        $myCollection->append(new MyBean(1, 'apple'));
+        $myCollection->append(new MyBean(2, 'banana'));
+        $myCollection->append(new MyBean(3, 'apple'));
+        $myCollection->append(new MyBean(4, 'banana'));
+
+        $fruits = $myCollection->partition(function(MyBean $myBean){
+            return $myBean->getValue();
+        });
+        
+        $this->assertTrue($fruits['apple'] instanceOf MyCollection);
+        $this->assertEquals(array(1,3), $fruits['apple']->getPrimaryKeys());
+        $this->assertTrue($fruits['banana'] instanceOf MyCollection);
+        $this->assertEquals(array(2,4), $fruits['banana']->getPrimaryKeys());
+    }
 
     /**
      *

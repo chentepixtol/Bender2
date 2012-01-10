@@ -4,12 +4,10 @@
 {% set collection = classes.get('Collection').getName().toCamelCase() %}
 {% set Collectable = classes.get('Collectable') %}
 {% set collectable = classes.get('Collectable').getName().toCamelCase() %}
-
 {{ Collection.printNamespace() }}
 
 {{ Collectable.printRequire() }}
 {{ Collectable.printUse() }}
-
 
 /**
  *
@@ -25,7 +23,7 @@ abstract class {{ Collection }} extends \ArrayIterator
      *
      * @return {{ Collection }}
      */
-    protected function makeCollection(){
+    public function newInstance(){
         return new static();
     }
 
@@ -128,7 +126,7 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function merge({{ Collection }} ${{ collection }})
     {
-        $newCollection = $this->makeCollection();
+        $newCollection = $this->newInstance();
         $appendFunction = function(Collectable $collectable) use($newCollection){
             if( !$newCollection->containsIndex( $collectable->getIndex() ) ){
                 $newCollection->append($collectable);
@@ -147,7 +145,7 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function diff({{ Collection }} ${{ collection }})
     {
-        $newCollection = $this->makeCollection();
+        $newCollection = $this->newInstance();
         $this->each(function(Collectable $collectable) use($newCollection, $collection){
             if( !$collection->containsIndex($collectable->getIndex()) ){
                 $newCollection->append($collectable);
@@ -163,7 +161,7 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function intersect({{ Collection }} ${{ collection }})
     {
-        $newCollection = $this->makeCollection();
+        $newCollection = $this->newInstance();
         $this->each(function(Collectable $collectable) use($newCollection, $collection){
             if( $collection->containsIndex($collectable->getIndex()) ){
                 $newCollection->append($collectable);
@@ -250,7 +248,7 @@ abstract class {{ Collection }} extends \ArrayIterator
     {
         $this->validateCallback($callable);
         
-        $newCollection = $this->makeCollection();
+        $newCollection = $this->newInstance();
         $this->each(function(Collectable $collectable) use($newCollection, $callable){
             if( $callable($collectable) ){
                 $newCollection->append($collectable);
@@ -289,6 +287,24 @@ abstract class {{ Collection }} extends \ArrayIterator
     }
     
     /**
+     *
+     * @param callable $callable
+     * @return array
+     */
+    public function partition($callable)
+    {
+        $this->validateCallback($callable);
+
+        $collections = array();
+        $getCollection = $this->collectionGenerator(&$collections);
+        $this->each(function(Collectable $collectable) use($getCollection, $callable){
+            $getCollection($callable($collectable))->append($collectable);
+        });
+
+        return $collections;
+    }
+    
+    /**
      * convert to array
      * @return array
      */
@@ -296,6 +312,22 @@ abstract class {{ Collection }} extends \ArrayIterator
         return $this->map(function({{ Collectable }} ${{ collectable }}){
             return array(${{ collectable }}->getIndex() => ${{ collectable }}->toArray());
         });
+    }
+    
+    /**
+     *
+     * @param array $collections
+     * @return \Closure
+     */
+    private function collectionGenerator(array $collections){
+        $self = $this;
+        $getCollection = function($index) use(&$collections, $self){
+            if( !isset($collections[$index]) ){
+                $collections[$index] = $self->newInstance();
+            }
+            return $collections[$index];
+        };
+        return $getCollection;
     }
 
 }
