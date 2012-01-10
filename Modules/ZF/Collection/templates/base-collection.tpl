@@ -40,6 +40,19 @@ abstract class {{ Collection }} extends \ArrayIterator
             throw new \InvalidArgumentException("Debe de cumplir con la Interface {{ Collectable }}");
         }
     }
+    
+    /**
+     *
+     * validate Callback
+     * @param callable $callable
+     * @throws \InvalidArgumentException
+     */
+    protected function validateCallback($callable)
+    {
+        if( !is_callable($callable) ){
+            throw new \InvalidArgumentException("Is not a callable function");
+        }
+    }
 
     /**
      * Appends the value
@@ -111,35 +124,36 @@ abstract class {{ Collection }} extends \ArrayIterator
     /**
      * Merge two Collections
      * @param {{ Collection }} ${{ collection }}
-     * @return void
+     * @return {{ Collection }}
      */
     public function merge({{ Collection }} ${{ collection }})
     {
-        ${{ collection }}->rewind();
-        while( ${{ collection }}->valid() )
-        {
-            ${{ collectable }} = ${{ collection }}->read();
-            if( !$this->containsIndex( ${{ collectable }}->getIndex() ) )
-                $this->append(${{ collectable }});
-        }
-        ${{ collection }}->rewind();
+        $newCollection = $this->makeCollection();
+        $appendFunction = function(Collectable $collectable) use($newCollection){
+            if( !$newCollection->containsIndex( $collectable->getIndex() ) ){
+                $newCollection->append($collectable);
+            }
+        };
+        $this->each($appendFunction);
+        $collection->each($appendFunction);
+        
+        return $new{{ Collection }};
     }
 
     /**
      * Diff two Collections
      * @param {{ Collection }} ${{ collection }}
-     * @return void
+     * @return {{ Collection }}
      */
     public function diff({{ Collection }} ${{ collection }})
     {
-        ${{ collection }}->rewind();
-        while( ${{ collection }}->valid() )
-        {
-            ${{ collectable }} = ${{ collection }}->read();
-            if( $this->containsIndex( ${{ collectable }}->getIndex() ) )
-                $this->remove(${{ collectable }}->getIndex());
-        }
-        ${{ collection }}->rewind();
+        $newCollection = $this->makeCollection();
+        $this->each(function(Collectable $collectable) use($newCollection, $collection){
+            if( !$collection->containsIndex($collectable->getIndex()) ){
+                $newCollection->append($collectable);
+            }
+        });
+        return $newCollection;
     }
 
     /**
@@ -149,18 +163,13 @@ abstract class {{ Collection }} extends \ArrayIterator
      */
     public function intersect({{ Collection }} ${{ collection }})
     {
-           $new{{ Collection }} = $this->makeCollection();
-        ${{ collection }}->rewind();
-        while( ${{ collection }}->valid() )
-        {
-            $object = ${{ collection }}->read();
-            if( $this->containsIndex( $object->getIndex() ) ){
-                $new{{ Collection }}->append($object);
+        $newCollection = $this->makeCollection();
+        $this->each(function(Collectable $collectable) use($newCollection, $collection){
+            if( $collection->containsIndex($collectable->getIndex()) ){
+                $newCollection->append($collectable);
             }
-        }
-        ${{ collection }}->rewind();
-        $new{{ Collection }}->rewind();
-        return $new{{ Collection }};
+        });
+        return $newCollection;
     }
 
     /**
@@ -193,40 +202,33 @@ abstract class {{ Collection }} extends \ArrayIterator
 
     /**
      *
-     * @param \Closure $closure
+     * @param \Closure $callable
      */
-    public function each($closure)
+    public function each($callable)
     {
-        if( !is_callable($closure) ){
-            throw new \InvalidArgumentException("Is not a callable function");
-        }
+        $this->validateCallback($callable);
 
         $this->rewind();
         while( $this->valid() )
         {
             ${{ collectable }} = $this->read();
-            $closure(${{ collectable }});
+            $callable(${{ collectable }});
         }
         $this->rewind();
     }
 
     /**
      *
-     * @param \Closure $closure
+     * @param \Closure $callable
      * @return array
      */
-    public function map($closure)
+    public function map($callable)
     {
-        if( !is_callable($closure) ){
-            throw new \InvalidArgumentException("Is not a callable function");
-        }
+        $this->validateCallback($callable);
 
         $array = array();
-        $this->rewind();
-        while( $this->valid() )
-        {
-            ${{ collectable }} = $this->read();
-            $mapResult = $closure(${{ collectable }});
+        $this->each(function(Collectable $collectable) use(&$array, $callable){
+            $mapResult = $callable($collectable);
             if( is_array($mapResult) ){
                 foreach($mapResult as $key => $value){
                     $array[$key] = $value;
@@ -234,33 +236,58 @@ abstract class {{ Collection }} extends \ArrayIterator
             }else{
                 $array[] = $mapResult;
             }
-        }
-        $this->rewind();
+        });
 
         return $array;
     }
 
     /**
      *
-     * @param \Closure $closure
+     * @param \Closure $callable
      * @return {{ Collection }}
      */
-    public function filter($closure)
+    public function filter($callable)
     {
-        ${{ collection }} = $this->makeCollection();
-        $this->rewind();
-        while( $this->valid() )
-        {
-            ${{ collectable }} = $this->read();
-            if( $closure(${{ collectable }}) ){
-                ${{ collection }}->append(${{ collectable }});
+        $this->validateCallback($callable);
+        
+        $newCollection = $this->makeCollection();
+        $this->each(function(Collectable $collectable) use($newCollection, $callable){
+            if( $callable($collectable) ){
+                $newCollection->append($collectable);
             }
-        }
-        $this->rewind();
-        ${{ collection }}->rewind();
-        return ${{ collection }};
-    }
+        });
 
+        return $newCollection;
+    }
+    
+    /**
+     * @param mixed $start
+     * @param callable $callable
+     */
+    public function foldLeft($start, $callable)
+    {
+        $this->validateCallback($callable);
+        $result = $start;
+        $this->each(function(Collectable $collectable) use(&$result, $callable){
+            $result = $callable($result, $collectable);
+        });
+        return $result;
+    }
+    
+    /**
+     *
+     * @param callable $callable
+     * @return boolean
+     */
+    public function forall($callable)
+    {
+        if( $this->isEmpty() ) return false;
+        $this->validateCallback($callable);
+        return $this->foldLeft(true, function($boolean, Collectable $collectable) use($callable){
+            return $boolean && $callable($collectable);
+        });
+    }
+    
     /**
      * convert to array
      * @return array

@@ -29,11 +29,14 @@ class {{ Factory }}{% if parent %} extends {{ classes.get(parent.getObject()~'Fa
      * @param {{ Bean }} {{ bean }}
      * @param array $fields
      */
-    public static function populate({{ Bean }} ${{ bean }}, $fields)
+    public static function populate(${{ bean }}, $fields)
     {
 {% if parent %}
         parent::populate(${{ bean }}, $fields);
 {% endif %}
+        if( !(${{ bean }} instanceof {{ Bean }}) ){
+            throw new {{ Exception }}("El objecto no es un {{ Bean }}");
+        }
 {% for field in fields %}
 
         if( isset($fields['{{ field }}']) ){  

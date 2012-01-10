@@ -177,10 +177,10 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
         $myCollection2->append($myBean2);
         $myCollection2->append($myBean3);
 
-        $myCollection1->merge($myCollection2);
+        $newCollection = $myCollection1->merge($myCollection2);
 
-        $this->assertEquals(3 ,$myCollection1->count());
-        $this->assertEquals(array(1,3,2), $myCollection1->getPrimaryKeys());
+        $this->assertEquals(3 , $newCollection->count());
+        $this->assertEquals(array(1,3,2), $newCollection->getPrimaryKeys());
     }
 
     /**
@@ -228,12 +228,13 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
         $myCollection2->append($myBean2);
         $myCollection2->append($myBean3);
 
-        $myCollection1->diff($myCollection2);
+        $newCollection = $myCollection1->diff($myCollection2);
 
-        $this->assertEquals(1, $myCollection1->count());
-        $this->assertFalse($myCollection1->containsIndex($myBean3->getId()));
-        $this->assertTrue($myCollection1->containsIndex($myBean1->getId()));
-        $this->assertEquals(array(1), $myCollection1->getPrimaryKeys());
+        $this->assertEquals(1, $newCollection->count());
+        $this->assertFalse($newCollection->containsIndex($myBean3->getId()));
+        $this->assertTrue($newCollection->containsIndex($myBean1->getId()));
+        $this->assertTrue($newCollection->getByPK($myBean1->getId()) == $myBean1);
+        $this->assertEquals(array(1), $newCollection->getPrimaryKeys());
     }
 
     /**
@@ -318,6 +319,46 @@ class {{ BaseCollectionTest }} extends {{ BaseTest }}
             2 => $myBean2->toArray(),
             3 => $myBean3->toArray()
         ), $myCollection->toArray());
+    }
+    
+    /**
+     *
+     * @test
+     */
+    public function foldLeft()
+    {
+        $myCollection = new MyCollection();
+        $myCollection->append(new MyBean(1, 'apple'));
+        $myCollection->append(new MyBean(2, 'apple'));
+        $myCollection->append(new MyBean(3, 'apple'));
+        $myCollection->append(new MyBean(4, 'apple'));
+        $myCollection->append(new MyBean(5, 'apple'));
+
+        $sumIds = $myCollection->foldLeft(0, function($acc, MyBean $myBean){
+            return $acc + $myBean->getIndex();
+        });
+        $this->assertEquals(15, $sumIds);
+    }
+    
+    /**
+     *
+     * @test
+     */
+    public function forall()
+    {
+        $myCollection = new MyCollection();
+        $myCollection->append(new MyBean(1, 'apple'));
+        $myCollection->append(new MyBean(2, 'apple'));
+        $myCollection->append(new MyBean(3, 'apple'));
+        $myCollection->append(new MyBean(4, 'apple'));
+
+        $onlyApples = function(MyBean $myBean){
+            return 'apple' == $myBean->getValue();
+        };
+        $this->assertTrue($myCollection->forall($onlyApples));
+        
+        $myCollection->append(new MyBean(5, 'banana'));
+        $this->assertFalse($myCollection->forall($onlyApples));
     }
 
     /**
