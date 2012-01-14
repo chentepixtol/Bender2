@@ -1,11 +1,10 @@
 {% include 'header.tpl' %}
 {{ Factory.printNamespace() }}
 
-{{ classes.get(Bean).printRequire() }}
-{{ classes.get('Factory').printRequire() }}
 {{ classes.get(Bean).printUse() }}
 {% if classes.get('Factory').getNamespace() != Factory.getNamespace() %}{{ classes.get('Factory').printUse() }}{% endif %}
 
+{% include "header_class.tpl" with {'infoClass': Factory} %}
 class {{ Factory }}{% if parent %} extends {{ classes.get(parent.getObject()~'Factory') }}{% endif %} implements {{ classes.get('Factory') }}
 {
 

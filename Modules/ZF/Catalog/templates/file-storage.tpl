@@ -1,17 +1,11 @@
 {% include 'header.tpl' %}
 {% set Storage = classes.get('Storage') %}
 {% set FileStorage = classes.get('FileStorage') %}
-
 {{ FileStorage.printNamespace() }}
 
 use Zend_Cache;
 
-/**
- *
- * {{ FileStorage }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': FileStorage} %}
 class {{ FileStorage }} implements {{ Storage }}
 {
 

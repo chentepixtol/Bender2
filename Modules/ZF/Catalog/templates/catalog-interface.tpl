@@ -4,18 +4,12 @@
 {% set Collection = classes.get('Collection') %}
 {% set Storage = classes.get('Storage') %}
 {% set storage = Storage.getName().toCamelCase() %}
-
 {{ Catalog.printNamespace() }}
 
 {{ Storage.printUse() }}
 use Query\Query;
 
-/**
- *
- * {{ Catalog }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': Catalog} %}
 interface {{ Catalog }}
 {
 

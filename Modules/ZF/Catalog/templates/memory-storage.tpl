@@ -1,15 +1,9 @@
 {% include 'header.tpl' %}
 {% set Storage = classes.get('Storage') %}
 {% set MemoryStorage = classes.get('MemoryStorage') %}
-
 {{ MemoryStorage.printNamespace() }}
 
-/**
- *
- * {{ MemoryStorage }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': MemoryStorage} %}
 class {{ MemoryStorage }} implements {{ Storage }}
 {
 

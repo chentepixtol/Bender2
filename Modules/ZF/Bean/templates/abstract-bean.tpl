@@ -1,18 +1,12 @@
 {% include 'header.tpl' %}
 {% set BaseBean = classes.get('Bean') %}
 {% set AbstractBean = classes.get('AbstractBean') %}
-
 {{ AbstractBean.printNamespace() }}
 {% if BaseBean.getNamespace() != AbstractBean.getNamespace() %}
 {{ BaseBean.printUse() }}
 {% endif %}
 
-/**
- *
- * {{ AbstractBean }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': AbstractBean} %}
 abstract class {{ AbstractBean }} implements {{ BaseBean }} 
 {
 

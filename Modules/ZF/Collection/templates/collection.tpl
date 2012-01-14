@@ -1,15 +1,13 @@
 {% include 'header.tpl' %}
+{{ Collection.printNamespace() }}
 
-namespace {{ classes.get(Collection).getNamespace() }};
-
-{{ classes.get('Collection').printRequire() }}
-
-{{ classes.get('Collection').printUse() }}
+{% if Collection.getNamespace != classes.get('Collection').getNamespace() %}{{ classes.get('Collection').printUse() }}{% endif %}
 
 /**
  *
+ * {{ Collection }}
  *
- * @author chente
+ * @author {{ meta.get('author') }}
  * @method {{ Bean }} current
  * @method {{ Bean }} read
  * @method {{ Bean }} getOne

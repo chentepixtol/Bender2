@@ -1,11 +1,7 @@
 {% include 'header.tpl' %}
+{{ Exception.printNamespace() }}
 
-namespace {{ classes.get(Exception).getNamespace() }};
-
-{% if parent %}
-{{ classes.get(parent.getObject()~'Exception').printRequire() }}
-{% endif %}
-
+{% include "header_class.tpl" with {'infoClass': Exception} %}
 class {{ Exception }} extends {% if parent %}{{ parent.getObject()~'Exception' }}{% else %}\Exception{% endif %}
 {
 

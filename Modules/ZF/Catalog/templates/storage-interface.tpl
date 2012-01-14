@@ -1,14 +1,8 @@
 {% include 'header.tpl' %}
 {% set Storage = classes.get('Storage') %}
-
 {{ Storage.printNamespace() }}
 
-/**
- *
- * {{ Storage }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': Storage} %}
 interface {{ Storage }}
 {
 

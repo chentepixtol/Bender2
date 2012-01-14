@@ -1,15 +1,8 @@
 {% include 'header.tpl' %}
-
 {% set Collectable = classes.get('Collectable') %}
-
 {{ Collectable.printNamespace() }}
 
-/**
- *
- * {{ Collectable }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': Collectable} %}
 interface {{ Collectable }}
 {
 

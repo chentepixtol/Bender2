@@ -8,7 +8,12 @@ settings:
     host:     localhost
     driver:   pdo_mysql 
   options:
-    author:   chente
+    meta:
+      author:      chente
+      company:     Bender
+      copyright:   Copyright (c) 2012 Bender (https://github.com/chentepixtol/Bender2)
+      description: Example Project created by Bender Code Generator
+      version:     1.0 alpha 
   ZF: 
     application_namespace: Application 
     zf_version: 1

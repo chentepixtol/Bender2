@@ -1,17 +1,11 @@
 {% include 'header.tpl' %}
 {% set Storage = classes.get('Storage') %}
 {% set ChainStorage = classes.get('ChainStorage') %}
-
 {{ ChainStorage.printNamespace() }}
 
 use Zend\Cache\Cache;
 
-/**
- *
- * {{ ChainStorage }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': ChainStorage} %}
 class {{ ChainStorage }} implements {{ Storage }}
 {
   

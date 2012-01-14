@@ -1,20 +1,13 @@
 {% include 'header.tpl' %}
-
 {% set Collection = classes.get('Collection') %}
 {% set collection = classes.get('Collection').getName().toCamelCase() %}
 {% set Collectable = classes.get('Collectable') %}
 {% set collectable = classes.get('Collectable').getName().toCamelCase() %}
 {{ Collection.printNamespace() }}
 
-{{ Collectable.printRequire() }}
 {{ Collectable.printUse() }}
 
-/**
- *
- *
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': Collection} %}
 abstract class {{ Collection }} extends \ArrayIterator
 {
 

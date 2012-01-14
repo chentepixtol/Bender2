@@ -1,14 +1,8 @@
 {% include 'header.tpl' %}
-
 {% set Singleton = classes.get('Singleton') %}
 {{ Singleton.printNamespace() }}
 
-/**
- *
- *
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': Singleton} %}
 abstract class {{ Singleton }}
 {
 

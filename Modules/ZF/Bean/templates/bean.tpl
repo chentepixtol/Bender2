@@ -3,10 +3,10 @@
 namespace {{ Bean.getNamespace() }};
 
 {% if parent %}{{ classes.get(parent.getObject()).printRequire() }}{% else %}
-{{ AbstractBean.printRequire() }}
 {% if AbstractBean.getNamespace() != Bean.getNamespace() %}{{ AbstractBean.printUse() }}{% endif %}
 {% endif %}
-class {{ Bean }} extends {% if parent %}{{ parent.getObject() }}{% else %}{{ AbstractBean }}{% endif %}
+{% include "header_class.tpl" with {'infoClass': Bean} %}
+class {{ Bean }} extends {% if parent %}{{ parent.getObject() }}{% else %}{{ AbstractBean }}{% endif %} 
 {
 
     /**

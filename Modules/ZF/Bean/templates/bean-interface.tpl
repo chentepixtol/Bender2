@@ -5,14 +5,8 @@
 {% if Bean.getNamespace() != Collectable.getNamespace() %}
 {{ Collectable.printUse() }}
 {% endif %}
-{{ Collectable.printRequire() }}
 
-/**
- *
- * {{ Bean }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': Bean} %}
 interface {{ Bean }} extends {{ Collectable }}
 {
 

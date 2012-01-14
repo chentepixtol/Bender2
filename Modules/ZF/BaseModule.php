@@ -2,6 +2,8 @@
 
 namespace Modules\ZF;
 
+use Application\Config\Configuration;
+
 use Application\Native\String;
 use Application\Database\Table;
 use Application\Generator\Module\AbstractModule;
@@ -26,6 +28,8 @@ abstract class BaseModule extends AbstractModule
         $this->getView()->Bean = $bean = $classes->get($table->getObject()->toString());
         $this->getView()->bean = $bean->getName()->toCamelCase();
         $this->getView()->isZF2 = $this->isZF2();
+        $this->getView()->globalOptions = $globalOptions = $this->getBender()->getSettings()->get('options', new Configuration());
+        $this->getView()->meta = $globalOptions->get('meta', new Configuration());
 
         $sufixes = array('Collection', 'Factory', 'Catalog', 'Exception',
                          'Query', 'Form', 'Validator', 'Filter', 'Controller');

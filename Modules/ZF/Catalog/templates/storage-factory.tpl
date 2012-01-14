@@ -4,15 +4,9 @@
 {% set NullStorage = classes.get('NullStorage') %}
 {% set MemoryStorage = classes.get('MemoryStorage') %}
 {% set FileStorage = classes.get('FileStorage') %}
-
 {{ FactoryStorage.printNamespace() }}
 
-/**
- *
- * {{ FactoryStorage }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': FactoryStorage} %}
 class {{ FactoryStorage }}
 {
 

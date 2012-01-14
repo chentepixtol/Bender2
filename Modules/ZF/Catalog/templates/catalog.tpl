@@ -4,12 +4,6 @@
 {% set BaseBean = classes.get('Bean') %}
 {{ Catalog.printNamespace() }}
 
-{{ AbstractCatalog.printRequire() }}
-{{ Bean.printRequire() }}
-{{ Factory.printRequire() }}
-{{ Collection.printRequire() }}
-{{ Exception.printRequire() }}
-
 {{ AbstractCatalog.printUse() }}
 {{ Bean.printUse() }}
 {{ Factory.printUse() }}
@@ -22,12 +16,14 @@ use Query\Query;
 /**
  *
  * {{ Catalog }}
- * @author chente
+ *
+ * @package {{ Catalog.getNamespace() }}
+ * @author {{ meta.get('author') }}
  * @method PersonCatalog getInstance
  * @method {{ Bean }} getOneByQuery
  * @method {{ Collection }} getByQuery
  */
-class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ 'Catalog') }}{% else %}{{ AbstractCatalog }} {% endif %}
+class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ 'Catalog') }}{% else %}{{ AbstractCatalog }} {% endif %} 
 {
 
     /**
@@ -46,7 +42,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
 
 {% endif %}
             $data = ${{ bean}}->toArrayFor(
-                array({% for field in fields.nonPrimaryKeys %}'{{ field.getName() }}',{% endfor %})
+                array({% for field in fields.nonPrimaryKeys %}'{{ field.getName() }}', {% endfor %})
             );
             $data = array_filter($data, array($this, 'isNotNull'));
             $this->getDb()->insert({{ Bean }}::TABLENAME, $data);

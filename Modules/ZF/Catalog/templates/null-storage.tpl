@@ -1,15 +1,9 @@
 {% include 'header.tpl' %}
 {% set Storage = classes.get('Storage') %}
 {% set NullStorage = classes.get('NullStorage') %}
-
 {{ NullStorage.printNamespace() }}
 
-/**
- *
- * {{ NullStorage }}
- * @author chente
- *
- */
+{% include "header_class.tpl" with {'infoClass': NullStorage} %}
 class {{ NullStorage }} implements {{ Storage }}
 {
 

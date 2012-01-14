@@ -8,11 +8,7 @@
 {% set Bean = classes.get('Bean') %}
 {% set TransactionalCatalog = classes.get('TransactionalCatalog') %}
 {% set bean = Bean.getName().toCamelCase() %}
-
 {{ AbstractCatalog.printNamespace() }}
-
-{{ Catalog.printRequire() }}
-{{ FactoryStorage.printRequire() }}
 
 {% if AbstractCatalog.getNamespace() != Catalog.getNamespace() %}{{ Catalog.printUse() }}{% endif %}
 {{ Bean.printUse() }}
@@ -20,10 +16,7 @@
 {{ FactoryStorage.printUse() }}
 use Query\Query;
 
-/**
- * Clase que representa un catalogo general
- *
- */
+{% include "header_class.tpl" with {'infoClass': AbstractCatalog} %}
 abstract class {{ AbstractCatalog }} extends {{ TransactionalCatalog }} implements {{ Catalog }}
 {
 

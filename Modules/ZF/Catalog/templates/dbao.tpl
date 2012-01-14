@@ -8,11 +8,7 @@ use Zend\Db\Db as ZendDb;
 use Zend_Db as ZendDb;
 {% endif %}
 
-
-/**
- * Clase que representa la abstraccion de nuestro objeto Zend_Db
- *
- */
+{% include "header_class.tpl" with {'infoClass': DBAO} %}
 class DBAO
 {
 

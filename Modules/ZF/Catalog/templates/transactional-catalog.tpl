@@ -2,18 +2,11 @@
 {% set Singleton = classes.get('Singleton') %}
 {% set DBAO = classes.get('DBAO') %}
 {% set TransactionalCatalog = classes.get('TransactionalCatalog') %}
-
 {{ TransactionalCatalog.printNamespace() }}
-
-{{ Singleton.printRequire() }}
-{{ DBAO.printRequire() }}
 
 {{ Singleton.printUse() }}
 
-/**
- * Clase que representa un catalogo general
- *
- */
+{% include "header_class.tpl" with {'infoClass': TransactionalCatalog} %}
 class {{ TransactionalCatalog }} extends {{ Singleton }}
 {
 
@@ -56,9 +49,9 @@ class {{ TransactionalCatalog }} extends {{ Singleton }}
      */
     public function beginTransaction()
     {
-        if(!$this->isNestable() || self::$transLevel == 0) {
+        if( !$this->isNestable() || self::$transLevel == 0 ){
             $this->getDb()->beginTransaction();
-        } else {
+        }else{
             $this->getDb()->exec("SAVEPOINT LEVEL".self::$transLevel);
         }
         self::$transLevel++;
@@ -71,9 +64,9 @@ class {{ TransactionalCatalog }} extends {{ Singleton }}
     {
         self::$transLevel--;
 
-        if(!$this->isNestable() || self::$transLevel == 0) {
+        if( !$this->isNestable() || self::$transLevel == 0 ){
             $this->getDb()->commit();
-        } else {
+        }else{
             $this->getDb()->exec("RELEASE SAVEPOINT LEVEL".self::$transLevel);
         }
     }
@@ -85,10 +78,9 @@ class {{ TransactionalCatalog }} extends {{ Singleton }}
     {
         self::$transLevel--;
 
-        if(!$this->isNestable() || self::$transLevel == 0)
-        {
+        if( !$this->isNestable() || self::$transLevel == 0 ){
             $this->getDb()->rollBack();
-        } else {
+        }else{
             $this->getDb()->exec("ROLLBACK TO SAVEPOINT LEVEL".self::$transLevel);
         }
     }
