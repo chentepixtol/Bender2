@@ -35,6 +35,7 @@ class Unit extends BaseModule
         $classes = $this->getBender()->getClasses();
         $classes->add('BaseTest', new PhpClass("Test/Unit/BaseTest.php"));
         $classes->add('BaseCollectionTest', new PhpClass("Test/Unit/Collection/BaseCollectionTest.php"));
+        $classes->add('OptionTest', new PhpClass("Test/Unit/Base/OptionTest.php"));
 
         $this->getBender()->getDatabase()->getTables()->inSchema()->each(function (Table $table) use($classes){
             $object = $table->getObject();
@@ -57,6 +58,7 @@ class Unit extends BaseModule
         $files = new FileCollection();
         $files->append(new File($classes->get('BaseTest')->getRoute(), $this->getView()->fetch('base-test.tpl')));
         $files->append(new File($classes->get('BaseCollectionTest')->getRoute(), $this->getView()->fetch('base-collection-test.tpl')));
+        $files->append(new File($classes->get('OptionTest')->getRoute(), $this->getView()->fetch('option-test.tpl')));
         $files->append(new File('Test/bootstrap.php', $this->getView()->fetch('bootstrap.tpl')));
         $files->append(new File('phpunit.xml', $this->getView()->fetch('phpunit.tpl')));
 

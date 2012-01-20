@@ -102,6 +102,9 @@ class Catalog extends BaseModule
             ),'Singleton' => array(
                 'route' => $ns.'Base/Singleton.php',
                 'template' => 'singleton.tpl',
+            ),'Option' => array(
+                'route' => $ns.'Base/Option.php',
+                'template' => 'option.tpl',
             ),'MemoryStorage' => array(
                 'route' => $ns.'Storage/Memory.php',
                 'template' => 'memory-storage.tpl',
