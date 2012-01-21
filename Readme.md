@@ -15,3 +15,4 @@ las distintas directivas para la generacion de tu codigo.
 
 * Estructura Modular. Tienes un entorno que te ayudara a generar nuevos modulos de manera muy facil.
 
+[![Build Status](https://secure.travis-ci.org/chentepixtol/Bender2.png?branch=master)](http://travis-ci.org/chentepixtol/Bender2)
