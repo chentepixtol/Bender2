@@ -68,6 +68,7 @@ abstract class {{ AbstractCatalog }} extends {{ TransactionalCatalog }} implemen
     /**
      *
      * @param Query $query
+     * @param {{  Storage }} $storage
      * @return {{ BaseCollection }}
      */
     public function getByQuery(Query $query, {{ Storage }} $storage = null)
@@ -89,10 +90,11 @@ abstract class {{ AbstractCatalog }} extends {{ TransactionalCatalog }} implemen
 
     /**
      *
-     * @param  Query $query
+     * @param Query $query
+     * @param {{  Storage }} $storage
      * @return {{ Bean }}
      */
-    public function getOneByQuery(Query $query, {{ Storage }} $storage = null, $throwIfNotExists = false)
+    public function getOneByQuery(Query $query, {{ Storage }} $storage = null)
     {
         $storage = {{ FactoryStorage }}::create($storage);
         
@@ -103,14 +105,13 @@ abstract class {{ AbstractCatalog }} extends {{ TransactionalCatalog }} implemen
             ${{ bean }} = $this->getByQuery($query, $storage)->getOne();
             $storage->save($key, ${{ bean }});
         }   
-        if( $throwIfNotExists ){
-            $this->validateBean(${{ bean }});
-        }
+        
         return ${{ bean }};
     }
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} $storage 
      * @return array
      */
     public function fetchAll(Query $query, {{ Storage }} $storage = null){
@@ -118,7 +119,8 @@ abstract class {{ AbstractCatalog }} extends {{ TransactionalCatalog }} implemen
     }
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} $storage
      * @return array
      */
     public function fetchCol(Query $query, {{ Storage }} $storage = null){
@@ -126,7 +128,8 @@ abstract class {{ AbstractCatalog }} extends {{ TransactionalCatalog }} implemen
     }
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} $storage
      * @return mixed
      */
     public function fetchOne(Query $query, {{ Storage }} $storage = null){
@@ -134,7 +137,8 @@ abstract class {{ AbstractCatalog }} extends {{ TransactionalCatalog }} implemen
     }
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} $storage
      * @return mixed
      */
     public function fetchPairs(Query $query, {{ Storage }} $storage = null){

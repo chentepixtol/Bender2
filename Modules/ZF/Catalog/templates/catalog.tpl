@@ -91,7 +91,7 @@ class {{ Catalog }} extends {% if parent %}{{ classes.get(parent.getObject() ~ '
     {
         try
         {
-            $where = array($this->db->quoteInto('{{ table.getPrimaryKey() }} = ?', ${{ primaryKey }}));
+            $where = array($this->getDb()->quoteInto('{{ table.getPrimaryKey() }} = ?', ${{ primaryKey }}));
             $this->db->delete({{ Bean }}::TABLENAME, $where);
         }
         catch(\Exception $e)

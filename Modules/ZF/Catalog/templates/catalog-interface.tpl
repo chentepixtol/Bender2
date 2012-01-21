@@ -55,37 +55,42 @@ interface {{ Catalog }}
     /**
      * getByQuery
      * @param Query $query
-     * @param {{  Storage }} ${{  storage }}
+     * @param {{  Storage }} ${{ storage }}
      * @return {{ Collection }}
      */
     public function getByQuery(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
      * @param Query $query
+     * @param {{  Storage }} ${{ storage }}
      * @return {{ Bean }}
      */
-    public function getOneByQuery(Query $query, {{  Storage }} ${{  storage }} = null, $throwIfNotExists = false);
+    public function getOneByQuery(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} ${{ storage }}
      * @return array
      */
     public function fetchAll(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} ${{ storage }}
      * @return array
      */
     public function fetchCol(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} ${{ storage }}
      * @return mixed
      */
     public function fetchOne(Query $query, {{  Storage }} ${{  storage }} = null);
 
     /**
-     *
+     * @param Query $query
+     * @param {{  Storage }} ${{ storage }}
      * @return mixed
      */
     public function fetchPairs(Query $query, {{  Storage }} ${{  storage }} = null);

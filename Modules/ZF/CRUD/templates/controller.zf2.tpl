@@ -32,7 +32,7 @@ class {{ Controller }} extends ActionController
      */
     public function listAction()
     {
-        ${{ collection }} = {{ Query }}::create()->execute();
+        ${{ collection }} = {{ Query }}::create()->find();
         $messages = $this->getFlashMessages();
         return compact('{{ collection }}', 'messages');
     }
@@ -56,7 +56,8 @@ class {{ Controller }} extends ActionController
     public function editAction()
     {
         $id = $this->getRouteParam('id');
-        ${{ bean }} = {{ Query }}::create()->primaryKey($id)->executeOne();
+        ${{ bean }} = {{ Query }}::create()->primaryKey($id)
+            ->findOneOrThrow("No existe el {{ Bean }} con id {$id}");
 
         $form = $this->getForm()
             ->populate(${{ bean }}->toArray())
@@ -107,7 +108,8 @@ class {{ Controller }} extends ActionController
             }
 
             $id = $this->getRouteParam('id');
-            ${{ bean }} = {{ Query }}::create()->primaryKey($id)->executeOne();
+            ${{ bean }} = {{ Query }}::create()->primaryKey($id)
+                ->findOneOrThrow("No existe el {{ Bean }} con id {$id}");
 
             {{ Factory }}::populate(${{ bean }}, $form->getValues());
             {{ Catalog }}::getInstance()->update(${{ bean }});

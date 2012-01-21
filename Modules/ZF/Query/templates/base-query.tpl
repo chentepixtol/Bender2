@@ -3,11 +3,13 @@
 {% set BaseQuery = classes.get('BaseQuery') %}
 {% set Storage = classes.get('Storage') %}
 {% set FactoryStorage = classes.get('FactoryStorage') %}
+{% set Option = classes.get('Option') %}
 
 {{ BaseQuery.printNamespace() }}
 
 use Query\Query;
 {{ Storage.printUse() }}
+{{ Option.printUse() }}
 
 /**
  *
@@ -36,14 +38,6 @@ abstract class {{ BaseQuery }} extends Query
     abstract public function primaryKey($value, $comparison = \Query\Criterion::AUTO, $mutatorColumn = null, $mutatorValue = null);
 
     /**
-     *
-     * @return {{ classes.get('Collection') }}
-     */
-    public function execute(){
-        return $this->getCatalog()->getByQuery($this, $this->storage);
-    }
-    
-    /**
      * @return {{ BaseQuery }}
      */
     public function useMemoryCache(){
@@ -58,15 +52,47 @@ abstract class {{ BaseQuery }} extends Query
        $this->setStorage(\{{ FactoryStorage.getFullName() }}::create('file'));
        return $this;
     }
+    
+    /**
+     *
+     * @return {{ classes.get('Collection') }}
+     */
+    public function find(){
+        return $this->getCatalog()->getByQuery($this, $this->storage);
+    }
 
     /**
      *
      * @return {{ classes.get('Bean') }}
      */
-    public function executeOne()
+    public function findOne()
     {
         ${{ classes.get('Bean').getName().toCamelCase() }} = $this->getCatalog()->getOneByQuery($this, $this->getStorage());
         return ${{ classes.get('Bean').getName().toCamelCase() }};
+    }
+    
+    /**
+     * @return \{{ Option.getFullName() }}
+     */
+    public function findOneOption(){
+        return new {{ Option }}($this->findOne());
+    }
+    
+    /**
+     * @param mixed $alternative
+     * @return {{ classes.get('Bean') }}
+     */
+    public function findOneOrElse($alternative){
+        return $this->findOneOption()->getOrElse($alternative);
+    }
+    
+    /**
+     * @param mixed $message
+     * @return {{ classes.get('Bean') }}
+     * @throws \InvalidArgumentException
+     */
+    public function findOneOrThrow($message){
+        return $this->findOneOption()->getOrThrow($message);
     }
 
     /**
