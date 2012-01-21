@@ -3,8 +3,5 @@
 .settings/
 output/*
 cache/*
-vendor/doctrine/
-vendor/symfony/
-vendor/twig/
-vendor/.composer/
+vendor/*
 composer.lock

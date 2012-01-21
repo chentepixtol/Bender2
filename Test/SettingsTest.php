@@ -2,14 +2,14 @@
 
 namespace Test;
 
-use Symfony\Component\Yaml\Yaml;
-
 require_once 'Test/BaseTest.php';
-require_once 'vfsStream/vfsStream.php';
 
+use Symfony\Component\Yaml\Yaml;
 use Application\Config\Settings;
 use Application\Generator\File\Writer;
-use vfsStream, vfsStreamWrapper, vfsStreamDirectory;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStreamDirectory;
 
 class SettingsTest extends BaseTest
 {
