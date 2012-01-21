@@ -1,0 +1,13 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+env:
+  - DB=mysql
+
+before_script:
+  - php composer.phar install
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS bender;' -uroot; fi"
+
+script: phpunit --coverage-text Test/
