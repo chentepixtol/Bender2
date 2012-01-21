@@ -3,11 +3,10 @@ language: php
 php:
   - 5.3
   - 5.4
-env:
-  - DB=mysql
 
 before_script:
   - php composer.phar update
-  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS bender;' -uroot; fi"
+  - mysql -e 'create database IF NOT EXISTS bender;' -uroot
+  - mysql -uroot bender < dev_dump.sql
 
 script: phpunit --coverage-text Test/

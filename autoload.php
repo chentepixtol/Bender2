@@ -6,13 +6,13 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-        'Application' => '.',
-        'Test'        => '.',
-        'Modules'     => '.',
+    'Application' => '.',
+    'Test'        => '.',
+    'Modules'     => '.',
 ));
 
 $loader->registerPrefixes(array(
-        'Zend_'  => 'vendor/',
+    'Zend_'  => 'vendor/',
 ));
 
 $loader->register();

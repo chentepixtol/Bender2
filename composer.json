@@ -1,9 +1,7 @@
 {
     "repositories": {
         "mikey179/vfsStream": {
-            "vcs": {
-                "url": "git://github.com/mikey179/vfsStream.git"
-            }
+            "vcs": {"url": "git://github.com/mikey179/vfsStream.git"}
         }
     },
     "require": {
