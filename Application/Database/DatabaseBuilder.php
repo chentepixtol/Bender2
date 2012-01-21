@@ -68,9 +68,12 @@ class DatabaseBuilder
            'lifetime' => 7200*10,
            'automatic_serialization' => true
         );
-
+        $cacheDir = './cache/';
+        if( !is_dir($cacheDir) ){
+            @mkdir($cacheDir);
+        }
         $backendOptions = array(
-            'cache_dir' => './cache/'
+            'cache_dir' => $cacheDir
         );
         $this->cache = \Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
     }
