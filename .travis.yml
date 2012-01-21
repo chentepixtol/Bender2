@@ -8,6 +8,8 @@ env:
 
 before_script:
   - php composer.phar install
+  - pear channel-discover pear.php-tools.net
+  - pear install pat/vfsStream-beta
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS bender;' -uroot; fi"
 
 script: phpunit --coverage-text Test/
