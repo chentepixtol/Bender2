@@ -58,5 +58,14 @@ class Schema extends AbstractModule
         return $schema;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Application\Generator\Module.Module::getTemplateDirs()
+     */
+    public function getTemplateDirs(){
+        $dir = __DIR__;
+        $module  = $this->getName();
+        return array($dir .'/templates', $dir . '/' . $module .'/templates');
+    }
 
 }

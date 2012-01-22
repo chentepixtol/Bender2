@@ -45,37 +45,6 @@ abstract class AbstractModule implements Module
 
     /**
      * (non-PHPdoc)
-     * @see Application\Generator\Module.Module::getTemplateDirs()
-     */
-    public function getTemplateDirs(){
-        return array(
-            $this->getModulePath(). '/templates/',
-            $this->getModulesPath().'/templates/',
-        );
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getModulePath()
-    {
-        $path = preg_match('$\/([0-9a-z\/]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
-        return $this->getBender()->getConfiguration()->get('modulesPath').$path;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getModulesPath()
-    {
-        $path = preg_match('$\/([0-9a-z]+)\/$i', str_replace('\\', '/', get_class($this)), $matches) ? $matches[1] : $this->getName();
-        return $this->getBender()->getConfiguration()->get('modulesPath'). $path;
-    }
-
-    /**
-     * (non-PHPdoc)
      * @see Application\Generator\Module.Module::getSubscriber()
      */
     public function getSubscriber(){

@@ -10,7 +10,6 @@ $bender = Bender::getInstance();
 $bender->loadContainer(realpath('.').'/config/Services.xml');
 
 $bender->getEventDispatcher()->addSubscriber(new CoreListener());
-$bender->getConfiguration()->set('modulesPath', 'Modules/');
 
 $output = $bender->getContainer()->get('output');
 $bender->getCLI()->run(null, $output);

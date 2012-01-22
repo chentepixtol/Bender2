@@ -1,6 +1,8 @@
 <?php
 namespace Application\Bender;
 
+use Application\Generator\ProjectInterface;
+
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -184,9 +186,17 @@ final class Bender extends Singleton
     {
         if( null == $this->modules )
         {
-            $directories = $this->getConfiguration()->get('modulesPath') . $project;
-            $finder = new Finder($directories);
-            $this->modules = $finder->findModules();
+            $classProject = "Modules\\{$project}\\Project";
+
+            if( class_exists($classProject) ){
+                $projectInstance = new $classProject();
+                if( $projectInstance instanceof ProjectInterface ){
+                    $this->modules = $projectInstance->getModules();
+                }
+            }
+            if( null == $this->modules ){
+                throw new \Exception("No existe el proyecto: ".$project);
+            }
 
             $eventDispatcher = $this->getEventDispatcher();
             $this->modules->each(function (Module $module) use ($eventDispatcher){
