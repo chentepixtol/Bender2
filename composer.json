@@ -1,8 +1,7 @@
 {
     "repositories": {
-        "mikey179/vfsStream": {
-            "vcs": {"url": "git://github.com/mikey179/vfsStream.git"}
-        }
+        "mikey179/vfsStream": {"vcs": {"url": "git://github.com/mikey179/vfsStream.git"}},
+        "chentepixtol/bender_zf": {"vcs": {"url": "git://github.com/chentepixtol/bender_zf.git"}}
     },
     "require": {
         "symfony/class-loader": "2.0.9",
@@ -14,6 +13,7 @@
         "doctrine/dbal":   "2.2.0-BETA2",
         "doctrine/common": "2.2.0-RC4",
         "twig/twig":       "1.5.1",
-        "mikey179/vfsStream": "1.0.0-dev"
+        "mikey179/vfsStream": "1.0.0-dev",
+        "chentepixtol/bender_zf": "1.0.0-dev"
     }
 }

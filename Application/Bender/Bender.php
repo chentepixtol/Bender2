@@ -19,7 +19,6 @@ use Application\CLI\CLI;
 use Application\Config\Settings;
 use Application\Config\Schema;
 use Application\Generator\Module\ModuleCollection;
-use Application\Generator\Module\Finder;
 use Application\Event\Event;
 use Application\Event\CoreListener;
 use Application\Event\Dispatcher;
