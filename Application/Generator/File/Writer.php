@@ -13,18 +13,24 @@ class Writer
 
     /**
      *
-     *
      * @var string
      */
     protected $encoding;
 
     /**
      *
+     * @var string
+     */
+    protected $encodingContent;
+
+    /**
      *
      * @param string $encoding
+     * @param string $encodingContent
      */
-    public function __construct($encoding = 'UTF-8'){
+    public function __construct($encoding = 'UTF-8', $encodingContent = 'UTF-8'){
         $this->encoding = $encoding;
+        $this->encodingContent = $encodingContent;
     }
 
     /**
@@ -36,17 +42,17 @@ class Writer
     public function save($filename, $content)
     {
         $dir = dirname($filename);
-        if (!is_dir($dir)){
+        if( !is_dir($dir) ){
             mkdir($dir, 0777, true);
         }
 
         $handle = fopen($filename, "w+");
-          if ( $this->encoding != 'UTF-8' ){
-              $content = iconv("UTF-8", $this->encoding, $content);
-          }
+        if ( $this->encoding != $this->encodingContent ){
+            $content = iconv($this->encodingContent, $this->encoding, $content);
+        }
 
-          fwrite($handle, $content);
-          fclose($handle);
+        fwrite($handle, $content);
+        fclose($handle);
     }
 
 }
