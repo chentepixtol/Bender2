@@ -28,15 +28,14 @@ class Copy
      *
      * @var Writer
      */
-    private $fileWrite;
+    private $fileWriter;
 
     /**
      *
-     * @param string $encoding
-     * @param string $encodingContent
+     * @param Writer
      */
-    public function __construct($encoding = 'UTF-8', $encodingContent = 'UTF-8'){
-        $this->fileWrite = new Writer($encoding, $encodingContent);
+    public function __construct(Writer $fileWriter){
+        $this->fileWriter = $fileWriter;
     }
 
     /**
@@ -55,7 +54,7 @@ class Copy
     public function exec(){
         foreach ($this->from as $i => $path){
             if( is_file($path) ){
-                $this->fileWrite->save($this->to[$i], file_get_contents($path));
+                $this->fileWriter->save($this->to[$i], file_get_contents($path));
             }elseif( is_dir($path) ){
                 $this->createCopyDirectory($path, $this->to[$i]);
             }
@@ -74,7 +73,7 @@ class Copy
             /* @var $path \SplFileInfo */
             if( !$path->isDir() ) {
                 $dir = str_replace($source, $destination, $path->getPath()) . DIRECTORY_SEPARATOR;
-                $this->fileWrite->save($dir . $path->getFilename(), file_get_contents($path->getPathname()));
+                $this->fileWriter->save($dir . $path->getFilename(), file_get_contents($path->getPathname()));
             }
         }
     }

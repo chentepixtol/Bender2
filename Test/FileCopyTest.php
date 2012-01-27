@@ -41,7 +41,7 @@ class FileCopyTest extends BaseTest
     public function copyFiles()
     {
         $root = vfsStreamWrapper::getRoot();
-        $copy = new Copy('ISO 8859-1', 'ISO 8859-1');
+        $copy = new Copy(new Writer('ISO 8859-1', 'ISO 8859-1'));
         $copy->addPath(vfsStream::url('root/dir1/file1.txt'), vfsStream::url('root/dirA/fileA.txt'));
         $copy->exec();
         $this->assertTrue($root->hasChild('dirA'));
@@ -56,7 +56,7 @@ class FileCopyTest extends BaseTest
     public function copyDirectories()
     {
         $root = vfsStreamWrapper::getRoot();
-        $copy = new Copy('ISO 8859-1', 'ISO 8859-1');
+        $copy = new Copy(new Writer('ISO 8859-1', 'ISO 8859-1'));
         $copy->addPath(vfsStream::url('root/dir1'), vfsStream::url('root/dirA'));
         $copy->exec();
         $this->assertTrue($root->hasChild('dirA'));
@@ -67,6 +67,23 @@ class FileCopyTest extends BaseTest
         $this->assertEquals('Content', $root->getChild('dirA')->getChild('file2.txt')->getContent());
     }
 
+    /**
+     * @test
+     */
+    public function overwrite()
+    {
+        $fileWriter = new Writer('ISO 8859-1');
+        $fileWriter->save(vfsStream::url('root/directory/main/file1.txt'), "Directory One Content");
+        $fileWriter->save(vfsStream::url('root/directory2/main/file1.txt'), "Directory Two Content");
+
+        $copy = new Copy(new Writer('ISO 8859-1', 'ISO 8859-1', false));
+        $copy->addPath(vfsStream::url('root/directory'), vfsStream::url('root/directory2'));
+        $copy->exec();
+
+        $root = vfsStreamWrapper::getRoot();
+        $contentFileDirectory2 = $root->getChild('directory2')->getChild('main')->getChild('file1.txt')->getContent();
+        $this->assertEquals("Directory Two Content", $contentFileDirectory2);
+    }
 
 }
 

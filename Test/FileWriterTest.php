@@ -29,7 +29,22 @@ class FileWriterTest extends BaseTest
 
 
         $this->assertTrue(vfsStreamWrapper::getRoot()->getChild('subdirectory')->hasChild('test.txt'));
-        $this->assertEquals("Content", vfsStreamWrapper::getRoot()->getChild('subdirectory')->getChild('test.txt')->getContent("Content"));
+        $this->assertEquals("Content", vfsStreamWrapper::getRoot()->getChild('subdirectory')->getChild('test.txt')->getContent());
+    }
+
+
+    /**
+     *
+     * @test
+     */
+    public function overwrite()
+    {
+        $fileWriter = new Writer('ISO 8859-1', 'UTF-8', false);
+        $fileWriter->save(vfsStream::url('root/files/MyFile.txt'), "First Content");
+        $fileWriter->save(vfsStream::url('root/files/MyFile.txt'), "Second Content");
+
+        $this->assertTrue(vfsStreamWrapper::getRoot()->getChild('files')->hasChild('MyFile.txt'));
+        $this->assertEquals("First Content", vfsStreamWrapper::getRoot()->getChild('files')->getChild('MyFile.txt')->getContent());
     }
 
 

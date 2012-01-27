@@ -25,12 +25,20 @@ class Writer
 
     /**
      *
+     * @var boolean
+     */
+    protected $overwrite;
+
+    /**
+     *
      * @param string $encoding
      * @param string $encodingContent
+     * @param boolean $overwrite
      */
-    public function __construct($encoding = 'UTF-8', $encodingContent = 'UTF-8'){
+    public function __construct($encoding = 'UTF-8', $encodingContent = 'UTF-8', $overwrite = true){
         $this->encoding = $encoding;
         $this->encodingContent = $encodingContent;
+        $this->overwrite = $overwrite;
     }
 
     /**
@@ -44,6 +52,10 @@ class Writer
         $dir = dirname($filename);
         if( !is_dir($dir) ){
             mkdir($dir, 0777, true);
+        }
+
+        if( file_exists($filename) && !$this->overwrite ){
+            return ;
         }
 
         $handle = fopen($filename, "w+");
