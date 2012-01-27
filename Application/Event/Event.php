@@ -29,6 +29,8 @@ class Event extends sfEvent
     const LOAD_SCHEMA = 'load.schema';
     const SAVE_FILE = 'save.file';
     const SAVE_FILES = 'save.files';
+    const GENERATOR_FINISH = 'generator.finish';
+    const GENERATOR_START = 'generator.start';
 
     /**
      *

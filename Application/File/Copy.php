@@ -57,6 +57,8 @@ class Copy
                 $this->fileWriter->save($this->to[$i], file_get_contents($path));
             }elseif( is_dir($path) ){
                 $this->createCopyDirectory($path, $this->to[$i]);
+            }else{
+                throw new \Exception("No existe el directorio {$path}");
             }
         }
     }

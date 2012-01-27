@@ -1,13 +1,12 @@
 <?php
 namespace Application\CLI;
 
-use Application\Bender\Event\Event;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Application\Generator\Module\Module;
 use Application\Generator\Generator;
+use Application\Event\Event;
 
 
 /**
@@ -69,7 +68,11 @@ class Create extends Command
                 $bender->getEventDispatcher()->addSubscriber($module->getSubscriber());
             }
         }
+
+        $bender->getEventDispatcher()->dispatch(Event::GENERATOR_START);
         $generator->generate();
+        $bender->getEventDispatcher()->dispatch(Event::GENERATOR_FINISH);
+
         $output->writeln("Se han generado correctamente los modulos");
     }
 
