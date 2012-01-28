@@ -27,4 +27,15 @@ class ColumnCollection extends BaseCollection
         });
     }
 
+    /**
+     *
+     * @return \Application\Database\ColumnCollection
+     */
+    public function nonForeignKeys()
+    {
+        return $this->filter(function(Column $column){
+            return !$column->getTable()->getForeignKeys()->containsColumnName($column->getIndex());
+        });
+    }
+
 }

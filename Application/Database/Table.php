@@ -266,6 +266,7 @@ class Table implements Collectable
      * @return \Application\Database\ManyToManyCollection
      */
     public function getManyToManyCollection(){
+        $this->manyToManyCollection->rewind();
         return $this->manyToManyCollection;
     }
 

@@ -32,25 +32,24 @@ class Delete
         $mode = \RecursiveIteratorIterator::CHILD_FIRST;
         foreach( $this->paths as $path )
         {
-            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), $mode);
-            foreach ($iterator as $fileInfo){
-                if( $fileInfo->isFile() ){
-                    unlink($fileInfo->getPathname());
-                }
-            }
-
-            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), $mode);
-            foreach( $iterator as $fileInfo ){
-                if( $fileInfo->isDir() && !in_array($fileInfo->getBasename(), array('.', '..')) ){
-                    rmdir($fileInfo->getPathname());
-                }
-            }
-
             if( is_dir($path) ){
+                $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), $mode);
+                foreach ($iterator as $fileInfo){
+                    if( $fileInfo->isFile() ){
+                        unlink($fileInfo->getPathname());
+                    }
+                }
+
+                $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), $mode);
+                foreach( $iterator as $fileInfo ){
+                    if( $fileInfo->isDir() && !in_array($fileInfo->getBasename(), array('.', '..')) ){
+                        rmdir($fileInfo->getPathname());
+                    }
+                }
+
                 rmdir($path);
             }
         }
-
     }
 
 
