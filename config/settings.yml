@@ -20,7 +20,7 @@ settings:
   alias:
     zf:
       project: ZF
-      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Unit, Form, CRUD]       
+      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Form, CRUD, Unit]       
     schema:
       project: Core
       modules: [ Schema ]

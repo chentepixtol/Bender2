@@ -1,8 +1,14 @@
 schema:
+  Address:
+    tablename: bender_addresses
+    options: 
+      crud: true
   Person:
     tablename: bender_persons
     options:
       form: true
+    relations:
+      manyToMany: [ bender_person_address ]
   Post:
     tablename: bender_posts
     options: 

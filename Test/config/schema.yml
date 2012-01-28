@@ -1,4 +1,10 @@
 schema:
+  Address:
+    tablename: bender_addresses
+    options: 
+      crud: true
+    relations:
+      many_to_many: [ bender_person_address ]
   Person:
     tablename: bender_persons
     options:

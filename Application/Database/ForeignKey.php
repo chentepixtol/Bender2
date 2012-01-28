@@ -57,6 +57,10 @@ class ForeignKey implements Collectable
         $this->setForeignTable($foreignTable);
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Application\Base.Collectable::getIndex()
+     */
     public function getIndex(){
         return $this->getName();
     }
@@ -129,6 +133,17 @@ class ForeignKey implements Collectable
      */
     public function setName($name) {
         $this->name = $name;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function __toString(){
+        $text = "FOREIGN KEY ( {$this->local->getName()->toString()} ) ";
+        $text .="REFERENCES {$this->foreignTable->getName()}";
+        $text .="( {$this->foreign->getName()->toString()} )";
+        return $text;
     }
 
 }

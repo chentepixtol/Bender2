@@ -4,12 +4,9 @@
 namespace Application\Database;
 
 use Application\Base\Collectable;
-
 use Doctrine\DBAL\Schema\Table as DoctrineTable;
 use Application\Native\String;
 use Application\Config\Configuration;
-use Application\Database\ColumnCollection;
-use Application\Database\ForeignKeyCollection;
 
 /**
  *
@@ -72,12 +69,19 @@ class Table implements Collectable
 
     /**
      *
+     * @var ManyToManyCollection
+     */
+    protected $manyToManyCollection;
+
+    /**
+     *
      *
      * @param DoctrineTable $table
      */
     public function __construct(DoctrineTable $table){
         $this->doctrineTable = $table;
         $this->columns = new ColumnCollection();
+        $this->manyToManyCollection = new ManyToManyCollection();
     }
 
     /**
@@ -255,6 +259,14 @@ class Table implements Collectable
      */
     public function getPrimaryKey() {
         return $this->primaryKey;
+    }
+
+    /**
+     *
+     * @return \Application\Database\ManyToManyCollection
+     */
+    public function getManyToManyCollection(){
+        return $this->manyToManyCollection;
     }
 
     /**

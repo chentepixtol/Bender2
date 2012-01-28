@@ -2,22 +2,17 @@
 
 namespace Test;
 
-use Application\Database\Cast\AbstractCast;
-
-use Application\Database\ColumnCollection;
-
-use Application\Database\Column;
-
-use Application\Database\ForeignKey;
-
-use Application\Config\Configuration;
-
-use Application\Database\Table;
-
-use Application\Database\Database;
-
 require_once 'Test/BaseTest.php';
 
+use Application\Database\ManyToMany;
+use Application\Database\ManyToManyCollection;
+use Application\Database\Cast\AbstractCast;
+use Application\Database\ColumnCollection;
+use Application\Database\Column;
+use Application\Database\ForeignKey;
+use Application\Config\Configuration;
+use Application\Database\Table;
+use Application\Database\Database;
 use Application\Native\String;
 
 class DatabaseTest extends BaseTest
@@ -60,24 +55,27 @@ class DatabaseTest extends BaseTest
     public function tableCollection()
     {
         $database = $this->getBender()->getDatabase();
-        $tableCollection = $database->getTables();
+        $tableCollection = $database->getTables()->inSchema();
 
         $this->assertTrue($tableCollection->containsIndex('Person'));
         $this->assertTrue($tableCollection->containsIndex('Post'));
         $this->assertTrue($tableCollection->containsIndex('User'));
         $this->assertTrue($tableCollection->containsIndex('Worker'));
+        $this->assertTrue($tableCollection->containsIndex('Address'));
 
-        $this->assertEquals(4, $tableCollection->count());
+        $this->assertEquals(5, $tableCollection->count());
 
         $personTable = $tableCollection->getByTablename('bender_persons');
         $postTable = $tableCollection->getByTablename('bender_posts');
         $userTable = $tableCollection->getByTablename('bender_users');
         $workerTable = $tableCollection->getByTablename('bender_workers');
+        $addressTable = $tableCollection->getByTablename('bender_addresses');
 
         $this->assertTrue($personTable instanceof Table);
         $this->assertTrue($postTable instanceof Table);
         $this->assertTrue($userTable instanceof Table);
         $this->assertTrue($workerTable instanceof Table);
+        $this->assertTrue($addressTable instanceof Table);
     }
 
     /**
@@ -210,6 +208,32 @@ class DatabaseTest extends BaseTest
         $this->assertEquals('float', $salary->getType());
         $this->assertEquals('1000', $salary->getDefault());
         $this->assertFalse($salary->getNotnull());
+    }
+
+    /**
+     * @test
+     */
+    public function manyToMany()
+    {
+        $database = $this->getBender()->getDatabase();
+        $tables = $database->getTables();
+        $address = $tables->getByPK('Address');
+
+        $manyToManyCollection = $address->getManyToManyCollection();
+
+        $this->assertTrue($address instanceof Table);
+        $this->assertTrue($manyToManyCollection != null);
+        $this->assertTrue($manyToManyCollection instanceof ManyToManyCollection);
+
+        $this->assertTrue($manyToManyCollection->containsIndex('Person'));
+        $manyToMany = $manyToManyCollection->getByPK('Person');
+
+        $this->assertTrue($manyToMany instanceof ManyToMany);
+        $this->assertEquals("id_address", $manyToMany->getLocalColumn()->getName()->toString());
+        $this->assertEquals("id_address", $manyToMany->getRelationColumn()->getName()->toString());
+        $this->assertEquals("bender_person_address", $manyToMany->getRelationTable()->getName()->toString());
+        $this->assertEquals("Person", $manyToMany->getForeignTable()->getObject()->toString());
+        $this->assertEquals("id_person", $manyToMany->getRelationForeignColumn()->getName()->toString());
     }
 
 

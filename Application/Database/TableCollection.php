@@ -8,12 +8,12 @@ use Application\Config\Configuration;
  *
  *
  * @author chente
- * @method Application\Database\Table current
- * @method Application\Database\Table read
- * @method Application\Database\Table getOne
- * @method Application\Database\Table getByPK
- * @method Application\Database\TableCollection intersect
- * @method Application\Database\TableCollection filter
+ * @method \Application\Database\Table current
+ * @method \Application\Database\Table read
+ * @method \Application\Database\Table getOne
+ * @method \Application\Database\Table getByPK
+ * @method \Application\Database\TableCollection intersect
+ * @method \Application\Database\TableCollection filter
  */
 class TableCollection extends BaseCollection
 {
@@ -33,7 +33,7 @@ class TableCollection extends BaseCollection
     }
 
     /**
-     * @return Application\Database\TableCollection
+     * @return \Application\Database\Table
      */
     public function getByTablename($tablename)
     {

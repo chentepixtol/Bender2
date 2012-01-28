@@ -3,6 +3,8 @@
 
 namespace Application\Database;
 
+use Application\Config\Configuration;
+
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Application\Event\Event;
@@ -133,6 +135,7 @@ class DatabaseBuilder
         $tables = $database->getTables();
 
         while ( $tables->valid() ) {
+
             $table = $tables->read();
 
             // Herencia
@@ -152,9 +155,55 @@ class DatabaseBuilder
                 $foreignKeys->append($foreignKey);
             }
             $table->setForeignKeys($foreignKeys);
-
         }
+
+        $this->setupRelations($tables);
+
         $tables->rewind();
+    }
+
+    /**
+     *
+     * @param TableCollection $tables
+     */
+    protected function setupRelations(TableCollection $tables)
+    {
+        $tables->rewind();
+        while( $tables->valid() )
+        {
+            $table = $tables->read();
+
+            // ManyToMany Relations
+            $manyToManytables = $table->getConfiguration()->getByDotNotation('relations.many_to_many');
+            if( $manyToManytables  instanceof Configuration ){
+                foreach( $manyToManytables->toArray() as $manyToManytable ){
+                    $manyToManytable = $tables->getByTablename($manyToManytable);
+                    if( $manyToManytable instanceof Table ){
+
+                        $foreignKeys = $manyToManytable->getForeignKeys();
+
+                        if( $foreignKeys->count() == 2 ){
+
+                            $foreignKey1 = $foreignKeys->read();
+
+                            $otherTable1 = $tables->getByTablename($foreignKey1->getForeignTable()->getName()->toString());
+                            $otherColumn1 = $otherTable1->getColumns()->getByPK($foreignKey1->getForeign()->getName()->toString());
+
+                            $foreignKey2 = $foreignKeys->read();
+
+                            $otherTable2 = $tables->getByTablename($foreignKey2->getForeignTable()->getName()->toString());
+                            $otherColumn2 = $otherTable2->getColumns()->getByPK($foreignKey2->getForeign()->getName()->toString());
+
+                            $manyToMany1 = new ManyToMany($otherColumn1, $foreignKey1->getLocal(), $foreignKey2->getLocal(), $manyToManytable, $otherTable2);
+                            $otherTable1->getManyToManyCollection()->append($manyToMany1);
+
+                            $manyToMany2 = new ManyToMany($otherColumn2, $foreignKey2->getLocal(), $foreignKey1->getLocal(), $manyToManytable, $otherTable1);
+                            $otherTable2->getManyToManyCollection()->append($manyToMany2);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

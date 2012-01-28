@@ -87,4 +87,5 @@ class TableBuilder
             if( $isPrimary ) $table->setPrimaryKey($column);
         }
     }
+
 }

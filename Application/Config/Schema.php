@@ -54,6 +54,7 @@ class Schema
                     $configuration->set('object', new String($object, String::UPPERCAMELCASE));
                     $configuration->set('options', $options->get('options', array()));
                     $configuration->set('extends', $options->get('extends', false));
+                    $configuration->set('relations', $options->get('relations', array()));
                     break;
                 }
             }
