@@ -10,8 +10,8 @@
         "symfony/console": "2.0.9",
         "symfony/event-dispatcher": "2.0.9",
         "symfony/yaml":    "2.0.9",
-        "doctrine/dbal":   "2.2.0-BETA2",
-        "doctrine/common": "2.2.0-RC4",
+        "doctrine/dbal":   "2.2.0",
+        "doctrine/common": "2.2.0",
         "twig/twig":       "1.5.1",
         "mikey179/vfsStream": "1.0.0-dev",
         "chentepixtol/bender_zf": "1.0.0-dev"
