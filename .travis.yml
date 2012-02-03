@@ -5,7 +5,7 @@ php:
   - 5.4
 
 before_script:
-  - php composer.phar update
+  - php composer.phar --quiet install 
   - mysql -e 'create database IF NOT EXISTS bender;' -uroot
   - mysql -uroot bender < Test/config/fix_priviligies.sql
   - mysql -uroot bender < dev_dump.sql
