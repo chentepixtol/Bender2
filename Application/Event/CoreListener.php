@@ -53,11 +53,14 @@ class CoreListener implements EventSubscriberInterface
             $encoding = $settings->getEnconding();
             $overwrite = $copyOptions->get('overwrite', false);
             $copy = new Copy(new Writer($encoding, $encoding, $overwrite));
+            $this->getOutput()->writeln("");
             foreach( $directories as $from => $to ){
                 $project = $this->getBender()->getConfiguration()->get('project');
                 $in = $settings->getOutputDir() . DIRECTORY_SEPARATOR . $project;
                 $copy->addPath($in . DIRECTORY_SEPARATOR . $from, $to);
+                $this->getOutput()->writeln("<info>Directorio {$from} copiado a {$to}</info>");
             }
+            $this->getOutput()->writeln("");
             $copy->exec();
         }
     }
