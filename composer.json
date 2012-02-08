@@ -4,15 +4,15 @@
         "chentepixtol/bender_zf": {"vcs": {"url": "git://github.com/chentepixtol/bender_zf.git"}}
     },
     "require": {
-        "symfony/class-loader": "2.0.9",
-        "symfony/dependency-injection": "2.0.9",
-        "symfony/config":  "2.0.9",
-        "symfony/console": "2.0.9",
-        "symfony/event-dispatcher": "2.0.9",
-        "symfony/yaml":    "2.0.9",
+        "symfony/class-loader": "2.0.10",
+        "symfony/dependency-injection": "2.0.10",
+        "symfony/config":  "2.0.10",
+        "symfony/console": "2.0.10",
+        "symfony/event-dispatcher": "2.0.10",
+        "symfony/yaml":    "2.0.10",
         "doctrine/dbal":   "2.2.0",
         "doctrine/common": "2.2.0",
-        "twig/twig":       "1.5.1",
+        "twig/twig":       "1.6.0",
         "mikey179/vfsStream": "1.0.0-dev",
         "chentepixtol/bender_zf": "1.0.0-dev"
     }
