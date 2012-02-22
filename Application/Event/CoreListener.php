@@ -53,13 +53,26 @@ class CoreListener implements EventSubscriberInterface
             $encoding = $settings->getEnconding();
             $overwrite = $copyOptions->get('overwrite', false);
             $copy = new Copy(new Writer($encoding, $encoding, $overwrite));
+            $copy->setEventDispatcher($this->getBender()->getEventDispatcher());
+
             $this->getOutput()->writeln("");
+
+            if( $copyOptions->has('compare_app') ){
+                $app = $copyOptions->get('compare_app');
+                $this->getBender()->getEventDispatcher()->addListener('copy.skip_file', function(Event $event) use($app){
+                    exec("{$app} {$event->get('source')} {$event->get('destination')}");
+                });
+            }
+
             foreach( $directories as $from => $to ){
+
                 $project = $this->getBender()->getConfiguration()->get('project');
                 $in = $settings->getOutputDir() . DIRECTORY_SEPARATOR . $project;
                 $copy->addPath($in . DIRECTORY_SEPARATOR . $from, $to);
+
                 $this->getOutput()->writeln("<info>Directorio {$from} copiado a {$to}</info>");
             }
+
             $this->getOutput()->writeln("");
             $copy->exec();
         }

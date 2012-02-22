@@ -3,6 +3,10 @@
 namespace Application\File;
 
 
+use Application\Event\Event;
+
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 use Application\Generator\File\Writer;
 
 /**
@@ -12,6 +16,7 @@ use Application\Generator\File\Writer;
  */
 class Copy
 {
+
     /**
      *
      * @var array
@@ -32,10 +37,23 @@ class Copy
 
     /**
      *
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
+     *
      * @param Writer
      */
     public function __construct(Writer $fileWriter){
         $this->fileWriter = $fileWriter;
+    }
+
+    /**
+     * @param EventDispatcher $eventDispatcher
+     */
+    public function setEventDispatcher(EventDispatcher $eventDispatcher){
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -53,12 +71,31 @@ class Copy
      */
     public function exec(){
         foreach ($this->from as $i => $path){
-            if( is_file($path) ){
-                $this->fileWriter->save($this->to[$i], file_get_contents($path));
+            $source = $path;
+            $destination = $this->to[$i];
+            if( is_file($source) ){
+                $this->fileWriter->save($destination, file_get_contents($source));
+                $this->triggerEvents($source, $destination);
             }elseif( is_dir($path) ){
-                $this->createCopyDirectory($path, $this->to[$i]);
+                $this->createCopyDirectory($source, $destination);
             }else{
-                throw new \Exception("No existe el directorio {$path}");
+                throw new \Exception("No existe el directorio {$source}");
+            }
+        }
+    }
+
+    /**
+     *
+     * @param string $source
+     * @param string $destination
+     */
+    private function triggerEvents($source, $destination){
+        if( $this->eventDispatcher ){
+            if( md5_file($destination) != md5_file($source) ){
+                $this->eventDispatcher->dispatch('copy.skip_file', new Event(array(
+                    'source' => $source,
+                    'destination' => $destination,
+                )));
             }
         }
     }
@@ -68,14 +105,19 @@ class Copy
      * @param unknown_type $source
      * @param unknown_type $destination
      */
-    protected function createCopyDirectory($source, $destination)
+    protected function createCopyDirectory($sourceDirectory, $destinationDirectory)
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source));
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourceDirectory));
         foreach($iterator as $path){
             /* @var $path \SplFileInfo */
             if( !$path->isDir() ) {
-                $dir = str_replace($source, $destination, $path->getPath()) . DIRECTORY_SEPARATOR;
-                $this->fileWriter->save($dir . $path->getFilename(), file_get_contents($path->getPathname()));
+
+                $dir = str_replace($sourceDirectory, $destinationDirectory, $path->getPath()) . DIRECTORY_SEPARATOR;
+                $destination = $dir . $path->getFilename();
+                $source = $path->getPathname();
+
+                $this->fileWriter->save($destination, file_get_contents($source));
+                $this->triggerEvents($source, $destination);
             }
         }
     }
