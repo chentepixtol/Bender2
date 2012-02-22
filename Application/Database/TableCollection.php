@@ -73,6 +73,15 @@ class TableCollection extends BaseCollection
     }
 
     /**
+     * @return Application\Database\TableCollection
+     */
+    public function filterUseService(){
+        return $this->whereOption(function(Configuration $options){
+            return $options->has('service');
+        });
+    }
+
+    /**
      *
      * @param Closure $function
      * @return Application\Database\TableCollection

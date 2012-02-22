@@ -9,5 +9,6 @@ before_script:
   - mysql -e 'create database IF NOT EXISTS bender;' -uroot
   - mysql -uroot bender < Test/config/fix_priviligies.sql
   - mysql -uroot bender < dev_dump.sql
+  - php bender.php create zf
 
 script: phpunit --coverage-text Test/

@@ -8,7 +8,7 @@ schema:
     options:
       form: true
     relations:
-      manyToMany: [ bender_person_address ]
+      many_to_many: [ bender_person_address ]
   Post:
     tablename: bender_posts
     options: 
