@@ -13,7 +13,7 @@
         "doctrine/dbal":   "2.2.0",
         "doctrine/common": "2.2.0",
         "twig/twig":       "1.6.0",
-        "mikey179/vfsStream": "1.0.0-dev",
-        "chentepixtol/bender_zf": "1.0.0-dev"
+        "mikey179/vfsStream": "1.0.0-beta2",
+        "chentepixtol/bender_zf": "1.0.0-beta1"
     }
 }
