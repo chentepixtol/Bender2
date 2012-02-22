@@ -1,8 +1,7 @@
 {
-    "repositories": {
-        "mikey179/vfsStream": {"vcs": {"url": "git://github.com/mikey179/vfsStream.git"}},
-        "chentepixtol/bender_zf": {"vcs": {"url": "git://github.com/chentepixtol/bender_zf.git"}}
-    },
+    "repositories": 
+        [{"type": "vcs","url": "http://github.com/mikey179/vfsStream"},
+         {"type": "vcs","url": "http://github.com/chentepixtol/bender_zf"}],
     "require": {
         "symfony/class-loader": "2.0.10",
         "symfony/dependency-injection": "2.0.10",
