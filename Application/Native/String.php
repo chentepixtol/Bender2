@@ -309,6 +309,17 @@ class String
     }
 
     /**
+     * @param boolean $upperCamelCase
+     * @return string
+     */
+    public function pluralize($camelCase = true){
+        require_once 'vendor/ecentinela/inflector/Inflector.php';
+        require_once 'vendor/ecentinela/inflector/inflections/en.php';
+        $name = $camelCase ? $this->toCamelCase() : $this->toString();
+        return \Inflector::pluralize($name);
+    }
+
+    /**
      * Convierte un string a camelCase
      * @param string $this->string (un-string/un_string/un.string)
      * @param string $separator [OPTIONAL]
