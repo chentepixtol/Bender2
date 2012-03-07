@@ -320,6 +320,16 @@ class String
     }
 
     /**
+     * @param boolean $upperCamelCase
+     * @return string
+     */
+    public function singularize(){
+        require_once 'vendor/ecentinela/inflector/Inflector.php';
+        require_once 'vendor/ecentinela/inflector/inflections/en.php';
+        return \Inflector::singularize($this->toString());
+    }
+
+    /**
      * Convierte un string a camelCase
      * @param string $this->string (un-string/un_string/un.string)
      * @param string $separator [OPTIONAL]

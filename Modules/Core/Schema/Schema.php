@@ -1,6 +1,10 @@
 <?php
 namespace Modules\Core\Schema;
 
+use Application\Native\String;
+
+use Application\Config\Configuration;
+
 use Symfony\Component\Yaml\Yaml;
 use Application\Generator\File\FileCollection;
 use Application\Generator\File\File;
@@ -46,12 +50,16 @@ class Schema extends AbstractModule
     protected function createSchemaArray()
     {
         $tables = $this->getBender()->getDatabase()->getTables();
+        $options = $this->getBender()->getSettings()->getOptions();
+        $prefixes = $options->get('schema_prefixes', new Configuration())->toArray();
 
         $schema = array( 'schema' => array());
         while ($tables->valid()) {
             $table = $tables->read();
             $tablename = $table->getName()->toString();
-            $schema['schema'][$tablename] = array(
+            $objectName = new String(str_replace($prefixes, '', $tablename), String::UNDERSCORE);
+            $objectName = new String($objectName->toUpperCamelCase(), String::UPPERCAMELCASE);
+            $schema['schema'][$objectName->singularize()] = array(
                 'tablename' => $tablename,
             );
         }
