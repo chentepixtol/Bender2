@@ -9,10 +9,10 @@
         "symfony/console": "2.0.10",
         "symfony/event-dispatcher": "2.0.10",
         "symfony/yaml":    "2.0.10",
-        "doctrine/dbal":   "2.2.0",
-        "doctrine/common": "2.2.0",
-        "twig/twig":       "1.6.0",
+        "doctrine/dbal":   "2.2.1",
+        "doctrine/common": "2.2.1",
+        "twig/twig":       "1.6.1",
         "mikey179/vfsStream": "1.0.0-beta2",
-        "chentepixtol/bender_zf": "1.0.0-beta1"
+        "chentepixtol/bender_zf": "1.0.0-beta2"
     }
 }
