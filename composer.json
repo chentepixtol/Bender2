@@ -13,6 +13,6 @@
         "doctrine/common": "2.2.1",
         "twig/twig":       "1.6.1",
         "mikey179/vfsStream": "1.0.0-beta2",
-        "chentepixtol/bender_zf": "1.0.0-beta2"
+        "chentepixtol/bender_zf": "1.0.0-beta4"
     }
 }
