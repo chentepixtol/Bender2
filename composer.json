@@ -3,16 +3,16 @@
         [{"type": "vcs","url": "http://github.com/mikey179/vfsStream"},
          {"type": "vcs","url": "http://github.com/chentepixtol/bender_zf"}],
     "require": {
-        "symfony/class-loader": "2.0.10",
-        "symfony/dependency-injection": "2.0.10",
-        "symfony/config":  "2.0.10",
-        "symfony/console": "2.0.10",
-        "symfony/event-dispatcher": "2.0.10",
-        "symfony/yaml":    "2.0.10",
+        "symfony/class-loader": "2.0.12",
+        "symfony/dependency-injection": "2.0.12",
+        "symfony/config":  "2.0.12",
+        "symfony/console": "2.0.12",
+        "symfony/event-dispatcher": "2.0.12",
+        "symfony/yaml":    "2.0.12",
         "doctrine/dbal":   "2.2.1",
         "doctrine/common": "2.2.1",
-        "twig/twig":       "1.6.1",
+        "twig/twig":       "1.6.3",
         "mikey179/vfsStream": "1.0.0-beta2",
-        "chentepixtol/bender_zf": "1.0.0-beta4"
+        "chentepixtol/bender_zf": "1.0.0-beta5"
     }
 }
