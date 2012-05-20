@@ -75,6 +75,12 @@ class Table implements Collectable
 
     /**
      *
+     * @var boolean
+     */
+    protected $inInheritance = false;
+
+    /**
+     *
      *
      * @param DoctrineTable $table
      */
@@ -210,9 +216,11 @@ class Table implements Collectable
     }
 
     /**
-     * @param Application\Database\Table $parentTable
+     * @param \Application\Database\Table $parentTable
      */
     public function setParent($parent) {
+        $this->setIsInheritance(true);
+        $parent->setIsInheritance(true);
         $this->parent = $parent;
     }
 
@@ -299,6 +307,20 @@ class Table implements Collectable
      */
     public function setPrimaryKey($primaryKey) {
         $this->primaryKey = $primaryKey;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isInheritance(){
+        return $this->inInheritance;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function setIsInheritance($boolean){
+        $this->inInheritance = $boolean;
     }
 
 }
