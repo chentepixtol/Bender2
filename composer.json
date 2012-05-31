@@ -2,15 +2,15 @@
     "repositories": 
         [{"type": "vcs","url": "http://github.com/chentepixtol/bender_zf"}],
     "require": {
-        "symfony/class-loader": "2.0.13",
-        "symfony/dependency-injection": "2.0.13",
-        "symfony/config":  "2.0.13",
-        "symfony/console": "2.0.13",
-        "symfony/event-dispatcher": "2.0.13",
-        "symfony/yaml":    "2.0.13",
+        "symfony/class-loader": "2.0.15",
+        "symfony/dependency-injection": "2.0.15",
+        "symfony/config":  "2.0.15",
+        "symfony/console": "2.0.15",
+        "symfony/event-dispatcher": "2.0.15",
+        "symfony/yaml":    "2.0.15",
         "doctrine/dbal":   "2.2.2",
-        "doctrine/common": "2.2.1",
-        "twig/twig":       "1.8.0",
+        "doctrine/common": "2.2.2",
+        "twig/twig":       "1.8.2",
         "mikey179/vfsStream": "1.0.0-beta5",
         "chentepixtol/bender_zf": "1.0.0-beta5"
     }
