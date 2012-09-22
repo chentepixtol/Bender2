@@ -11,16 +11,16 @@ settings:
     meta:
       author:      chente
       company:     Bender
-      copyright:   Copyright (c) 2012 Bender (https://github.com/chentepixtol/Bender2)
+      copyright:   Copyleft (c) 2012 Bender (https://github.com/chentepixtol/Bender2)
       description: Example Project created by Bender Code Generator
-      version:     1.0 alpha 
+      version:     1.0.6 beta
   ZF: 
     application_namespace: Application 
     zf_version: 1
   alias:
     zf:
       project: ZF
-      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Form, CRUD, Unit]       
+      modules: [ Bean, Collection, Factory, Catalog, Exception, Query, Form, CRUD, Unit, Metadata]       
     schema:
       project: Core
       modules: [ Schema ]
